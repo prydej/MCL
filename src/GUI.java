@@ -10,6 +10,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -44,6 +47,7 @@ public class GUI extends Application{
 	private MenuItem miSave, miClose;					// save/close
 	private MenuItem miAbout;							// Displays info about the program
 	private String moveString;
+	private LineChart<String, Double> lineChart;
 
 	/** @author Savanh Lu
 	 * this is a constructor
@@ -198,11 +202,20 @@ public class GUI extends Application{
 
 		/* PUT EVERYTHING TOGETHER */
 		Scene scene = new Scene(MCLPane, 950, 850);
-		//StackPane root= new StackPane();
+		//chart things
+		CategoryAxis xAxis= new CategoryAxis();
+		NumberAxis yAxis = new NumberAxis();
+		lineChart = new LineChart(xAxis, yAxis);
+		lineChart.setTitle("Data from Simulation");
+		
+		StackPane root= new StackPane();
+		//add line chart
+		root.getChildren().add(lineChart);
 
 		// Add the menu bar and shapes to the border pane
 		MCLPane.setTop(menuBar);
 		MCLPane.setCenter(grid);
+		MCLPane.setBottom(lineChart);
 
 		// Configure and display the stage
 		stage.setScene(scene);
