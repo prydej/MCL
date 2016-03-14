@@ -125,11 +125,13 @@ public class Robot {
 		return calcPosition;
 	}
 	
-	public double findTotalDist(double[] waypoints){
+	public double findTotalDist(double[][] waypoints){
 		
 		//For loop to loop through each distance traveled
 		for(int beaver = 0; beaver < waypoints.length - 1; beaver++){
-			//
+			//Find distance between waypoints[beaver] and waypoints[beaver + 1]
+			distBetweenWaypoints = Math.sqrt(Math.pow((waypoints[beaver][0] - waypoints[beaver + 1][1]),2) + 
+					Math.pow((waypoints[beaver][1] - waypoints[beaver + 1][1]),2));
 			
 		}
 		

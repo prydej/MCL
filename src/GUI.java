@@ -62,7 +62,6 @@ public class GUI extends Application{
 		menuHelp.getItems().addAll(miAbout);
 		menuChart.getItems().addAll(miShow, miChart, new SeparatorMenuItem());
 		menuBar.getMenus().addAll(menuFile, menuHelp, menuChart);
-
 		//Defining the text field
 		final TextField rangeText = new TextField();
 		Label label1 = new Label ("Range:");
@@ -118,7 +117,6 @@ public class GUI extends Application{
 		endPoint.setPromptText("Enter in the form of (x,y)");
 		GridPane.setConstraints(endPoint, 2, 6);
 		GridPane.setConstraints(label7, 1, 6);
-		
 		//Defining the start sim button
 		Button start = new Button("Start Simulation");
 		start.setStyle("-fx-font: 20 Times New Roman; -fx-base: #6b6a6b;"); //change button color
@@ -136,8 +134,7 @@ public class GUI extends Application{
 			/* @author Savanh Lu
 			 * (non-Javadoc)
 			 * Setting an action for the Clear button
-			 * @see javafx.event.EventHandler#handle(javafx.event.Event)
-			 */
+			 * @see javafx.event.EventHandler#handle(javafx.event.Event) */
 			@Override
 			public void handle(ActionEvent e) {
 				rangeText.clear();
@@ -149,13 +146,11 @@ public class GUI extends Application{
 				endPoint.clear();
 			}
 		});
-
 		start.setOnAction(new EventHandler<ActionEvent>() {
 			/* @author Julian Pryde
 			 * Set action for start simulation button
 			 * (non-Javadoc)
-			 * @see javafx.event.EventHandler#handle(javafx.event.Event)
-			 */
+			 * @see javafx.event.EventHandler#handle(javafx.event.Event)*/
 			@Override
 			public void handle(ActionEvent e){
 				//get text, take out parens, split by comma, convert each element part to int
@@ -177,15 +172,12 @@ public class GUI extends Application{
 			}
 		});
 	}
-
-	//invoke GUI
 	/** @author Savanh Lu
-	 */
+	 * Invoke GUI */
 	public void showGUI(){
-		
+
 		Application.launch();
 	}
-
 	//set moveString
 	/**@author Julian Pryde*/
 	public void setMoveString(String moveString){
@@ -193,7 +185,9 @@ public class GUI extends Application{
 	}
 	/**@author Savanh Lu*/
 	/* (non-Javadoc)
-	 * @see javafx.application.Application#start(javafx.stage.Stage)
+	 * @see 
+	 * javafx.application.Application#
+	 * start(javafx.stage.Stage)
 	 */
 	
 	@Override
@@ -201,12 +195,9 @@ public class GUI extends Application{
 		miAbout.setOnAction(e -> showAbout());			//Event Handlers
 		miClose.setOnAction(e -> Platform.exit());
 		miChart.setOnAction(new ChartDisplayHandler());
-		
-
+		miShow.setOnAction(new ShowHandler());
 		/* PUT EVERYTHING TOGETHER */
 		Scene scene = new Scene(MCLPane, 950, 850);
-		
-
 		// Add the menu bar and shapes to the border pane
 		MCLPane.setTop(menuBar);
 		MCLPane.setCenter(grid);
@@ -239,25 +230,20 @@ public class GUI extends Application{
 					return answer;
 				}
 	/** Shows information about the program in it's own window 
-	 * @author Savanh Lu
-	 */
+	 * @author Savanh Lu */
 	private void showAbout(){
 		//customize text
 		final String aboutText ="This program was designed by Miralda Rodney,"
 				+ " Jadeira Lu, Julian Pryde, and Stephen Kristin in collaboration with"
 				+ " Dr.Garfield.";
-
 		// Create the text label
 		Label aboutLabel = new Label();
 		aboutLabel.setWrapText(true);
 		aboutLabel.setTextAlignment(TextAlignment.CENTER);
 		aboutLabel.setFont(Font.font("Times New Roman", 22));
 		aboutLabel.setText(aboutText);
-
-		// Add the label to a StackPane
-		StackPane pane = new StackPane();
+		StackPane pane = new StackPane();	// Add the label to a StackPane
 		pane.getChildren().add(aboutLabel);
-
 		// Create and display said the aforementioned pane in a new stage 	
 		Scene scene = new Scene(pane, 550, 200);
 		Stage stage = new Stage();
@@ -270,7 +256,7 @@ public class GUI extends Application{
 		class ChartDisplayHandler implements EventHandler<ActionEvent>{
 			@Override
 			public void handle(ActionEvent arg0) {
-				//updateChart();
+			
 			}
 		}
 	
@@ -278,10 +264,7 @@ public class GUI extends Application{
 		private class ShowHandler implements EventHandler<ActionEvent>{
 			@Override
 			public void handle(ActionEvent e) {
-				//set to true
 				miChart.setSelected(true);
-				//updateChart();
 			}
 		}
-		
 }
