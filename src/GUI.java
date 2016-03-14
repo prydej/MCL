@@ -50,7 +50,7 @@ public class GUI extends Application{
 	 */
 	public GUI(){
 		MCLPane = new BorderPane();							//make pane
-		//Pane buttonPane = new Pane();
+		
 		//create menu items
 		miSave = new MenuItem("Save");
 		miClose = new MenuItem("Close");
@@ -66,54 +66,65 @@ public class GUI extends Application{
 		menuHelp.getItems().addAll(miAbout);
 		menuBar.getMenus().addAll(menuFile, menuHelp);
 
-		//Defining text fields
+		//Defining the text field
 		final TextField rangeText = new TextField();
-		rangeText.setPromptText("Enter a range");
+		Label label1 = new Label ("Range:");
+		rangeText.setPromptText("Enter a double");
 		rangeText.setPrefColumnCount(20);
 		rangeText.getText();
 		GridPane.setConstraints(rangeText, 2, 0);
-
+		GridPane.setConstraints(label1, 1, 0);
+		//Defining  text field
 		final TextField refPoints = new TextField();
+		Label label2 = new Label ("Reference Points:");
 		refPoints.setPromptText("Enter a number of reference points");
 		GridPane.setConstraints(refPoints, 2, 1);
-
+		GridPane.setConstraints(label2, 1, 1);
+		//Defining text field
 		final TextField senseError = new TextField();
+		Label label3 = new Label ("Sensor Error %:");
 		senseError.setPrefColumnCount(25);
-		senseError.setPromptText("Enter sensor error percentage");
+		senseError.setPromptText("Enter a percentage");
 		GridPane.setConstraints(senseError, 2, 2);
-
+		GridPane.setConstraints(label3, 1, 2);
+		//Defining text field
 		final TextField waypoints = new TextField();
+		Label label4 = new Label ("Waypoints:");
 		waypoints.setPrefColumnCount(25);
-		waypoints.setPromptText("Enter amount of waypoints");
+		waypoints.setPromptText("Enter a double");
 		GridPane.setConstraints(waypoints, 2, 3);
-
+		GridPane.setConstraints(label4, 1, 3);
+		//Defining text field
 		final TextField moveError = new TextField();
+		Label label5 = new Label ("Movment Error %:");
 		moveError.setPrefColumnCount(25);
-		moveError.setPromptText("Enter movement error percentage");
+		moveError.setPromptText("Enter a percentage");
 		GridPane.setConstraints(moveError, 2, 4);
-
+		GridPane.setConstraints(label5, 1, 4);
+		//Defining text field
 		final TextField startPoint = new TextField();
+		Label label6 = new Label ("Start Point:");
 		startPoint.setPrefColumnCount(25);
-		startPoint.setPromptText("Enter starting location in the form of (x,y)");
+		startPoint.setPromptText("Enter in the form of (x,y)");
 		GridPane.setConstraints(startPoint, 2, 5);
-
+		GridPane.setConstraints(label6, 1, 5);
+		//Defining text field
 		final TextField endPoint = new TextField();
+		Label label7 = new Label ("End Point:");
 		endPoint.setPrefColumnCount(25);
-		endPoint.setPromptText("Enter end location in the form of (x,y)");
+		endPoint.setPromptText("Enter in the form of (x,y)");
 		GridPane.setConstraints(endPoint, 2, 6);
-
-		//Defining the start simulation button
+		GridPane.setConstraints(label7, 1, 6);
+		
+		//Defining the start sim button
 		Button start = new Button("Start Simulation");
-		start.setStyle("-fx-base: #6b6a6b;"); //change button color
+		start.setStyle("-fx-font: 20 Times New Roman; -fx-base: #6b6a6b;"); //change button color
 		GridPane.setConstraints(start, 3, 0);
-
 		//Defining the Clear button
 		Button clear = new Button("Clear");
-		clear.setStyle("-fx-base:#ebebeb;"); //change button color
-		GridPane.setConstraints(clear, 3, 1);
-		//add everything to grid
-		grid.getChildren().addAll(clear, start, endPoint, startPoint, moveError, rangeText, refPoints, senseError, waypoints);
-
+		clear.setStyle("-fx-font: 20 Times New Roman; -fx-base:#ebebeb;"); //change button color
+		GridPane.setConstraints(clear, 3, 1);grid.getChildren().addAll(clear, start, endPoint, startPoint, moveError, label1, rangeText, label2, refPoints,label3, senseError,label4, label5, label6, label7, waypoints);
+		
 		clear.setOnAction(new EventHandler<ActionEvent>() {
 			/* @author Savanh Lu
 			 * (non-Javadoc)
@@ -182,8 +193,8 @@ public class GUI extends Application{
 	 */
 	@Override
 	public void start(Stage stage) throws Exception {
-		//miAbout.setOnAction(e -> showAbout());			//Event Handlers
-		//miClose.setOnAction(e -> Platform.exit());
+		miAbout.setOnAction(e -> showAbout());			//Event Handlers
+		miClose.setOnAction(e -> Platform.exit());
 
 		/* PUT EVERYTHING TOGETHER */
 		Scene scene = new Scene(MCLPane, 950, 850);
