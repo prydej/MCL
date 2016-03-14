@@ -203,6 +203,7 @@ public class GUI extends Application{
 	/* (non-Javadoc)
 	 * @see javafx.application.Application#start(javafx.stage.Stage)
 	 */
+	
 	@Override
 	public void start(Stage stage) throws Exception {
 		miAbout.setOnAction(e -> showAbout());			//Event Handlers
