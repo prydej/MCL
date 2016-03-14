@@ -40,7 +40,7 @@ public class chart extends Application{
 			ObservableList<XYChart.Series<String, Double>>answer = FXCollections.observableArrayList();
 			
 			
-			answer.addAll( getChartData());
+			answer.add( getChartData());
 			return answer;
 		}
 		//creates chart data

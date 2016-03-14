@@ -1,11 +1,8 @@
 
-import java.io.File;
-import java.io.IOException;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -13,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -20,55 +18,49 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import java.lang.Integer;
+import javafx.scene.control.CheckMenuItem;
 import java.lang.Double;
 
 /** The GUI
  * @author Savanh
  */
 public class GUI extends Application{
-
 	private BorderPane MCLPane; 						//border pane
 	GridPane grid = new GridPane();						//gridpane
 	private MenuBar menuBar;							// MenuBar
-	private Menu menuFile, menuHelp;					// Menus
+	private Menu menuFile, menuHelp, menuChart;					// Menus
 	private MenuItem miSave, miClose;					// save/close
-	private MenuItem miAbout;							// Displays info about the program
+	private MenuItem miAbout, miChart, miShow;							// Displays info about the program
 	private String moveString;
 	private LineChart<String, Double> lineChart;
 
 	/** @author Savanh Lu
-	 * this is a constructor
-	 */
+	 * this is a constructor*/
 	public GUI(){
 		MCLPane = new BorderPane();							//make pane
-		
 		//create menu items
 		miSave = new MenuItem("Save");
 		miClose = new MenuItem("Close");
 		miAbout = new MenuItem("About");
-
+		miChart = new MenuItem("See Data");
+		miShow = new MenuItem("Show Data");
 		// Create Menus and MenuBar
 		menuFile = new Menu("File");
 		menuHelp = new Menu("Help");
 		menuBar = new MenuBar();	
-
+		menuChart = new Menu("Data Chart");
 		// Add menu items to respective menus and to menuBaar
 		menuFile.getItems().addAll(miSave, miClose);
 		menuHelp.getItems().addAll(miAbout);
-		menuBar.getMenus().addAll(menuFile, menuHelp);
+		menuChart.getItems().addAll(miShow, miChart, new SeparatorMenuItem());
+		menuBar.getMenus().addAll(menuFile, menuHelp, menuChart);
 
 		//Defining the text field
 		final TextField rangeText = new TextField();
@@ -155,7 +147,6 @@ public class GUI extends Application{
 			 */
 			@Override
 			public void handle(ActionEvent e){
-
 				//get text, take out parens, split by comma, convert each element part to int
 				int startx = Integer.parseInt(startPoint.getText().replaceAll("[()]","").split(",")[0]);
 				int starty = Integer.parseInt(startPoint.getText().replaceAll("[()]","").split(",")[1]);
@@ -199,38 +190,44 @@ public class GUI extends Application{
 	public void start(Stage stage) throws Exception {
 		miAbout.setOnAction(e -> showAbout());			//Event Handlers
 		miClose.setOnAction(e -> Platform.exit());
+		miChart.setOnAction(new ChartDisplayHandler());
+		
 
 		/* PUT EVERYTHING TOGETHER */
 		Scene scene = new Scene(MCLPane, 950, 850);
-		//chart things
-		CategoryAxis xAxis= new CategoryAxis();
-		NumberAxis yAxis = new NumberAxis();
-		lineChart = new LineChart(xAxis, yAxis);
-		lineChart.setTitle("Data from Simulation");
 		
-		StackPane root= new StackPane();
-		//add line chart
-		root.getChildren().add(lineChart);
 
 		// Add the menu bar and shapes to the border pane
 		MCLPane.setTop(menuBar);
 		MCLPane.setCenter(grid);
 		MCLPane.setBottom(lineChart);
-
+		//chart things
+		CategoryAxis xAxis= new CategoryAxis();
+		NumberAxis yAxis = new NumberAxis();
+		lineChart = new LineChart(xAxis, yAxis);
+		lineChart.setTitle("Data from Simulation");
+		StackPane root= new StackPane();
+		root.getChildren().add(lineChart);//add line chart
+		((CheckMenuItem) miChart).setSelected(true);
 		// Configure and display the stage
 		stage.setScene(scene);
 		stage.setTitle("Monte Carlo Localization Simulator");
-
 		//won't allow user to resize grid
 		stage.setResizable(false);
 		stage.show();
-
 		//GridPane things
 		grid.setPadding(new Insets(20, 20, 20, 20));
 		grid.setVgap(5);
 		grid.setHgap(5);
-
 	}
+		//creates the chart
+				private ObservableList<XYChart.Series<String, Double>> getChart(boolean miChart){
+					//declare variables
+					ObservableList<XYChart.Series<String, Double>>answer = FXCollections.observableArrayList();
+					if (miChart){
+						answer.addAll(new chart().getChartData());}
+					return answer;
+				}
 	/** Shows information about the program in it's own window 
 	 * @author Savanh Lu
 	 */
@@ -259,5 +256,22 @@ public class GUI extends Application{
 		stage.setResizable(false);
 		stage.show();
 	}
-
+	//tell the buttons what to do using event handler
+		class ChartDisplayHandler implements EventHandler<ActionEvent>{
+			@Override
+			public void handle(ActionEvent arg0) {
+				//updateChart();
+			}
+		}
+	
+	//shows chart
+		private class ShowHandler implements EventHandler<ActionEvent>{
+			@Override
+			public void handle(ActionEvent e) {
+				//set to true
+				((CheckMenuItem) miChart).setSelected(true);
+				//updateChart();
+			}
+		}
+		
 }
