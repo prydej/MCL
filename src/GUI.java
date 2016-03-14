@@ -37,8 +37,9 @@ public class GUI extends Application{
 	private MenuBar menuBar;							// MenuBar
 	private Menu menuFile, menuHelp, menuChart;					// Menus
 	private MenuItem miSave, miClose;					// save/close
-	private MenuItem miAbout, miChart, miShow;							// Displays info about the program
+	private MenuItem miAbout, miShow;							// Displays info about the program
 	private String moveString;
+	private CheckMenuItem miChart;	// CheckMenuItems for each chart
 	private LineChart<String, Double> lineChart;
 
 	/** @author Savanh Lu
@@ -49,7 +50,7 @@ public class GUI extends Application{
 		miSave = new MenuItem("Save");
 		miClose = new MenuItem("Close");
 		miAbout = new MenuItem("About");
-		miChart = new MenuItem("See Data");
+		miChart = new CheckMenuItem("See Data");
 		miShow = new MenuItem("Show Data");
 		// Create Menus and MenuBar
 		menuFile = new Menu("File");
@@ -217,7 +218,7 @@ public class GUI extends Application{
 		lineChart.setTitle("Data from Simulation");
 		StackPane root= new StackPane();
 		root.getChildren().add(lineChart);//add line chart
-		((CheckMenuItem) miChart).setSelected(true);
+		 miChart.setSelected(true);
 		// Configure and display the stage
 		stage.setScene(scene);
 		stage.setTitle("Monte Carlo Localization Simulator");
@@ -278,7 +279,7 @@ public class GUI extends Application{
 			@Override
 			public void handle(ActionEvent e) {
 				//set to true
-				((CheckMenuItem) miChart).setSelected(true);
+				miChart.setSelected(true);
 				//updateChart();
 			}
 		}
