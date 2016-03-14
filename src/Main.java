@@ -45,7 +45,7 @@ public class Main extends Application{
 	 * @param movementError
 	 */
 	public static void simulate(int numRefPoints, int[] waypoint1, int[] waypoint2, double range,
-			double sensorError, double movementError) throws Exception{
+			double sensorError, double movementError){
 
 		//Instantiate robot
 		Robot robot = new Robot();

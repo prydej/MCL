@@ -177,8 +177,6 @@ public class GUI extends Application{
 	 */
 	public void showGUI(){
 		
-		int a = 1;
-		
 		Application.launch();
 	}
 
