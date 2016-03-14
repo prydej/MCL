@@ -78,12 +78,14 @@ public class GUI extends Application{
 		rangeText.getText();
 		GridPane.setConstraints(rangeText, 2, 0);
 		GridPane.setConstraints(label1, 1, 0);
+		
 		//Defining  text field
 		final TextField refPoints = new TextField();
 		Label label2 = new Label ("Reference Points:");
 		refPoints.setPromptText("Enter a number of reference points");
 		GridPane.setConstraints(refPoints, 2, 1);
 		GridPane.setConstraints(label2, 1, 1);
+		
 		//Defining text field
 		final TextField senseError = new TextField();
 		Label label3 = new Label ("Sensor Error %:");
@@ -91,6 +93,7 @@ public class GUI extends Application{
 		senseError.setPromptText("Enter a percentage");
 		GridPane.setConstraints(senseError, 2, 2);
 		GridPane.setConstraints(label3, 1, 2);
+		
 		//Defining text field
 		final TextField waypoints = new TextField();
 		Label label4 = new Label ("Waypoints:");
@@ -98,6 +101,7 @@ public class GUI extends Application{
 		waypoints.setPromptText("Enter a double");
 		GridPane.setConstraints(waypoints, 2, 3);
 		GridPane.setConstraints(label4, 1, 3);
+		
 		//Defining text field
 		final TextField moveError = new TextField();
 		Label label5 = new Label ("Movment Error %:");
@@ -105,6 +109,7 @@ public class GUI extends Application{
 		moveError.setPromptText("Enter a percentage");
 		GridPane.setConstraints(moveError, 2, 4);
 		GridPane.setConstraints(label5, 1, 4);
+		
 		//Defining text field
 		final TextField startPoint = new TextField();
 		Label label6 = new Label ("Start Point:");
@@ -112,6 +117,7 @@ public class GUI extends Application{
 		startPoint.setPromptText("Enter in the form of (x,y)");
 		GridPane.setConstraints(startPoint, 2, 5);
 		GridPane.setConstraints(label6, 1, 5);
+		
 		//Defining text field
 		final TextField endPoint = new TextField();
 		Label label7 = new Label ("End Point:");
@@ -124,10 +130,14 @@ public class GUI extends Application{
 		Button start = new Button("Start Simulation");
 		start.setStyle("-fx-font: 20 Times New Roman; -fx-base: #6b6a6b;"); //change button color
 		GridPane.setConstraints(start, 3, 0);
+		
 		//Defining the Clear button
 		Button clear = new Button("Clear");
 		clear.setStyle("-fx-font: 20 Times New Roman; -fx-base:#ebebeb;"); //change button color
-		GridPane.setConstraints(clear, 3, 1);grid.getChildren().addAll(clear, start, endPoint, startPoint, moveError, label1, rangeText, label2, refPoints,label3, senseError,label4, label5, label6, label7, waypoints);
+		GridPane.setConstraints(clear, 3, 1);
+		
+		grid.getChildren().addAll(rangeText, refPoints, senseError, waypoints, 
+				moveError, startPoint, endPoint, clear, start, label1, label2, label3,label4, label5, label6, label7);
 		
 		clear.setOnAction(new EventHandler<ActionEvent>() {
 			/* @author Savanh Lu
