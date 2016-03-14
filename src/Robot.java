@@ -56,8 +56,7 @@ public class Robot {
 		
 		this.position = new double[][2];
 
-		//find next position 1 unit away from last position
-		//	divide horz and vert component by distance between actual position and toWaypoint #UnitVector
+		//Find distance between fromWaypoint and toWaypoint
 		distBetweenWaypoints = Math.sqrt(Math.pow((waypoints[toWaypoint][0] - 
 				waypoints[fromWaypoint][0]),2) + 
 				Math.pow((waypoints[toWaypoint][1] - waypoints[fromWaypoint][1]),2));
@@ -65,6 +64,8 @@ public class Robot {
 		//loop through all stops between waypoints
 		for (chipmunk = 0; chipmunk < distBetweenWaypoints; chipmunk++){
 			
+			//find next position 1 unit away from last position
+			//	divide horz and vert component by distance between actual position and toWaypoint #UnitVector
 			double[] nextPosition = {(waypoints[toWaypoint][0] - position[chipmunk][0])/
 					distBetweenWaypoints, 
 					(waypoints[toWaypoint][1] - position[chipmunk][1])/distBetweenWaypoints};
@@ -128,6 +129,7 @@ public class Robot {
 		
 		//For loop to loop through each distance traveled
 		for(int beaver = 0; beaver < waypoints.length - 1; beaver++){
+			//
 			
 		}
 		
