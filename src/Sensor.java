@@ -211,6 +211,10 @@ public class Sensor {
 					
 					return angleOfRobotAndTwoPoints;
 				}
+				else{
+					
+					distanceOfRef1FromRobot = Math.sqrt(Math.pow((robotsX1-refPointX1), 2) + Math.pow((robotsX2-refPointX2), 2));
+				}
 				
 				readFile.close();		
 			}
