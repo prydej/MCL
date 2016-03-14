@@ -94,7 +94,7 @@ public class Robot {
 			//call this.calculate()
 			position[chipmunk] = this.calculate(positionWError, Map.refPoints);
 			
-			//send info to GUI
+			//send info to IO
 			outputString = "Ideal Positions: " + Arrays.toString(position[chipmunk]) + 
 					"\nPositions with Error " + Arrays.toString(positionWError);
 			IO.setMoveString(outputString);		
