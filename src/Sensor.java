@@ -120,9 +120,12 @@ public class Sensor {
 							
 						}
 					
-					File saveDetectedPoints = new File("DetectedPoints.txt");
+				
 
 					try{
+						
+						File saveDetectedPoints = new File("DetectedPoints.txt");
+						
 						saveDetectedPoints.createNewFile();
 
 						BufferedWriter bWSavePoints = new BufferedWriter(new FileWriter(saveDetectedPoints, true));
