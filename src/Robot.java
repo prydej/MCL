@@ -53,6 +53,8 @@ public class Robot {
 		waypoints[0][1] = (double) start[1];
 		waypoints[1][0] = (double) end[0];
 		waypoints[1][1] = (double) end[1];
+		
+		this.position = new double[][2];
 
 		//find next position 1 unit away from last position
 		//	divide horz and vert component by distance between actual position and toWaypoint #UnitVector
@@ -120,6 +122,16 @@ public class Robot {
 		calcPosition[1] = 1;
 
 		return calcPosition;
+	}
+	
+	public double findTotalDist(double[] waypoints){
+		
+		//For loop to loop through each distance traveled
+		for(int beaver = 0; beaver < waypoints.length - 1; beaver++){
+			
+		}
+		
+		return distance;
 	}
 
 }
