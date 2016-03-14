@@ -152,7 +152,7 @@ public class Sensor {
 	 * distance between two at a time to estimate robot's 
 	 * location
 	 */
-	public double distanceBetweenPoints() throws IOException{
+	public void distanceBetweenPoints() throws IOException{
 		
 		//this method will read the detectedPoints file to figure out the
 		//distance between every two point, so 1 and 2, 2 and 3, etc.
@@ -209,7 +209,12 @@ public class Sensor {
 				
 					angleOfRobotAndTwoPoints = Math.toDegrees(radiansOfAngle);
 					
-					return angleOfRobotAndTwoPoints;
+				}
+				else{
+					
+					distanceOfRef1FromRobot = Math.sqrt(Math.pow((robotsX1-refPointX1), 2) + Math.pow((robotsX2-refPointX2), 2));
+				
+					
 				}
 				
 				readFile.close();		
@@ -218,7 +223,6 @@ public class Sensor {
 		catch(IOException iOEx2){
 			
 			iOEx2.printStackTrace();
-		}
-		return angleOfRobotAndTwoPoints;	
+		}	
 	}
 }
