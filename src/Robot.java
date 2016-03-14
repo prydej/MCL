@@ -6,6 +6,7 @@
 
 
 import java.util.Random;
+import java.io.IOException;
 import java.util.Arrays;
 
 public class Robot {
@@ -89,8 +90,12 @@ public class Robot {
 			}
 
 			//call sensor.sense()
+			try{
 			sensor.detectPoints(range, positionWError[0], positionWError[1], sensorError);
-
+			} catch (IOException e) {
+				System.out.println("IO Exception");
+			}
+			
 			//call this.calculate()
 			position[chipmunk] = this.calculate(positionWError, Map.refPoints);
 			

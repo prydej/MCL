@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.*;
+import java.math.*;
 
 /**
  * @author Miralda Rodney
@@ -19,12 +20,8 @@ import java.lang.*;
  * is a reference point. The points are saved
  * formatted in a file.
  *
- */
+ **/
 
-/**
- * @author prydej
- *
- */
 @SuppressWarnings("unused")
 
 public class Sensor {
@@ -48,7 +45,7 @@ public class Sensor {
 	 * Description of detectPoints method which takes in three 
 	 * parameters and does not return any values.
 	 **/
-	public void detectPoints(double rangeOfSensor, double robotX, double robotY, double sensorError){
+	public void detectPoints(double rangeOfSensor, double robotX, double robotY, double sensorError) throws IOException{
 		
 		//loop counters
 		int i = 0;
@@ -71,10 +68,16 @@ public class Sensor {
 		int pointDetectedY = -1;
 		
 		//variables to hold the estimated locations
-		//of the reference points and the robot
-		double estimatedXLoc = 0.0;
+		//of the reference points from the robot
+		double refPointXLoc = 0.0;
 		
-		double estimatedYLoc = 0.0;
+		double refPointYLoc = 0.0;
+		
+		//intermediate variables to hold partially
+		//calculated values of ref. point locations
+		double tempVarX = 0.0;
+		
+		double tempVarY = 0.0;
 
 		//loop to go through array of reference points 
 		//and determine if any are within the sensors' range
@@ -98,9 +101,24 @@ public class Sensor {
 				//are saved to a file with the error accounted for
 				if(pointDetectedX != -1 && pointDetectedY != -1){
 
-					estimatedXLoc = pointDetectedX*(sensorError/100);
+					tempVarX = sensorError/pointDetectedX;
 					
-					estimatedYLoc = pointDetectedY*(sensorError/100);
+					tempVarY = sensorError/pointDetectedY;
+					
+						if(j % 2 == 0){
+							
+							refPointXLoc = pointDetectedX + tempVarX;
+					
+							refPointYLoc = pointDetectedY + tempVarY;
+						}
+						
+						if(j % 2 != 0){
+							
+							refPointXLoc = pointDetectedX - tempVarX;
+							
+							refPointYLoc = pointDetectedY - tempVarY;
+							
+						}
 					
 					File saveDetectedPoints = new File("DetectedPoints.txt");
 
@@ -109,16 +127,18 @@ public class Sensor {
 
 						BufferedWriter bWSavePoints = new BufferedWriter(new FileWriter(saveDetectedPoints, true));
 
-						bWSavePoints.write("" + estimatedXLoc + " " + estimatedYLoc + "\n");
+						bWSavePoints.write(robotX + "," + robotY + "," + refPointXLoc + "," + refPointYLoc + "\n");
+						
 						bWSavePoints.newLine();
 
-						//System.out.println(pointDetectedX + " " + pointDetectedY);
-
 						bWSavePoints.close();
+						
 					}
 					catch (IOException iOEx1){
 
 						//error message and scene and pane to pop up
+						//for final project
+						
 						//printing stack trace for demo 1
 						iOEx1.printStackTrace();
 					}
@@ -132,15 +152,73 @@ public class Sensor {
 	 * distance between two at a time to estimate robot's 
 	 * location
 	 */
-	public void distanceBetweenPoints(){
+	public double distanceBetweenPoints() throws IOException{
 		
 		//this method will read the detectedPoints file to figure out the
 		//distance between every two point, so 1 and 2, 2 and 3, etc.
 		
+		double distanceOfRef1FromRobot = 0.0;
 		
-		//to hold the robot's estimated x and y locations
-		double robotsXLocFromPoints = 0.0;
+		double distanceOfRef2FromRobot = 0.0;
 		
-		double robotsYLocFromPoints = 0.0;
+		double distanceBetween2RefPoints = 0.0;
+		
+		double radiansOfAngle = 0.0;
+		
+		double angleOfRobotAndTwoPoints = 0.0;
+		
+		try{
+			
+			Scanner readFile = new Scanner(new File("detectedPoints.txt"));
+			
+			readFile.useDelimiter(",");
+			
+			double robotsX1, robotsY1, refPointX1, refPointY1, robotsX2,
+						robotsY2, refPointX2, refPointY2;
+			
+			while(readFile.next() != null){
+				
+				robotsX1 = readFile.nextDouble();
+				
+				robotsY1 = readFile.nextDouble();
+				
+				refPointX1 = readFile.nextDouble();
+				
+				refPointY1 = readFile.nextDouble();
+				
+				readFile.nextLine();
+				
+				robotsX2 = readFile.nextDouble();
+				
+				robotsY2 = readFile.nextDouble();
+				
+				refPointX2 = readFile.nextDouble();
+				
+				refPointY2 = readFile.nextDouble();
+				
+				
+				if(robotsX1 == robotsX2 && robotsY1 == robotsY2){
+				
+					distanceOfRef1FromRobot = Math.sqrt(Math.pow((robotsX1 - refPointX1), 2) + Math.pow((robotsY1 - refPointY1), 2));
+				
+					distanceOfRef2FromRobot = Math.sqrt(Math.pow((robotsX2 - refPointX2), 2) + Math.pow((robotsY2 - refPointY2), 2));
+				
+					distanceBetween2RefPoints = Math.sqrt(Math.pow((refPointX1 - refPointX2), 2) + Math.pow((refPointY1 - refPointY2), 2));
+					
+					radiansOfAngle = Math.acos((Math.pow(distanceOfRef1FromRobot, 2) + Math.pow(distanceOfRef2FromRobot, 2) - Math.pow(distanceBetween2RefPoints, 2))/(2*distanceOfRef1FromRobot*distanceOfRef2FromRobot));
+				
+					angleOfRobotAndTwoPoints = Math.toDegrees(radiansOfAngle);
+					
+					return angleOfRobotAndTwoPoints;
+				}
+				
+				readFile.close();		
+			}
+		}
+		catch(IOException iOEx2){
+			
+			iOEx2.printStackTrace();
+		}
+		return angleOfRobotAndTwoPoints;	
 	}
 }
