@@ -13,7 +13,7 @@ public class Robot {
 
 	public Sensor sensor;
 	public SensedMap m_SensedMap;
-	private double[] calcPosition, positionWError; //2 elements: 1st is x position, 2nd is y position
+	private double[] calcPosition, positionWError, nextPosition; //2 elements: 1st is x position, 2nd is y position
 	private double[][] waypoints = {{0,0},{0,0}};
 	public double[][] position;
 	private double movementError, distBetweenWaypoints, distFromLastWaypoint, 
@@ -24,6 +24,12 @@ public class Robot {
 
 	public Robot(){
 		sensor = new Sensor();
+		
+		// Instantiate position vector
+		this.position = new double[(int) Math.ceil(this.findTotalDist(waypoints))][2]; //ceiling of total distance travelled by robot
+		
+		// Instantiate nextPosition
+		nextPosition = new double[2];
 	}
 	
 	public int getNumWaypoints(){
@@ -49,16 +55,14 @@ public class Robot {
 	 */
 	public double[][] move(GUI gui, Map map, int[] start, int[] end, double range, double sensorError){
 		
+		
 		waypoints[0][0] = (double) start[0];
 		waypoints[0][1] = (double) start[1];
 		waypoints[1][0] = (double) end[0];
 		waypoints[1][1] = (double) end[1];
-		
-		this.position = new double[][2];
 
 		//Find distance between fromWaypoint and toWaypoint
-		distBetweenWaypoints = Math.sqrt(Math.pow((waypoints[toWaypoint][0] - 
-				waypoints[fromWaypoint][0]),2) + 
+		distBetweenWaypoints = Math.sqrt(Math.pow((waypoints[toWaypoint][0] - waypoints[fromWaypoint][0]),2) + 
 				Math.pow((waypoints[toWaypoint][1] - waypoints[fromWaypoint][1]),2));
 
 		//loop through all stops between waypoints
@@ -66,9 +70,8 @@ public class Robot {
 			
 			//find next position 1 unit away from last position
 			//	divide horz and vert component by distance between actual position and toWaypoint #UnitVector
-			double[] nextPosition = {(waypoints[toWaypoint][0] - position[chipmunk][0])/
-					distBetweenWaypoints, 
-					(waypoints[toWaypoint][1] - position[chipmunk][1])/distBetweenWaypoints};
+			nextPosition[0] = (waypoints[1][0] - position[0][0])/distBetweenWaypoints;
+			nextPosition[1] = (waypoints[toWaypoint][1] - position[chipmunk][1])/distBetweenWaypoints;
 
 			//change position var to new position
 			position[chipmunk][0] = nextPosition[0];

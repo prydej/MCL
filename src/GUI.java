@@ -128,7 +128,7 @@ public class GUI extends Application{
 		GridPane.setConstraints(clear, 3, 1);
 		
 		grid.getChildren().addAll(rangeText, refPoints, senseError, waypoints, 
-				moveError, startPoint, endPoint, clear, start, label1, label2, label3,label4, label5, label6, label7);
+				moveError, startPoint, endPoint, start, clear, label1, label2, label3,label4, label5, label6, label7);
 		
 		clear.setOnAction(new EventHandler<ActionEvent>() {
 			/* @author Savanh Lu
@@ -184,6 +184,7 @@ public class GUI extends Application{
 		this.moveString = moveString;
 	}
 	/**@author Savanh Lu*/
+	
 	/* (non-Javadoc)
 	 * @see 
 	 * javafx.application.Application#
