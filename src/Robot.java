@@ -13,7 +13,8 @@ public class Robot {
 
 	public Sensor sensor;
 	public SensedMap m_SensedMap;
-	private double[] calcPosition, positionWError, nextPosition; //2 elements: 1st is x position, 2nd is y position
+	private double[] calcPosition, nextPosition; //2 elements: 1st is x position, 2nd is y position
+	private double[] positionWError = {0,0};
 	private double[][] waypoints = {{0,0},{0,0}};
 	public double[][] position;
 	private double movementError, distBetweenWaypoints, distFromLastWaypoint, 
