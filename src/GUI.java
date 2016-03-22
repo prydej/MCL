@@ -119,12 +119,10 @@ public class GUI extends Application{
 		GridPane.setConstraints(label7, 1, 6);
 		//Defining the start sim button
 		Button start = new Button("Start Simulation");
-		start.setStyle("-fx-font: 20 Times New Roman; -fx-base: #6b6a6b;"); //change button color
 		GridPane.setConstraints(start, 3, 0);
 		
 		//Defining the Clear button
 		Button clear = new Button("Clear");
-		clear.setStyle("-fx-font: 20 Times New Roman; -fx-base:#ebebeb;"); //change button color
 		GridPane.setConstraints(clear, 3, 1);
 		
 		grid.getChildren().addAll(rangeText, refPoints, senseError, waypoints, 
@@ -146,11 +144,13 @@ public class GUI extends Application{
 				endPoint.clear();
 			}
 		});
+		
 		start.setOnAction(new EventHandler<ActionEvent>() {
 			/* @author Julian Pryde
 			 * Set action for start simulation button
 			 * (non-Javadoc)
 			 * @see javafx.event.EventHandler#handle(javafx.event.Event)*/
+			
 			@Override
 			public void handle(ActionEvent e){
 				//get text, take out parens, split by comma, convert each element part to int
@@ -210,7 +210,7 @@ public class GUI extends Application{
 		lineChart.setTitle("Data from Simulation");
 		StackPane root= new StackPane();
 		root.getChildren().add(lineChart);//add line chart
-		 miChart.setSelected(true);
+		miChart.setSelected(true);
 		// Configure and display the stage
 		stage.setScene(scene);
 		stage.setTitle("Monte Carlo Localization Simulator");

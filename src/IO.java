@@ -40,8 +40,7 @@ public class IO extends Application {
 	
 	/**
 	 * 
-	 * @param String
-	 * @param String2
+	 * @param outputString contains information from one run
 	 */
 	public static void setMoveString(String outputString){
 		

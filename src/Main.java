@@ -10,8 +10,6 @@ import javafx.stage.Stage;
 
 public class Main extends Application{
 
-	public Map m_Map;
-	public Robot m_Robot;
 	public static GUI gui;
 
 	public Main(){
@@ -35,20 +33,18 @@ public class Main extends Application{
 	}
 
 	/**
-	 * 
-	 * 
-	 * @param numRefPoints
-	 * @param waypoint1
-	 * @param waypoint2
-	 * @param range
-	 * @param sensorError
-	 * @param movementError
+	 * @param numRefPoints number of reference points
+	 * @param waypoint1 first point in robot's path
+	 * @param waypoint2 2nd point in robot's path
+	 * @param range sensor range
+	 * @param sensorError sensor error decimal
+	 * @param movementError movement error decimal
 	 */
 	public static void simulate(int numRefPoints, int[] waypoint1, int[] waypoint2, double range,
 			double sensorError, double movementError){
 
 		//Instantiate robot
-		Robot robot = new Robot();
+		Robot robot = new Robot(waypoint1, waypoint2);
 
 		//Instantiate map
 		Map map = new Map();
@@ -59,7 +55,7 @@ public class Main extends Application{
 		robot.toWaypoint = 1;
 		
 		for (squirrel = 0; squirrel < 2; squirrel++){
-			robot.move(gui, map, waypoint1, waypoint2, range, sensorError);
+			robot.move(gui, map, range, sensorError);
 		}
 		
 		

@@ -5,8 +5,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.*;
-import java.math.*;
+//import java.lang.*;
+//import java.math.*;
 
 /**
  * @author Miralda Rodney
@@ -21,8 +21,6 @@ import java.math.*;
  * formatted in a file.
  *
  **/
-
-@SuppressWarnings("unused")
 
 public class Sensor {
 

@@ -22,11 +22,23 @@ public class Robot {
 	private int numMoves = 0;
 	private String outputString;
 
-	public Robot(){
+	/**
+	 * @param start: starting position x and y
+	 * @param end: ending position x and y
+	 */
+	public Robot(int[] start, int[] end){
 		sensor = new Sensor();
-		
+
+		// Set waypoint values
+		waypoints[0][0] = (double) start[0];
+		waypoints[0][1] = (double) start[1];
+		waypoints[1][0] = (double) end[0];
+		waypoints[1][1] = (double) end[1];
+
 		// Instantiate position vector
-		this.position = new double[(int) Math.ceil(this.findTotalDist(waypoints))][2]; //ceiling of total distance travelled by robot
+		int totalDist = (int) Math.ceil(this.findTotalDist(waypoints));
+		
+		this.position = new double[totalDist][2]; //ceiling of total distance travelled by robot
 		
 		// Instantiate nextPosition
 		nextPosition = new double[2];
@@ -49,17 +61,9 @@ public class Robot {
 	 * 
 	 * @param gui class
 	 * @param map: class with reference points
-	 * @param start: starting position x and y
-	 * @param end: ending position x and y
 	 * @return double array of positions betwen waypoints after robot hits a waypoint
 	 */
-	public double[][] move(GUI gui, Map map, int[] start, int[] end, double range, double sensorError){
-		
-		
-		waypoints[0][0] = (double) start[0];
-		waypoints[0][1] = (double) start[1];
-		waypoints[1][0] = (double) end[0];
-		waypoints[1][1] = (double) end[1];
+	public double[][] move(GUI gui, Map map, double range, double sensorError){
 
 		//Find distance between fromWaypoint and toWaypoint
 		distBetweenWaypoints = Math.sqrt(Math.pow((waypoints[toWaypoint][0] - waypoints[fromWaypoint][0]),2) + 
@@ -132,8 +136,11 @@ public class Robot {
 		
 		double distance = 0;
 		
+		int length = waypoints.length;
+		
 		//For loop to loop through each distance traveled
-		for(int beaver = 0; beaver < waypoints.length - 1; beaver++){
+		for(int beaver = 0; beaver < length - 1; beaver++){
+			
 			//Find distance between waypoints[beaver] and waypoints[beaver + 1]
 			distance += Math.sqrt(Math.pow((waypoints[beaver][0] - waypoints[beaver + 1][1]),2) + 
 					Math.pow((waypoints[beaver][1] - waypoints[beaver + 1][1]),2));
