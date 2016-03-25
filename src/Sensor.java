@@ -110,8 +110,9 @@ public class Sensor {
 					pointDetectedX = refPointLoc[i][j] + errorInX;
 					errorInY = ( (sensorError/100)*refPointLoc[i+1][j] );
 					pointDetectedY = refPointLoc[i+1][j] + errorInY;
-					
+
 					saveToFile(robotX, robotY, pointDetectedX, pointDetectedY);
+					
 				}
 				if(refPointLoc[i][j] <= ((1/3)*rangeSensorX) && refPointLoc[i+1][j] <= ((1/3)*rangeSensorY)){
 
@@ -119,7 +120,7 @@ public class Sensor {
 					pointDetectedX = refPointLoc[i][j] + errorInX;
 					errorInY = ( ((0.3)*sensorError/100)*refPointLoc[i+1][j] );
 					pointDetectedY = refPointLoc[i+1][j] + errorInY;
-					
+
 					saveToFile(robotX, robotY, pointDetectedX, pointDetectedY);
 				}
 				if( (refPointLoc[i][j] > ((1/3)*rangeSensorX) && refPointLoc[i][j] <= ((2/3)*rangeSensorX)) && (refPointLoc[i+1][j] > ((1/3)*rangeSensorY) && refPointLoc[i+1][j] <= ((2/3)*rangeSensorY)) ){
@@ -128,19 +129,15 @@ public class Sensor {
 					pointDetectedX = refPointLoc[i][j] + errorInX;
 					errorInY = ( ((0.6)*sensorError/100)*refPointLoc[i+1][j] );
 					pointDetectedY = refPointLoc[i+1][j] + errorInY;
-					
+
 					saveToFile(robotX, robotY, pointDetectedX, pointDetectedY);
-				}
-				
 				}
 			}
 		}
-	
+	}
 	/**
-	 * This will save the points formatted to a file, will
-	 * probably differentiate the points detected in each run 
-	 * by a space of something, hopefully so I can use a 
-	 * switch statement.
+	 * This will save the points detected in the format 
+	 * of (point1,point2,point3, point4) in a file.
 	 * 
 	 * @param rx
 	 * @param ry
@@ -148,7 +145,7 @@ public class Sensor {
 	 * @param sy
 	 */
 	public void saveToFile(double rx, double ry, double sx, double sy){
-		
+
 		try{
 			File saveDetectedPoints = new File("DetectedPoints.txt");
 			saveDetectedPoints.createNewFile();
@@ -158,90 +155,66 @@ public class Sensor {
 			bWSavePoints.close();
 		}
 		catch (IOException iOEx1){
-			Stage errorInSensingMessage = new Stage();
-			errorInSensingMessage.initStyle(StageStyle.UNIFIED);
-			Scene scene = new Scene(new Group(new Text(25, 25, "Erorr! The Sensor has crashed!! ")));
-			errorInSensingMessage.setScene(scene);
-			errorInSensingMessage.show();
+			Stage fileNotFound = new Stage();
+			fileNotFound.initStyle(StageStyle.UNIFIED);
+			Scene scene = new Scene(new Group(new Text(25, 25, "There was an error while trying to create and write your information to the file :(")));
+			fileNotFound.setScene(scene);
+			fileNotFound.show();
 		}	
 	}
-
-/**
- * The distanceBetweenPoints method will get the 
- * 
- * @exception IOException is thrown
- */
-public void distanceBetweenPoints() throws IOException{
-
-	//this method will read the detectedPoints file to figure out the
-	//distance between every two point, so 1 and 2, 2 and 3, etc.
-
-	double distanceOfRef1FromRobot = 0.0;
-
-	double distanceOfRef2FromRobot = 0.0;
-
-	double distanceBetween2RefPoints = 0.0;
-
-	double radiansOfAngle = 0.0;
-
-	double angleOfRobotAndTwoPoints = 0.0;
-
-	try{
-
-		Scanner readFile = new Scanner(new File("detectedPoints.txt"));
-
-		readFile.useDelimiter(",");
-
-		double robotsX1, robotsY1, refPointX1, refPointY1, robotsX2,
-		robotsY2, refPointX2, refPointY2;
-
-		while(readFile.next() != null){
-
-			robotsX1 = readFile.nextDouble();
-
-			robotsY1 = readFile.nextDouble();
-
-			refPointX1 = readFile.nextDouble();
-
-			refPointY1 = readFile.nextDouble();
-
-			readFile.nextLine();
-
-			robotsX2 = readFile.nextDouble();
-
-			robotsY2 = readFile.nextDouble();
-
-			refPointX2 = readFile.nextDouble();
-
-			refPointY2 = readFile.nextDouble();
-
-
-			if(robotsX1 == robotsX2 && robotsY1 == robotsY2){
-
-				distanceOfRef1FromRobot = Math.sqrt(Math.pow((robotsX1 - refPointX1), 2) + Math.pow((robotsY1 - refPointY1), 2));
-
-				distanceOfRef2FromRobot = Math.sqrt(Math.pow((robotsX2 - refPointX2), 2) + Math.pow((robotsY2 - refPointY2), 2));
-
-				distanceBetween2RefPoints = Math.sqrt(Math.pow((refPointX1 - refPointX2), 2) + Math.pow((refPointY1 - refPointY2), 2));
-
-				radiansOfAngle = Math.acos((Math.pow(distanceOfRef1FromRobot, 2) + Math.pow(distanceOfRef2FromRobot, 2) - Math.pow(distanceBetween2RefPoints, 2))/(2*distanceOfRef1FromRobot*distanceOfRef2FromRobot));
-
-				angleOfRobotAndTwoPoints = Math.toDegrees(radiansOfAngle);
-
+	/**
+	 * The distanceBetweenPoints method will get the 
+	 * 
+	 * @exception IOException is thrown
+	 */
+	public void distanceBetweenPoints() throws IOException{
+		
+		int counter1 = 0;
+		
+		int counter2 = 0;
+		
+		double[] robotsX = new double[Map.refPoints.length];
+		
+		double[] robotsY = new double[Map.refPoints.length];
+		
+		double[] refPointX = new double[Map.refPoints.length];
+		
+		double[] refPointY = new double[Map.refPoints.length];
+		
+		try{
+			
+			File foundPointHandle = new File("DetectedPoints.txt");
+			
+			Scanner readPointsFound = new Scanner(foundPointHandle);
+			
+			readPointsFound.useDelimiter(",");
+			
+			while(readPointsFound.next() != null){
+				
+				robotsX[counter1] = readPointsFound.nextDouble();
+				
+				robotsY[counter1] = readPointsFound.nextDouble();
+				
+				refPointX[counter1] = readPointsFound.nextDouble();
+				
+				refPointY[counter1] = readPointsFound.nextDouble();
+				
+				counter1++;
 			}
-			else{
-
-				distanceOfRef1FromRobot = Math.sqrt(Math.pow((robotsX1-refPointX1), 2) + Math.pow((robotsX2-refPointX2), 2));
-
-
+			
+			for(counter2 = 0; counter2 < counter1; counter2++){
+				
 			}
-
-			readFile.close();		
+			
+			readPointsFound.close();
+			
+		}catch(IOException iOEx2){
+		
+			Stage fileNotFound2 = new Stage();
+			fileNotFound2.initStyle(StageStyle.UNIFIED);
+			Scene scene = new Scene(new Group(new Text(25, 25, "The file you want to get information from is nowhere to be found :(")));
+			fileNotFound2.setScene(scene);
+			fileNotFound2.show();
 		}
 	}
-	catch(IOException iOEx2){
-
-		iOEx2.printStackTrace();
-	}	
-}
 }
