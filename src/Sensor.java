@@ -100,7 +100,10 @@ public class Sensor {
 		 * and (3) one-third of the error in the inner ring and right
 		 * on top of a point.
 		 */
-		for(i = 0; i < refPointLoc.length -1; i++){
+		try{
+			
+		
+		for(i = 0; i < (refPointLoc.length -1); i++){
 
 			for(j = 0; j < refPointLoc[i].length; j++){
 
@@ -133,6 +136,14 @@ public class Sensor {
 					saveToFile(robotX, robotY, pointDetectedX, pointDetectedY);
 				}
 			}
+		}
+		}catch(NullPointerException nPe1){
+			
+			Stage nPe1Msg = new Stage();
+			nPe1Msg.initStyle(StageStyle.UNIFIED);
+			Scene scene = new Scene(new Group(new Text(25, 25, "There was a null pointer event when attmepting to use the array of reference points :(")));
+			nPe1Msg.setScene(scene);
+			nPe1Msg.show();
 		}
 	}
 	/**
@@ -173,13 +184,29 @@ public class Sensor {
 		
 		int counter2 = 0;
 		
-		double[] robotsX = new double[Map.refPoints.length];
+		double[] actRobotsX = new double[Map.refPoints.length];
 		
-		double[] robotsY = new double[Map.refPoints.length];
+		double[] actRobotsY = new double[Map.refPoints.length];
 		
 		double[] refPointX = new double[Map.refPoints.length];
 		
 		double[] refPointY = new double[Map.refPoints.length];
+		
+		double distancePt1 = 0.0;
+		
+		double distancePt2 = 0.0;
+		
+		double distancePt3 = 0.0;
+		
+		double distancePt12 = 0.0;
+		
+		double distancePt23 = 0.0;
+		
+		double propConstant = 0.0;
+		
+		double[] estRobotsX = new double[Map.refPoints.length];
+		
+		double[] estRobotsY = new double[Map.refPoints.length];
 		
 		try{
 			
@@ -191,9 +218,9 @@ public class Sensor {
 			
 			while(readPointsFound.next() != null){
 				
-				robotsX[counter1] = readPointsFound.nextDouble();
+				actRobotsX[counter1] = readPointsFound.nextDouble();
 				
-				robotsY[counter1] = readPointsFound.nextDouble();
+				actRobotsY[counter1] = readPointsFound.nextDouble();
 				
 				refPointX[counter1] = readPointsFound.nextDouble();
 				
@@ -202,9 +229,19 @@ public class Sensor {
 				counter1++;
 			}
 			
-			for(counter2 = 0; counter2 < counter1; counter2++){
+			for(counter2 = 0; counter2 < counter1-1; counter2++){
 				
-			}
+				//from dzone.com
+				distancePt1 = Math.sqrt(Math.pow((actRobotsX[counter2] - refPointX[counter2]), 2) + Math.pow((actRobotsY[counter2]-refPointY[counter2]), 2));
+				
+				distancePt12 = Math.sqrt(Math.pow((actRobotsX[counter2+1] - refPointX[counter2+1]), 2) + Math.pow((actRobotsY[counter2+1]-refPointY[counter2+1]), 2));
+				
+				propConstant = distancePt12 / distancePt1;
+				
+				estRobotsX[counter2] = (1 - propConstant)*refPointX[counter2] + propConstant*refPointX[counter2+1];
+				
+				estRobotsY[counter2] = (1 - propConstant)*refPointY[counter2] + propConstant*refPointY[counter2+1];
+ 			}
 			
 			readPointsFound.close();
 			
