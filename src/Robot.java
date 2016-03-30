@@ -4,24 +4,22 @@
  * @version 1.0
  */
 
-
 import java.util.Random;
 import java.io.IOException;
 import java.util.Arrays;
 
 public class Robot {
 
-	public Sensor sensor;
-	public SensedMap m_SensedMap;
+	private Sensor sensor;
 	private double[] calcPosition, nextPosition; //2 elements: 1st is x position, 2nd is y position
 	private double[] positionWError = {0,0};
 	private double[][] waypoints = {{0,0},{0,0}};
-	public double[][] position;
+	private double[][] position;
 	private double movementError, distBetweenWaypoints, distFromLastWaypoint, 
 			error, xError, yError;
-	public int fromWaypoint, toWaypoint, numWaypoints, chipmunk;
+	private int fromWaypoint, toWaypoint, numWaypoints, chipmunk;
 	private int numMoves = 0;
-	private String outputString;
+	private String runString;
 
 	/**
 	 * @param start: starting position x and y
@@ -53,25 +51,28 @@ public class Robot {
 
 	}
 
-	public double[] findPosition(){
-		return null;
-	}
+
 
 	/**
 	 * move() moves the robot to its next position, calls sense and calculate.
-	 * 
-	 * @param gui class
-	 * @param map: class with reference points
+	 *
+	 * @param range: Sensor range.
+	 * @param sensorError: Error in the return from the sensors at max range. Error decreases linearly to zero with
+	 *                   distance of sensed point from the sensor.
 	 * @return double array of positions betwen waypoints after robot hits a waypoint
 	 */
-	public double[][] move(GUI gui, Map map, double range, double sensorError){
+	public double[][][] move(){ //double range, double sensorError){
 
 		//Find distance between fromWaypoint and toWaypoint
 		distBetweenWaypoints = Math.sqrt(Math.pow((waypoints[toWaypoint][0] - waypoints[fromWaypoint][0]),2) + 
 				Math.pow((waypoints[toWaypoint][1] - waypoints[fromWaypoint][1]),2));
 
+		//Create array of positions with error for testing
+		int totalMoves = (int) Math.ceil(this.findTotalDist(waypoints));
+		double[][] arrPosWError = new double[totalMoves][2];
+
 		//loop through all stops between waypoints
-		for (chipmunk = 0; chipmunk < distBetweenWaypoints; chipmunk++){
+		for (chipmunk = 0; chipmunk < totalMoves; chipmunk++){
 			
 			//find next position 1 unit away from last position
 			//	divide horz and vert component by distance between actual position and toWaypoint #UnitVector
@@ -101,36 +102,33 @@ public class Robot {
 			}
 
 			//call sensor.sense()
-			try{
-			sensor.detectPoints(range, positionWError[0], positionWError[1], sensorError);
-			} catch (IOException e) {
-				System.out.println("IO Exception");
-			}
+//			try{
+//				sensor.detectPoints(range, positionWError[0], positionWError[1], sensorError);
+//			} catch (IOException e) {
+//				System.out.println("IO Exception.");
+//			}
 			
-			//call this.calculate()
-			position[chipmunk] = this.calculate(positionWError, Map.refPoints);
+			//Calculate position
+			//position[chipmunk] = this.calculate(positionWError, Map.refPoints);
 			
 			//send info to GUI
-			outputString = "Ideal Positions: " + Arrays.toString(position[chipmunk]) + 
-					"\nPositions with Error " + Arrays.toString(positionWError);
-			IO.setMoveString(outputString);		
-			
+			runString = runString + "Move: " + chipmunk + "\n" +
+					"Ideal Positions: " + Arrays.toString(position[chipmunk]) + "\n" +
+					"Positions with Error " + Arrays.toString(positionWError) + "\n";
+
+			//save positions for testing
+			arrPosWError[chipmunk][0] = positionWError[0];
+			arrPosWError[chipmunk][1] = positionWError[1];
+
 		}
-		return position;
-	}
-	
-	/**
-	 * 
-	 * @param position 
-	 * @param points
-	 * @return
-	 */
-	public double[] calculate(double[] position, int[][] points){
 
-		calcPosition[0] = 0;
-		calcPosition[1] = 1;
+		//Create array of positions and positions with error for testing
+		double[][][] runPositions = new double[2][totalMoves][2];
 
-		return calcPosition;
+		runPositions[0] = position; //first layer is idealized positions
+		runPositions[1] = arrPosWError; //second layer is positions with error
+
+		return runPositions;
 	}
 	
 	public double findTotalDist(double[][] waypoints){
@@ -143,7 +141,7 @@ public class Robot {
 		for(int beaver = 0; beaver < length - 1; beaver++){
 			
 			//Find distance between waypoints[beaver] and waypoints[beaver + 1]
-			distance += Math.sqrt(Math.pow((waypoints[beaver][0] - waypoints[beaver + 1][1]),2) + 
+			distance += Math.sqrt(Math.pow((waypoints[beaver][0] - waypoints[beaver + 1][1]),2) +
 					Math.pow((waypoints[beaver][1] - waypoints[beaver + 1][1]),2));
 		}
 		

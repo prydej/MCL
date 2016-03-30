@@ -40,7 +40,7 @@ public class Main extends Application{
 	 * @param sensorError sensor error decimal
 	 * @param movementError movement error decimal
 	 */
-	public static void simulate(int numRefPoints, int[] waypoint1, int[] waypoint2, double range,
+	public static void simulate(int[] waypoint1, int[] waypoint2, double range,
 			double sensorError, double movementError){
 
 		//Instantiate robot
@@ -51,11 +51,8 @@ public class Main extends Application{
 		
 		int squirrel;
 		
-		robot.fromWaypoint = 0;
-		robot.toWaypoint = 1;
-		
 		for (squirrel = 0; squirrel < 2; squirrel++){
-			robot.move(gui, map, range, sensorError);
+			robot.move();//range, sensorError);
 		}
 		
 		

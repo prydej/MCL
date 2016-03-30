@@ -39,25 +39,10 @@ public class IO extends Application {
 	}
 	
 	/**
-	 * 
-	 * @param outputString contains information from one run
+	 *
 	 */
-	public static void setMoveString(String outputString){
-		
-		//Create stage, scene, and pane
-		Pane pane = new Pane();
-		Stage stage = new Stage();
-		Scene scene = new Scene(pane);
-		
-		//Create text object
-		Text runString = new Text();
-		
-		//Set Scene
-		stage.setScene(scene);
-		
-		//add text to pane
-		pane.getChildren().add(runString);
-		
+	public static void saveRunData(){
+
 	}
 
 }
