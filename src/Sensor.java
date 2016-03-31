@@ -196,8 +196,6 @@ public class Sensor {
 		
 		double distancePt2 = 0.0;
 		
-		double distancePt3 = 0.0;
-		
 		double distancePt12 = 0.0;
 		
 		double distancePt23 = 0.0;
@@ -230,19 +228,24 @@ public class Sensor {
 			}
 			
 			for(counter2 = 0; counter2 < counter1-1; counter2++){
-				
+			
+				if(actRobotsX[counter2] == actRobotsX[counter2+1] && actRobotsY[counter2] == actRobotsY[counter2+1]){
 				//from dzone.com
 				distancePt1 = Math.sqrt(Math.pow((actRobotsX[counter2] - refPointX[counter2]), 2) + Math.pow((actRobotsY[counter2]-refPointY[counter2]), 2));
 				
-				distancePt12 = Math.sqrt(Math.pow((actRobotsX[counter2+1] - refPointX[counter2+1]), 2) + Math.pow((actRobotsY[counter2+1]-refPointY[counter2+1]), 2));
+				distancePt12 = Math.sqrt(Math.pow((refPointX[counter2] - refPointX[counter2+1]), 2) + Math.pow((refPointY[counter2]-refPointY[counter2+1]), 2));
 				
 				propConstant = distancePt12 / distancePt1;
 				
 				estRobotsX[counter2] = (1 - propConstant)*refPointX[counter2] + propConstant*refPointX[counter2+1];
 				
 				estRobotsY[counter2] = (1 - propConstant)*refPointY[counter2] + propConstant*refPointY[counter2+1];
- 			}
-			
+ 			
+				}
+				else{
+					
+				}
+			}
 			readPointsFound.close();
 			
 		}catch(IOException iOEx2){
