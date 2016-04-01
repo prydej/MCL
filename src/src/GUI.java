@@ -1,3 +1,4 @@
+package src;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -30,14 +31,15 @@ import java.lang.Double;
 
 /** The GUI
  * @author Savanh
+ * @author Stephen
  */
 public class GUI extends Application{
 	private BorderPane MCLPane; 						//border pane
 	GridPane grid = new GridPane();						//gridpane
 	private MenuBar menuBar;							// MenuBar
-	private Menu menuFile, menuHelp, menuChart;					// Menus
+	private Menu menuFile, menuHelp, menuChart;			// Menus
 	private MenuItem miSave, miClose;					// save/close
-	private MenuItem miAbout, miShow;							// Displays info about the program
+	private MenuItem miAbout, miInstructions, miShow;	// Displays info about the program
 	private String moveString;
 	private CheckMenuItem miChart;	// CheckMenuItems for each chart
 	private LineChart<String, Double> lineChart;
@@ -50,6 +52,7 @@ public class GUI extends Application{
 		miSave = new MenuItem("Save");
 		miClose = new MenuItem("Close");
 		miAbout = new MenuItem("About");
+		miInstructions = new MenuItem("Instructions");
 		miChart = new CheckMenuItem("See Data");
 		miShow = new MenuItem("Show Data");
 		// Create Menus and MenuBar
@@ -59,7 +62,7 @@ public class GUI extends Application{
 		menuChart = new Menu("Data Chart");
 		// Add menu items to respective menus and to menuBaar
 		menuFile.getItems().addAll(miSave, miClose);
-		menuHelp.getItems().addAll(miAbout);
+		menuHelp.getItems().addAll(miAbout, miInstructions);
 		menuChart.getItems().addAll(miShow, miChart, new SeparatorMenuItem());
 		menuBar.getMenus().addAll(menuFile, menuHelp, menuChart);
 		//Defining the text field
@@ -193,12 +196,13 @@ public class GUI extends Application{
 	
 	@Override
 	public void start(Stage stage) throws Exception {
-		miAbout.setOnAction(e -> showAbout());			//Event Handlers
+		miAbout.setOnAction(e -> showAbout());  //Event Handlers
+		miInstructions.setOnAction(e -> showInstructions());
 		miClose.setOnAction(e -> Platform.exit());
 		miChart.setOnAction(new ChartDisplayHandler());
 		miShow.setOnAction(new ShowHandler());
 		/* PUT EVERYTHING TOGETHER */
-		Scene scene = new Scene(MCLPane, 950, 850);
+		Scene scene = new Scene(MCLPane, 700, 375);
 		// Add the menu bar and shapes to the border pane
 		MCLPane.setTop(menuBar);
 		MCLPane.setCenter(grid);
@@ -253,6 +257,52 @@ public class GUI extends Application{
 		stage.setResizable(false);
 		stage.show();
 	}
+	
+	
+	/** Shows instructions on each item in the GUI
+	 * @author Stephen Kristin
+	 */
+	private void showInstructions(){
+		//customize text
+		final String infoText ="File menu:\n" 
+				+ "Save: Saves the current run to txt file.\n"
+				+ "Close: Closes the program.\n\n"
+				+ "Help menu:\n"
+				+ "About: Shows info on authors.\n"
+				+ "Information: Shows this window.\n\n"
+				+ "Data Chart menu:\n"
+				+ "Show Data: Shows graphs of data from simulation.\n"
+				+ "See Data: Shows the data.\n\n"
+				+ "Text Fields:\n"
+				+ "Range: User input to determine sensor range as Double value.\n"
+				+ "Reference Points: User input to determine number of reference points as Integer value.\n"
+				+ "Sensor Error: User input to determine percentage of sensor error as Double value.\n"
+				+ "Waypoints: User input to determine number of waypoints as Double value.\n"
+				+ "Movement Error: User input to determine percentage of movement error as Double value.\n"
+				+ "Start Point: User input to determine robot starting point, input as (x,y) as Integers.\n"
+				+ "End Point: User input to determine robot ending point, input as (x,y) as Integers.\n\n"
+				+ "Start Simualtion button: Uses user input data to run the simulation.\n"
+				+ "Clear button: Clears all input info from the text boxes.";
+		// Create the text label
+		Label infoLabel = new Label();
+		infoLabel.setWrapText(true);
+		infoLabel.setTextAlignment(TextAlignment.LEFT);
+		infoLabel.setFont(Font.font("Times New Roman", 22));
+		infoLabel.setText(infoText);
+		StackPane pane = new StackPane();	// Add the label to a StackPane
+		pane.getChildren().add(infoLabel);
+		// Create and display said the aforementioned pane in a new stage 	
+		Scene scene = new Scene(pane, 800, 800);
+		Stage stage = new Stage();
+		stage.setScene(scene);
+		stage.setTitle("Instructions on program features.");
+		stage.setResizable(false);
+		stage.show();
+	}
+	
+	
+	
+	
 	//tell the buttons what to do using event handler
 		class ChartDisplayHandler implements EventHandler<ActionEvent>{
 			@Override

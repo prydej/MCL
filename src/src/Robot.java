@@ -1,3 +1,4 @@
+package src;
 /**
  * @author julian
  * credit to: Jason Samuel Koch for gaussian rng.
