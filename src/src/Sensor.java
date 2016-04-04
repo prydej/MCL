@@ -1,5 +1,6 @@
 package src;
 
+
 import java.util.*;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -92,6 +93,11 @@ public class Sensor {
 		 */
 		double errorInX = 0.0;
 		double errorInY = 0.0;
+		
+		/**
+		 * distance from the point to the robot's current location
+		 */
+		double distFromRobot = 0.0;
 
 		/**
 		 * loop to access the information in the reference point
@@ -199,9 +205,11 @@ public class Sensor {
 		
 		double distancePt12 = 0.0;
 		
-		double distancePt23 = 0.0;
+		double distanceToPt = 0.0;
 		
-		double propConstant = 0.0;
+		double angleToPt = 0.0;
+		
+		double ratioDistances = 0.0;
 		
 		double[] estRobotsX = new double[Map.refPoints.length];
 		
@@ -236,15 +244,22 @@ public class Sensor {
 				
 				distancePt12 = Math.sqrt(Math.pow((refPointX[counter2] - refPointX[counter2+1]), 2) + Math.pow((refPointY[counter2]-refPointY[counter2+1]), 2));
 				
-				propConstant = distancePt12 / distancePt1;
+				ratioDistances = distancePt12 / distancePt1;
 				
-				estRobotsX[counter2] = (1 - propConstant)*refPointX[counter2] + propConstant*refPointX[counter2+1];
+				estRobotsX[counter2] = (1 - ratioDistances)*refPointX[counter2] + ratioDistances*refPointX[counter2+1];
 				
-				estRobotsY[counter2] = (1 - propConstant)*refPointY[counter2] + propConstant*refPointY[counter2+1];
+				estRobotsY[counter2] = (1 - ratioDistances)*refPointY[counter2] + ratioDistances*refPointY[counter2+1];
  			
 				}
 				else{
 					
+					distanceToPt = Math.sqrt(Math.pow((actRobotsX[counter2]- refPointX[counter2]), 2) + Math.pow((actRobotsY[counter2]- refPointY[counter2]),2));
+					
+					angleToPt = (double) Math.toDegrees(Math.atan2((actRobotsY[counter2] -refPointY[counter2]), (actRobotsX[counter2] - refPointX[counter2])));
+					
+					estRobotsX[counter2] = refPointX[counter2] + (distanceToPt * Math.cos(angleToPt));
+					
+					estRobotsY[counter2] = refPointY[counter2] + (distanceToPt * Math.cos(angleToPt));
 				}
 			}
 			readPointsFound.close();
