@@ -1,4 +1,3 @@
-package src;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -12,6 +11,7 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -31,17 +31,15 @@ import java.lang.Double;
 
 /** The GUI
  * @author Savanh
- * @author Stephen
  */
 public class GUI extends Application{
 	private BorderPane MCLPane; 						//border pane
 	GridPane grid = new GridPane();						//gridpane
 	private MenuBar menuBar;							// MenuBar
-	private Menu menuFile, menuHelp, menuChart;			// Menus
+	private Menu menuFile, menuHelp, menuChart;					// Menus
 	private MenuItem miSave, miClose;					// save/close
-	private MenuItem miAbout, miInstructions, miShow;	// Displays info about the program
+	private MenuItem miAbout, miShow;							// Displays info about the program
 	private String moveString;
-	private CheckMenuItem miChart;	// CheckMenuItems for each chart
 	private LineChart<String, Double> lineChart;
 
 	/** @author Savanh Lu
@@ -52,8 +50,7 @@ public class GUI extends Application{
 		miSave = new MenuItem("Save");
 		miClose = new MenuItem("Close");
 		miAbout = new MenuItem("About");
-		miInstructions = new MenuItem("Instructions");
-		miChart = new CheckMenuItem("See Data");
+		//miChart = new CheckMenuItem("See Data");
 		miShow = new MenuItem("Show Data");
 		// Create Menus and MenuBar
 		menuFile = new Menu("File");
@@ -62,8 +59,8 @@ public class GUI extends Application{
 		menuChart = new Menu("Data Chart");
 		// Add menu items to respective menus and to menuBaar
 		menuFile.getItems().addAll(miSave, miClose);
-		menuHelp.getItems().addAll(miAbout, miInstructions);
-		menuChart.getItems().addAll(miShow, miChart, new SeparatorMenuItem());
+		menuHelp.getItems().addAll(miAbout);
+		menuChart.getItems().addAll(miShow,new SeparatorMenuItem());
 		menuBar.getMenus().addAll(menuFile, menuHelp, menuChart);
 		//Defining the text field
 		final TextField rangeText = new TextField();
@@ -123,7 +120,6 @@ public class GUI extends Application{
 		//Defining the start sim button
 		Button start = new Button("Start Simulation");
 		GridPane.setConstraints(start, 3, 0);
-		
 		//Defining the Clear button
 		Button clear = new Button("Clear");
 		GridPane.setConstraints(clear, 3, 1);
@@ -178,7 +174,6 @@ public class GUI extends Application{
 	/** @author Savanh Lu
 	 * Invoke GUI */
 	public void showGUI(){
-
 		Application.launch();
 	}
 	//set moveString
@@ -187,25 +182,23 @@ public class GUI extends Application{
 		this.moveString = moveString;
 	}
 	/**@author Savanh Lu*/
-	
 	/* (non-Javadoc)
 	 * @see 
 	 * javafx.application.Application#
 	 * start(javafx.stage.Stage)
 	 */
-	
 	@Override
 	public void start(Stage stage) throws Exception {
-		miAbout.setOnAction(e -> showAbout());  //Event Handlers
-		miInstructions.setOnAction(e -> showInstructions());
+		miAbout.setOnAction(e -> showAbout());			//Event Handlers
 		miClose.setOnAction(e -> Platform.exit());
-		miChart.setOnAction(new ChartDisplayHandler());
 		miShow.setOnAction(new ShowHandler());
+		//start.setOnAction(new showHandler());
 		/* PUT EVERYTHING TOGETHER */
-		Scene scene = new Scene(MCLPane, 700, 375);
+		Scene scene = new Scene(MCLPane, 850, 850);
 		// Add the menu bar and shapes to the border pane
 		MCLPane.setTop(menuBar);
 		MCLPane.setCenter(grid);
+
 		MCLPane.setBottom(lineChart);
 		//chart things
 		CategoryAxis xAxis= new CategoryAxis();
@@ -214,7 +207,8 @@ public class GUI extends Application{
 		lineChart.setTitle("Data from Simulation");
 		StackPane root= new StackPane();
 		root.getChildren().add(lineChart);//add line chart
-		miChart.setSelected(true);
+		//miChart.setSelected(true);
+
 		// Configure and display the stage
 		stage.setScene(scene);
 		stage.setTitle("Monte Carlo Localization Simulator");
@@ -227,13 +221,12 @@ public class GUI extends Application{
 		grid.setHgap(5);
 	}
 		//creates the chart
-				private ObservableList<XYChart.Series<String, Double>> getChart(boolean miChart){
-					//declare variables
-					ObservableList<XYChart.Series<String, Double>>answer = FXCollections.observableArrayList();
-					if (miChart){
-						answer.addAll(new chart().getChartData());}
-					return answer;
-				}
+				
+//				public void updateChart(){
+//					lineChart.setData(getChart(
+//							//miChart.isSelected())); 
+//							
+//				}
 	/** Shows information about the program in it's own window 
 	 * @author Savanh Lu */
 	private void showAbout(){
@@ -257,65 +250,99 @@ public class GUI extends Application{
 		stage.setResizable(false);
 		stage.show();
 	}
-	
-	
-	/** Shows instructions on each item in the GUI
-	 * @author Stephen Kristin
-	 */
-	private void showInstructions(){
-		//customize text
-		final String infoText ="File menu:\n" 
-				+ "Save: Saves the current run to txt file.\n"
-				+ "Close: Closes the program.\n\n"
-				+ "Help menu:\n"
-				+ "About: Shows info on authors.\n"
-				+ "Information: Shows this window.\n\n"
-				+ "Data Chart menu:\n"
-				+ "Show Data: Shows graphs of data from simulation.\n"
-				+ "See Data: Shows the data.\n\n"
-				+ "Text Fields:\n"
-				+ "Range: User input to determine sensor range as Double value.\n"
-				+ "Reference Points: User input to determine number of reference points as Integer value.\n"
-				+ "Sensor Error: User input to determine percentage of sensor error as Double value.\n"
-				+ "Waypoints: User input to determine number of waypoints as Double value.\n"
-				+ "Movement Error: User input to determine percentage of movement error as Double value.\n"
-				+ "Start Point: User input to determine robot starting point, input as (x,y) as Integers.\n"
-				+ "End Point: User input to determine robot ending point, input as (x,y) as Integers.\n\n"
-				+ "Start Simualtion button: Uses user input data to run the simulation.\n"
-				+ "Clear button: Clears all input info from the text boxes.";
-		// Create the text label
-		Label infoLabel = new Label();
-		infoLabel.setWrapText(true);
-		infoLabel.setTextAlignment(TextAlignment.LEFT);
-		infoLabel.setFont(Font.font("Times New Roman", 22));
-		infoLabel.setText(infoText);
-		StackPane pane = new StackPane();	// Add the label to a StackPane
-		pane.getChildren().add(infoLabel);
-		// Create and display said the aforementioned pane in a new stage 	
-		Scene scene = new Scene(pane, 800, 800);
-		Stage stage = new Stage();
-		stage.setScene(scene);
-		stage.setTitle("Instructions on program features.");
-		stage.setResizable(false);
-		stage.show();
-	}
-	
-	
-	
-	
 	//tell the buttons what to do using event handler
-		class ChartDisplayHandler implements EventHandler<ActionEvent>{
-			@Override
-			public void handle(ActionEvent arg0) {
-			
-			}
-		}
-	
-	//shows chart
+//		class ChartDisplayHandler implements EventHandler<ActionEvent>{
+//			@Override
+//			public void handle(ActionEvent arg0) {
+//			
+//			}
+//		}
+//	
 		private class ShowHandler implements EventHandler<ActionEvent>{
 			@Override
 			public void handle(ActionEvent e) {
-				miChart.setSelected(true);
+				
+				StackPane pane = new StackPane();	// Add the label to a StackPane
+				// Create and display said the aforementioned pane in a new stage 	
+				Scene scene = new Scene(pane, 600, 600);
+				Stage stage = new Stage();
+				stage.setScene(scene);
+				stage.setTitle("Data Chart");
+				stage.setResizable(false);
+				stage.show();
+				//chart things
+				CategoryAxis xAxis= new CategoryAxis();
+				NumberAxis yAxis = new NumberAxis();
+				lineChart = new LineChart(xAxis, yAxis);
+				lineChart.setTitle("Data from Simulation");
+				StackPane root= new StackPane();
+				pane.getChildren().add(lineChart);//add line chart
+				
 			}
+			/**@author Savanh
+			 * chart uses dummy data from a JavaFX textbook*/
+			private ObservableList<XYChart.Series<String, Double>> getChart(boolean miChart){
+				//declare variables
+				double bValue = 17.56;
+				double gValue= 17.06;
+				ObservableList<XYChart.Series<String, Double>>answer = FXCollections.observableArrayList();
+				Series<String, Double> blue = new Series<>();
+				Series<String, Double> green = new Series<>();
+				blue.setName("blue");
+				green.setName("green");
+				
+				for(int i = 2011; i < 2016; i++){
+					blue.getData().add(new XYChart.Data(Integer.toString(i), bValue));
+					bValue = bValue + 6 * Math.random() -.2;
+					green.getData().add(new XYChart.Data(Integer.toString(i), gValue));
+					gValue = gValue + 4 * Math.random() - 2;
+				}
+				answer.addAll(blue, green);
+				return answer;
+			} }
+		
+
+		/** Shows instructions on each item in the GUI
+		 * @author Stephen Kristin
+		 */
+		private void showInstructions(){
+			//customize text
+			final String infoText ="File menu:\n" 
+					+ "Save: Saves the current run to txt file.\n"
+					+ "Close: Closes the program.\n\n"
+					+ "Help menu:\n"
+					+ "About: Shows info on authors.\n"
+					+ "Information: Shows this window.\n\n"
+					+ "Data Chart menu:\n"
+					+ "Show Data: Shows graphs of data from simulation.\n"
+					+ "See Data: Shows the data.\n\n"
+					+ "Text Fields:\n"
+					+ "Range: User input to determine sensor range as Double value.\n"
+					+ "Reference Points: User input to determine number of reference points as Integer value.\n"
+					+ "Sensor Error: User input to determine percentage of sensor error as Double value.\n"
+					+ "Waypoints: User input to determine number of waypoints as Double value.\n"
+					+ "Movement Error: User input to determine percentage of movement error as Double value.\n"
+					+ "Start Point: User input to determine robot starting point, input as (x,y) as Integers.\n"
+					+ "End Point: User input to determine robot ending point, input as (x,y) as Integers.\n\n"
+					+ "Start Simualtion button: Uses user input data to run the simulation.\n"
+					+ "Clear button: Clears all input info from the text boxes.";
+			// Create the text label
+			Label infoLabel = new Label();
+			infoLabel.setWrapText(true);
+			infoLabel.setTextAlignment(TextAlignment.LEFT);
+			infoLabel.setFont(Font.font("Times New Roman", 22));
+			infoLabel.setText(infoText);
+			StackPane pane = new StackPane();	// Add the label to a StackPane
+			pane.getChildren().add(infoLabel);
+			// Create and display said the aforementioned pane in a new stage 	
+			Scene scene = new Scene(pane, 800, 800);
+			Stage stage = new Stage();
+			stage.setScene(scene);
+			stage.setTitle("Instructions on program features.");
+			stage.setResizable(false);
+			stage.show();
 		}
+		
+		
 }
+

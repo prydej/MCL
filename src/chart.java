@@ -1,4 +1,3 @@
-package src;
 /*Author: Jadeira Savanh Lu */
 //Date: 14 March 2016
 import javafx.application.Application;
@@ -16,8 +15,8 @@ import javafx.stage.Stage;
 	//chart
 public class chart extends Application{
 
-		public static void  main(String[] args){
-			launch(args);
+		public  void  showChart(){
+			Application.launch();
 		}
 		
 		@Override
@@ -36,23 +35,20 @@ public class chart extends Application{
 		}
 		//creates the chart
 		private ObservableList<XYChart.Series<String, Double>> getChart(){
-			//declare variables
-			
+			double bValue = 19.26;
+			double gValue= 13.93;
 			ObservableList<XYChart.Series<String, Double>>answer = FXCollections.observableArrayList();
+			Series<String, Double> blue = new Series<>();
+			Series<String, Double> green = new Series<>();
+			blue.setName("blue");
+			green.setName("green");
 			
-			
-			answer.add( getChartData());
+			for(int i = 2011; i < 2016; i++){
+				blue.getData().add(new XYChart.Data(Integer.toString(i), bValue));
+				bValue = bValue + 6 * Math.random() -.2;
+				green.getData().add(new XYChart.Data(Integer.toString(i), gValue));
+				gValue = gValue + 4 * Math.random() - 2;
+			}
+			answer.addAll(blue, green);
 			return answer;
 		}
-		//creates chart data
-		Series<String, Double> getChartData(){
-			Series<String, Double> data = new Series<>();
-			//name for variables
-			data.setName("Blergh");
-			
-			//for loop for y axis, pull info 
-			
-			return data;
-		}
-		
-}
