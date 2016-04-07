@@ -1,6 +1,3 @@
-package src;
-
-
 /**
  * @author julian
  * @version 1.0

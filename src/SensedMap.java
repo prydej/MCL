@@ -1,7 +1,3 @@
-package src;
-
-
-
 /**
  * @author Stephen Kristin
  * @version 1.0

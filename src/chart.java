@@ -52,3 +52,4 @@ public class chart extends Application{
 			answer.addAll(blue, green);
 			return answer;
 		}
+}
