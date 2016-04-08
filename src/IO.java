@@ -33,33 +33,47 @@ public class IO {
 		JSONObject runPositions = new JSONObject();
 
 		//Write positions with error to json array
+		//Write x positions with movement error to json object
 		JSONArray x_error = new JSONArray(); //create json array of all x comps of pos w/o error
 		for (int cat = 0; cat < positions.length; cat++){
-			x_error.add(positionsWError[cat][0]); //add all x componenents of positions w/ error to array
+			
+			x_error.add(positions[cat][0]); //add all x componenents of positions w/ error to array
 		}
-		
 		runPositions.put("x_error", x_error); //add x comps of pos w/error to object
-
+		
+		System.out.println(runPositions);
+		
+		//Write y positions with movement error to json object
 		JSONArray y_error = new JSONArray(); //create json array of all y comps of pos w/ error
 		for (int dog = 0; dog < positions.length; dog++){
-			y_error.add(positionsWError[dog][0]);
+			
+			y_error.add(positions[dog][1]);
 		}
-		
 		runPositions.put("y_error", y_error); //add y comps of pos w/error to object
-
+		
+		System.out.println(runPositions);
+		
 		//Write positions without error to json array
+		//write x positions WITHOUT movement error to json object
 		JSONArray x_actual = new JSONArray(); //create json array of all x comps of pos w/o error
-		for (int cat = 0; cat < positions.length; cat++){
-			x_actual.add(positionsWError[cat][0]);
+		for (int fish = 0; fish < positions.length; fish++){
+			
+			x_actual.add(positionsWError[fish][0]);
 		}
 		runPositions.put("x_actual", x_actual); //add x comps of pos w/o error to object
-
 		
+		System.out.println(runPositions);
+		
+		//write y positions WITHOUT movement error to json object
 		JSONArray y_actual = new JSONArray(); //create json array of all y comps of pos w/o error
-		for (int dog = 0; dog < positions.length; dog++){
-			y_actual.add(positionsWError[dog][0]);
+		for (int hamster = 0; hamster < positions.length; hamster++){
+			
+			y_actual.add(positionsWError[hamster][1]);
 		}
 		runPositions.put("y_actual", y_actual); //add y comps of pos w/o error to object
+		
+		//for testing
+		System.out.println(runPositions);
 		
 		//Create name for new file
 		DateFormat formatObj = new SimpleDateFormat("ddMMMYY-HH-mm-ss"); //Format for date for name of file
@@ -68,7 +82,7 @@ public class IO {
 		
 		//Write to file
 		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(filename, false)); //create writer object
+			BufferedWriter writer = new BufferedWriter(new FileWriter(filename + ".json", false)); //create writer object
 			writer.write(runPositions.toJSONString());
 			
 			//Close filewriter

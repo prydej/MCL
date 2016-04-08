@@ -147,11 +147,12 @@ public class GUI extends Application{
 		});
 		
 		start.setOnAction(new EventHandler<ActionEvent>() {
+			
 			/* @author Julian Pryde
 			 * Set action for start simulation button
 			 * (non-Javadoc)
-			 * @see javafx.event.EventHandler#handle(javafx.event.Event)*/
-			
+			 * @see javafx.event.EventHandler#handle(javafx.event.Event)
+			 */
 			@Override
 			public void handle(ActionEvent e){
 				//get text, take out parens, split by comma, convert each element part to int
@@ -169,7 +170,9 @@ public class GUI extends Application{
 						endPos, 
 						Double.parseDouble(rangeText.getText()), 
 						Double.parseDouble(senseError.getText()),
-						Double.parseDouble(moveError.getText()));
+						Double.parseDouble(moveError.getText()),
+						Double.parseDouble(waypoints.getText())
+						);
 			}
 		});
 	}
@@ -275,8 +278,8 @@ public class GUI extends Application{
 				+ "Range: User input to determine sensor range as Double value.\n"
 				+ "Reference Points: User input to determine number of reference points as Integer value.\n"
 				+ "Sensor Error: User input to determine percentage of sensor error as Double value.\n"
-				+ "Waypoints: User input to determine number of waypoints as Double value.\n"
-				+ "Movement Error: User input to determine percentage of movement error as Double value.\n"
+				+ "Waypoints: User input to determine number of waypoints as an Integer value.\n"
+				+ "Movement Error: User input to determine standard deviation of the movement error as a Double value.\n"
 				+ "Start Point: User input to determine robot starting point, input as (x,y) as Integers.\n"
 				+ "End Point: User input to determine robot ending point, input as (x,y) as Integers.\n\n"
 				+ "Start Simualtion button: Uses user input data to run the simulation.\n"

@@ -41,7 +41,7 @@ public class Main extends Application{
 	 * @param movementError movement error decimal
 	 */
 	public static void simulate(int numRefPoints, int[] waypoint1, int[] waypoint2, double range,
-			double sensorError, double movementError){
+			double sensorError, double movementError, double numWayPoints){
 
 		//Instantiate robot
 		Robot robot = new Robot(waypoint1, waypoint2);
@@ -57,11 +57,9 @@ public class Main extends Application{
 		robot.fromWaypoint = 0;
 		robot.toWaypoint = 1;
 		
-		for (squirrel = 0; squirrel < 2; squirrel++){
-			robot.move(range, sensorError, gui, map, sensor);
+		for (squirrel = 1; squirrel < 2; squirrel++){ //move robot to each waypoint
+			robot.move(range, sensorError, movementError, gui, map, sensor);
 		}
-		
-		
 	}
 
 }
