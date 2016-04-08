@@ -25,7 +25,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import java.lang.Integer;
-import javafx.scene.control.CheckMenuItem;
 import java.lang.Double;
 
 /** The GUI
@@ -206,7 +205,6 @@ public class GUI extends Application{
 		lineChart.setTitle("Data from Simulation");
 		StackPane root= new StackPane();
 		root.getChildren().add(lineChart);//add line chart
-		//miChart.setSelected(true);
 
 		// Configure and display the stage
 		stage.setScene(scene);
@@ -219,13 +217,7 @@ public class GUI extends Application{
 		grid.setVgap(5);
 		grid.setHgap(5);
 	}
-		//creates the chart
-				
-//				public void updateChart(){
-//					lineChart.setData(getChart(
-//							//miChart.isSelected())); 
-//							
-//				}
+		
 	/** Shows information about the program in it's own window 
 	 * @author Savanh Lu */
 	private void showAbout(){
@@ -249,14 +241,7 @@ public class GUI extends Application{
 		stage.setResizable(false);
 		stage.show();
 	}
-	//tell the buttons what to do using event handler
-//		class ChartDisplayHandler implements EventHandler<ActionEvent>{
-//			@Override
-//			public void handle(ActionEvent arg0) {
-//			
-//			}
-//		}
-//	
+
 		private class ShowHandler implements EventHandler<ActionEvent>{
 			@Override
 			public void handle(ActionEvent e) {
@@ -279,7 +264,7 @@ public class GUI extends Application{
 				
 			}
 			/**@author Savanh
-			 * chart uses dummy data from a JavaFX textbook*/
+			 * chart uses dummy data*/
 			private ObservableList<XYChart.Series<String, Double>> getChart(boolean miChart){
 				//declare variables
 				double bValue = 17.56;
