@@ -1,4 +1,3 @@
-package src;
 import javafx.application.Application;
 import javafx.stage.Stage;
 //import javafx.stage.*;
@@ -50,13 +49,16 @@ public class Main extends Application{
 		//Instantiate map
 		Map map = new Map();
 		
+		//Instantiate Sensor
+		Sensor sensor = new Sensor();
+		
 		int squirrel;
 		
 		robot.fromWaypoint = 0;
 		robot.toWaypoint = 1;
 		
 		for (squirrel = 0; squirrel < 2; squirrel++){
-			robot.move(gui, map, range, sensorError);
+			robot.move(range, sensorError, gui, map, sensor);
 		}
 		
 		

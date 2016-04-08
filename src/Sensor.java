@@ -1,6 +1,3 @@
-package src;
-
-
 import java.util.*;
 import javafx.scene.Group;
 import javafx.scene.Scene;

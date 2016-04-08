@@ -1,4 +1,3 @@
-package src;
 /**
  * @author julian
  * credit to: Jason Samuel Koch for gaussian rng.
@@ -8,16 +7,13 @@ package src;
 
 import java.util.Random;
 import java.io.IOException;
-import java.util.Arrays;
 
 public class Robot {
 
-	public Sensor sensor;
-	public SensedMap m_SensedMap;
-	private double[] calcPosition, nextPosition; //2 elements: 1st is x position, 2nd is y position
-	private double[] positionWError = {0,0};
+	private double[] calcPosition, nextPosition; //2 elements: 1st is x positions, 2nd is y positions
+	private double[][] positionsWError;
 	private double[][] waypoints = {{0,0},{0,0}};
-	public double[][] position;
+	public double[][] positions;
 	private double movementError, distBetweenWaypoints, distFromLastWaypoint, 
 			error, xError, yError;
 	public int fromWaypoint, toWaypoint, numWaypoints, chipmunk;
@@ -25,11 +21,10 @@ public class Robot {
 	private String outputString;
 
 	/**
-	 * @param start: starting position x and y
-	 * @param end: ending position x and y
+	 * @param start: starting positions x and y
+	 * @param end: ending positions x and y
 	 */
 	public Robot(int[] start, int[] end){
-		sensor = new Sensor();
 
 		// Set waypoint values
 		waypoints[0][0] = (double) start[0];
@@ -37,13 +32,16 @@ public class Robot {
 		waypoints[1][0] = (double) end[0];
 		waypoints[1][1] = (double) end[1];
 
-		// Instantiate position vector
+		// Instantiate positions vector
 		int totalDist = (int) Math.ceil(this.findTotalDist(waypoints));
 		
-		this.position = new double[totalDist][2]; //ceiling of total distance travelled by robot
+		this.positions = new double[totalDist][2]; //ceiling of total distance travelled by robot
+		this.positionsWError = new double[totalDist][2];
 		
 		// Instantiate nextPosition
 		nextPosition = new double[2];
+		
+		// 
 	}
 	
 	public int getNumWaypoints(){
@@ -59,13 +57,10 @@ public class Robot {
 	}
 
 	/**
-	 * move() moves the robot to its next position, calls sense and calculate.
-	 * 
-	 * @param gui class
-	 * @param map: class with reference points
+	 * move() moves the robot to its next positions, calls sense and calculate
 	 * @return double array of positions betwen waypoints after robot hits a waypoint
 	 */
-	public double[][] move(GUI gui, Map map, double range, double sensorError){
+	public double[][] move(double range, double sensorError, GUI gui, Map map, Sensor sensor){
 
 		//Find distance between fromWaypoint and toWaypoint
 		distBetweenWaypoints = Math.sqrt(Math.pow((waypoints[toWaypoint][0] - waypoints[fromWaypoint][0]),2) + 
@@ -74,14 +69,14 @@ public class Robot {
 		//loop through all stops between waypoints
 		for (chipmunk = 0; chipmunk < distBetweenWaypoints; chipmunk++){
 			
-			//find next position 1 unit away from last position
-			//	divide horz and vert component by distance between actual position and toWaypoint #UnitVector
-			nextPosition[0] = (waypoints[1][0] - position[0][0])/distBetweenWaypoints;
-			nextPosition[1] = (waypoints[toWaypoint][1] - position[chipmunk][1])/distBetweenWaypoints;
+			//find next positions 1 unit away from last positions
+			//	divide horz and vert component by distance between actual positions and toWaypoint #UnitVector
+			nextPosition[0] = (waypoints[1][0] - positions[0][0])/distBetweenWaypoints;
+			nextPosition[1] = (waypoints[toWaypoint][1] - positions[chipmunk][1])/distBetweenWaypoints;
 
-			//change position var to new position
-			position[chipmunk][0] = nextPosition[0];
-			position[chipmunk][1] = nextPosition[1];
+			//change positions var to new positions
+			positions[chipmunk][0] = nextPosition[0];
+			positions[chipmunk][1] = nextPosition[1];
 			numMoves++;//count number of updates since last change of waypoint
 
 			//add error
@@ -92,8 +87,8 @@ public class Robot {
 				yError = errorGen.nextGaussian() * 2;
 			}
 
-			positionWError[0] += xError; //add error in x direction to position
-			positionWError[1] += yError; //add error in y direction to position
+			positionsWError[chipmunk][0] += xError; //add error in x direction to positions
+			positionsWError[chipmunk][1] += yError; //add error in y direction to positions
 
 			//after robot has traveled ceil(distBetweenWaypoint)
 			if (numMoves == Math.ceil(distBetweenWaypoints)){
@@ -103,21 +98,15 @@ public class Robot {
 
 			//call sensor.sense()
 			try{
-			sensor.detectPoints(range, positionWError[0], positionWError[1], sensorError);
+			sensor.detectPoints(range, positionsWError[chipmunk][0], positionsWError[chipmunk][1], sensorError);
 			} catch (IOException e) {
 				System.out.println("IO Exception");
 			}
 			
-			//call this.calculate()
-			position[chipmunk] = this.calculate(positionWError, Map.refPoints);
-			
-			//send info to GUI
-			outputString = "Ideal Positions: " + Arrays.toString(position[chipmunk]) + 
-					"\nPositions with Error " + Arrays.toString(positionWError);
-			IO.setMoveString(outputString);		
-			
+			//send info to file
+			IO.writeRunData(positions, positionsWError);
 		}
-		return position;
+		return positions;
 	}
 	
 	/**
