@@ -105,7 +105,7 @@ public class Sensor {
 		 * on top of a point.
 		 */
 		
-		for(i = 0; i < (refPointLoc.length -1); i++){
+		for(i = 0; i < refPointLoc.length; i++){
 
 			for(j = 0; j < refPointLoc[i].length; j++){
 
