@@ -104,8 +104,6 @@ public class Sensor {
 		 * and (3) one-third of the error in the inner ring and right
 		 * on top of a point.
 		 */
-		try{
-			
 		
 		for(i = 0; i < (refPointLoc.length -1); i++){
 
@@ -141,15 +139,8 @@ public class Sensor {
 				}
 			}
 		}
-		}catch(NullPointerException nPe1){
-			
-			Stage nPe1Msg = new Stage();
-			nPe1Msg.initStyle(StageStyle.UNIFIED);
-			Scene scene = new Scene(new Group(new Text(25, 25, "There was a null pointer event when attmepting to use the array of reference points :(")));
-			nPe1Msg.setScene(scene);
-			nPe1Msg.show();
-		}
 	}
+		
 	/**
 	 * This will save the points detected in the format 
 	 * of (point1,point2,point3, point4) in a file.

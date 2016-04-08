@@ -48,6 +48,7 @@ public class Main extends Application{
 
 		//Instantiate map
 		Map map = new Map();
+		map.createPoints(numRefPoints);
 		
 		//Instantiate Sensor
 		Sensor sensor = new Sensor();

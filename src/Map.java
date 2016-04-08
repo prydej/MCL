@@ -1,3 +1,4 @@
+
 import java.util.Random;
 
 /**
@@ -24,15 +25,19 @@ public class Map{
 	// take the number of points the user wants from the GUI and give the points x and y values 
 	
 	/**
-	 * @param NumberRefPoints
+	 * @param numberRefPoints
 	 */
-	public void createPoints(int NumberRefPoints){
+	public void createPoints(int numberRefPoints){
+		//Instntiate refPoints
+		refPoints = new int[numberRefPoints][2];
+		
 		// variables for loop iteration
 		int i, j;
 		
-		for (i=0; i < NumberRefPoints; i++ ){// NumberRefPoints is the number from the GUI
+		for (i=0; i < numberRefPoints; i++ ){// NumberRefPoints is the number from the GUI
 			for (j=0; j<2; j++){
 				// j index 0 and 1 for x and y
+				System.out.println(i + "\n" + j + "\n");
 				refPoints[i][j]= gen.nextInt(100); 
 			}			
 		}

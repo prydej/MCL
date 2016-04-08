@@ -35,9 +35,7 @@ public class Robot {
 		this.positionsWError = new double[totalDist][2];
 
 		// Instantiate nextPosition
-		nextPosition = new double[2];
-
-		// 
+		nextPosition = new double[2]; 
 	}
 
 	public int getNumWaypoints(){
@@ -80,8 +78,8 @@ public class Robot {
 			xError = errorGen.nextGaussian() * movementError; //multiply for standard deviation
 			yError = errorGen.nextGaussian() * movementError;
 
-			positionsWError[chipmunk][0] = positions[chipmunk][0] + xError; //add error in x direction to positions
-			positionsWError[chipmunk][1] = positions[chipmunk][1] + yError; //add error in y direction to positions
+			positionsWError[chipmunk][0] = positionsWError[chipmunk][0] + xError; //add error in x direction to positions
+			positionsWError[chipmunk][1] = positionsWError[chipmunk][1] + yError; //add error in y direction to positions
 			
 			//call sensor.sense()
 			try{

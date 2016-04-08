@@ -1,14 +1,24 @@
 /**
- * @author julian
- * @version 1.0
+ * @author julian and stephen
+ * @version 1.25
  * @created 13-Feb-2016 1:56:50 PM
+ * @modified 8-Apr-2016 3:16:25 PM
  */
 
-import org.json.simple.*;
 import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Iterator;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  * @author prydej
@@ -93,6 +103,78 @@ public class IO {
 			e.printStackTrace();
 		}
 
+	}
+	
+	/*
+	 * @author Stephen Kristin
+	 * 
+	 * The ParseMethod reads the data from the file and adds them to variables the program can read.
+	 * 
+	 */
+	public int ParseMethod(){
+		JSONParser  parser = new JSONParser ();
+
+		try {
+
+			Object obj = parser.parse(new FileReader("c:\\test.json"));
+
+			JSONObject ParseObject = (JSONObject) obj;
+
+			// loop array for x_error
+			JSONArray x_error = (JSONArray) ParseObject.get("x_error");
+			Iterator<String> iterator = x_error.iterator();
+			while (iterator.hasNext()) {
+				int i = 0;
+				double X_error_array[] = null;
+				
+				X_error_array[i] = Double.parseDouble(iterator.next());
+						
+				i++;
+			}
+			// loop array for y_error
+			JSONArray y_error = (JSONArray) ParseObject.get("y_error");
+			Iterator<String> iterator1 = y_error.iterator();
+			while (iterator1.hasNext()) {
+				int i = 0;
+				double Y_error_array[] = null;
+							
+				Y_error_array[i] = Double.parseDouble(iterator1.next());
+									
+				i++;
+			}
+			// loop array for x_actual
+			JSONArray x_actual = (JSONArray) ParseObject.get("x_actual");
+			Iterator<String> iterator2 = x_actual.iterator();
+			while (iterator2.hasNext()) {
+				int i = 0;
+				double X_actual_array[] = null;
+										
+				X_actual_array[i] = Double.parseDouble(iterator2.next());
+												
+				i++;
+			}
+			// loop array for y_actual
+			JSONArray y_actual = (JSONArray) ParseObject.get("y_actual");
+			Iterator<String> iterator3 = y_actual.iterator();
+			while (iterator3.hasNext()) {
+				int i = 0;
+				double Y_actual_array[] = null;
+													
+				Y_actual_array[i] = Double.parseDouble(iterator3.next());
+															
+				i++;
+			}
+			
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		return 0;
 	}
 
 }
