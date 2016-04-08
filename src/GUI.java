@@ -29,6 +29,7 @@ import java.lang.Double;
 
 /** The GUI
  * @author Savanh
+ * @author Stephen
  */
 public class GUI extends Application{
 	private BorderPane MCLPane; 						//border pane
@@ -36,7 +37,7 @@ public class GUI extends Application{
 	private MenuBar menuBar;							// MenuBar
 	private Menu menuFile, menuHelp, menuChart;					// Menus
 	private MenuItem miSave, miClose;					// save/close
-	private MenuItem miAbout, miShow;							// Displays info about the program
+	private MenuItem miAbout,miInstructions, miShow;							// Displays info about the program
 	private String moveString;
 	private LineChart<String, Double> lineChart;
 
@@ -48,6 +49,7 @@ public class GUI extends Application{
 		miSave = new MenuItem("Save");
 		miClose = new MenuItem("Close");
 		miAbout = new MenuItem("About");
+		miInstructions = new MenuItem("Instructions");
 		//miChart = new CheckMenuItem("See Data");
 		miShow = new MenuItem("Show Data");
 		// Create Menus and MenuBar
@@ -57,7 +59,7 @@ public class GUI extends Application{
 		menuChart = new Menu("Data Chart");
 		// Add menu items to respective menus and to menuBaar
 		menuFile.getItems().addAll(miSave, miClose);
-		menuHelp.getItems().addAll(miAbout);
+		menuHelp.getItems().addAll(miAbout, miInstructions);
 		menuChart.getItems().addAll(miShow,new SeparatorMenuItem());
 		menuBar.getMenus().addAll(menuFile, menuHelp, menuChart);
 		//Defining the text field
@@ -187,6 +189,7 @@ public class GUI extends Application{
 	 */
 	@Override
 	public void start(Stage stage) throws Exception {
+		miInstructions.setOnAction(e -> showInstructions());
 		miAbout.setOnAction(e -> showAbout());			//Event Handlers
 		miClose.setOnAction(e -> Platform.exit());
 		miShow.setOnAction(new ShowHandler());
