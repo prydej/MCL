@@ -223,7 +223,11 @@ public class GUI extends Application{
 		grid.setVgap(5);
 		grid.setHgap(5);
 	}
+<<<<<<< HEAD
 
+=======
+		
+>>>>>>> 3bad783bdc57e6fb46805ef69f57bf3cd535593c
 	/** Shows information about the program in it's own window 
 	 * @author Savanh Lu */
 	private void showAbout(){
@@ -248,6 +252,7 @@ public class GUI extends Application{
 		stage.show();
 	}
 
+<<<<<<< HEAD
 	//shows chart
 
 	private class ShowHandler implements EventHandler<ActionEvent>{
@@ -336,5 +341,93 @@ public class GUI extends Application{
 	}
 
 
+=======
+		private class ShowHandler implements EventHandler<ActionEvent>{
+			@Override
+			public void handle(ActionEvent e) {
+				
+				StackPane pane = new StackPane();	// Add the label to a StackPane
+				// Create and display said the aforementioned pane in a new stage 	
+				Scene scene = new Scene(pane, 600, 600);
+				Stage stage = new Stage();
+				stage.setScene(scene);
+				stage.setTitle("Data Chart");
+				stage.setResizable(false);
+				stage.show();
+				//chart things
+				CategoryAxis xAxis= new CategoryAxis();
+				NumberAxis yAxis = new NumberAxis();
+				lineChart = new LineChart(xAxis, yAxis);
+				lineChart.setTitle("Data from Simulation");
+				StackPane root= new StackPane();
+				pane.getChildren().add(lineChart);//add line chart
+				
+			}
+			/**@author Savanh
+			 * chart uses dummy data*/
+			private ObservableList<XYChart.Series<String, Double>> getChart(boolean miChart){
+				//declare variables
+				double bValue = 17.56;
+				double gValue= 17.06;
+				ObservableList<XYChart.Series<String, Double>>answer = FXCollections.observableArrayList();
+				Series<String, Double> blue = new Series<>();
+				Series<String, Double> green = new Series<>();
+				blue.setName("blue");
+				green.setName("green");
+				
+				for(int i = 2011; i < 2016; i++){
+					blue.getData().add(new XYChart.Data(Integer.toString(i), bValue));
+					bValue = bValue + 6 * Math.random() -.2;
+					green.getData().add(new XYChart.Data(Integer.toString(i), gValue));
+					gValue = gValue + 4 * Math.random() - 2;
+				}
+				answer.addAll(blue, green);
+				return answer;
+			} }
+		
+
+		/** Shows instructions on each item in the GUI
+		 * @author Stephen Kristin
+		 */
+		private void showInstructions(){
+			//customize text
+			final String infoText ="File menu:\n" 
+					+ "Save: Saves the current run to txt file.\n"
+					+ "Close: Closes the program.\n\n"
+					+ "Help menu:\n"
+					+ "About: Shows info on authors.\n"
+					+ "Information: Shows this window.\n\n"
+					+ "Data Chart menu:\n"
+					+ "Show Data: Shows graphs of data from simulation.\n"
+					+ "See Data: Shows the data.\n\n"
+					+ "Text Fields:\n"
+					+ "Range: User input to determine sensor range as Double value.\n"
+					+ "Reference Points: User input to determine number of reference points as Integer value.\n"
+					+ "Sensor Error: User input to determine percentage of sensor error as Double value.\n"
+					+ "Waypoints: User input to determine number of waypoints as Double value.\n"
+					+ "Movement Error: User input to determine percentage of movement error as Double value.\n"
+					+ "Start Point: User input to determine robot starting point, input as (x,y) as Integers.\n"
+					+ "End Point: User input to determine robot ending point, input as (x,y) as Integers.\n\n"
+					+ "Start Simualtion button: Uses user input data to run the simulation.\n"
+					+ "Clear button: Clears all input info from the text boxes.";
+			// Create the text label
+			Label infoLabel = new Label();
+			infoLabel.setWrapText(true);
+			infoLabel.setTextAlignment(TextAlignment.LEFT);
+			infoLabel.setFont(Font.font("Times New Roman", 22));
+			infoLabel.setText(infoText);
+			StackPane pane = new StackPane();	// Add the label to a StackPane
+			pane.getChildren().add(infoLabel);
+			// Create and display said the aforementioned pane in a new stage 	
+			Scene scene = new Scene(pane, 800, 800);
+			Stage stage = new Stage();
+			stage.setScene(scene);
+			stage.setTitle("Instructions on program features.");
+			stage.setResizable(false);
+			stage.show();
+		}
+		
+		
+>>>>>>> 3bad783bdc57e6fb46805ef69f57bf3cd535593c
 }
 

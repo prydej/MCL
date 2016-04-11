@@ -90,11 +90,6 @@ public class Sensor {
 		 */
 		double errorInX = 0.0;
 		double errorInY = 0.0;
-		
-		/**
-		 * distance from the point to the robot's current location
-		 */
-		double distFromRobot = 0.0;
 
 		/**
 		 * loop to access the information in the reference point
@@ -105,7 +100,7 @@ public class Sensor {
 		 * on top of a point.
 		 */
 		
-		for(i = 0; i < (refPointLoc.length -1); i++){
+		for(i = 0; i < refPointLoc.length; i++){
 
 			for(j = 0; j < refPointLoc[i].length; j++){
 
@@ -188,8 +183,6 @@ public class Sensor {
 		double[] refPointY = new double[Map.refPoints.length];
 		
 		double distancePt1 = 0.0;
-		
-		double distancePt2 = 0.0;
 		
 		double distancePt12 = 0.0;
 		
