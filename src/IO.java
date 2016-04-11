@@ -5,14 +5,11 @@
  * @modified 8-Apr-2016 3:16:25 PM
  */
 
-<<<<<<< HEAD
 import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-=======
->>>>>>> 3bad783bdc57e6fb46805ef69f57bf3cd535593c
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -21,17 +18,7 @@ import java.util.Iterator;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-<<<<<<< HEAD
 import org.json.simple.parser.ParseException;
-=======
-import org.json.simple.parser.ParseException;
-
-import javafx.application.Application;
-import javafx.stage.Stage;
-import javafx.scene.Scene;
-import javafx.scene.text.Text;
-import javafx.scene.layout.Pane;
->>>>>>> 3bad783bdc57e6fb46805ef69f57bf3cd535593c
 
 /**
  * @author prydej
@@ -124,7 +111,7 @@ public class IO {
 	 * The ParseMethod reads the data from the file and adds them to variables the program can read.
 	 * 
 	 */
-	public int ParseMethod(){
+	public int parseMethod(){
 		JSONParser  parser = new JSONParser ();
 
 		try {
