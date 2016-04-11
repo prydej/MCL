@@ -223,11 +223,7 @@ public class GUI extends Application{
 		grid.setVgap(5);
 		grid.setHgap(5);
 	}
-<<<<<<< HEAD
 
-=======
-		
->>>>>>> 3bad783bdc57e6fb46805ef69f57bf3cd535593c
 	/** Shows information about the program in it's own window 
 	 * @author Savanh Lu */
 	private void showAbout(){
@@ -252,7 +248,6 @@ public class GUI extends Application{
 		stage.show();
 	}
 
-<<<<<<< HEAD
 	//shows chart
 
 	private class ShowHandler implements EventHandler<ActionEvent>{
@@ -339,9 +334,6 @@ public class GUI extends Application{
 		stage.setResizable(false);
 		stage.show();
 	}
-
-
-=======
 		private class ShowHandler implements EventHandler<ActionEvent>{
 			@Override
 			public void handle(ActionEvent e) {
@@ -385,49 +377,5 @@ public class GUI extends Application{
 				return answer;
 			} }
 		
-
-		/** Shows instructions on each item in the GUI
-		 * @author Stephen Kristin
-		 */
-		private void showInstructions(){
-			//customize text
-			final String infoText ="File menu:\n" 
-					+ "Save: Saves the current run to txt file.\n"
-					+ "Close: Closes the program.\n\n"
-					+ "Help menu:\n"
-					+ "About: Shows info on authors.\n"
-					+ "Information: Shows this window.\n\n"
-					+ "Data Chart menu:\n"
-					+ "Show Data: Shows graphs of data from simulation.\n"
-					+ "See Data: Shows the data.\n\n"
-					+ "Text Fields:\n"
-					+ "Range: User input to determine sensor range as Double value.\n"
-					+ "Reference Points: User input to determine number of reference points as Integer value.\n"
-					+ "Sensor Error: User input to determine percentage of sensor error as Double value.\n"
-					+ "Waypoints: User input to determine number of waypoints as Double value.\n"
-					+ "Movement Error: User input to determine percentage of movement error as Double value.\n"
-					+ "Start Point: User input to determine robot starting point, input as (x,y) as Integers.\n"
-					+ "End Point: User input to determine robot ending point, input as (x,y) as Integers.\n\n"
-					+ "Start Simualtion button: Uses user input data to run the simulation.\n"
-					+ "Clear button: Clears all input info from the text boxes.";
-			// Create the text label
-			Label infoLabel = new Label();
-			infoLabel.setWrapText(true);
-			infoLabel.setTextAlignment(TextAlignment.LEFT);
-			infoLabel.setFont(Font.font("Times New Roman", 22));
-			infoLabel.setText(infoText);
-			StackPane pane = new StackPane();	// Add the label to a StackPane
-			pane.getChildren().add(infoLabel);
-			// Create and display said the aforementioned pane in a new stage 	
-			Scene scene = new Scene(pane, 800, 800);
-			Stage stage = new Stage();
-			stage.setScene(scene);
-			stage.setTitle("Instructions on program features.");
-			stage.setResizable(false);
-			stage.show();
-		}
-		
-		
->>>>>>> 3bad783bdc57e6fb46805ef69f57bf3cd535593c
 }
 
