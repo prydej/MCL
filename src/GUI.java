@@ -248,7 +248,8 @@ public class GUI extends Application{
 		stage.show();
 	}
 
-	//shows chart
+	/**@author Savanh
+	 * shows chart */
 
 	private class ShowHandler implements EventHandler<ActionEvent>{
 		@Override
@@ -334,5 +335,6 @@ public class GUI extends Application{
 		stage.setResizable(false);
 		stage.show();
 	}
+
 }
 

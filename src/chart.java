@@ -1,4 +1,3 @@
-
 /*Author: Jadeira Savanh Lu */
 //Date: 14 March 2016
 import javafx.application.Application;
@@ -54,4 +53,5 @@ public class chart extends Application{
 			return answer;
 		}
 }
+
 
