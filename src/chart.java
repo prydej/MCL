@@ -1,6 +1,5 @@
-<<<<<<< HEAD
 
-/*Author: Jadeira Savanh Lu */
+/**@author Jadeira Savanh Lu */
 //Date: 14 March 2016
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -113,4 +112,4 @@ public class chart extends Application{
 			return answer;
 		}
 }
->>>>>>> 3bad783bdc57e6fb46805ef69f57bf3cd535593c
+

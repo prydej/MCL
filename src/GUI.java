@@ -247,9 +247,8 @@ public class GUI extends Application{
 		stage.setResizable(false);
 		stage.show();
 	}
-
-	//shows chart
-
+	/**@author Savanh
+	 * shows chart */
 	private class ShowHandler implements EventHandler<ActionEvent>{
 		@Override
 		public void handle(ActionEvent e) {
@@ -334,48 +333,6 @@ public class GUI extends Application{
 		stage.setResizable(false);
 		stage.show();
 	}
-		private class ShowHandler implements EventHandler<ActionEvent>{
-			@Override
-			public void handle(ActionEvent e) {
-				
-				StackPane pane = new StackPane();	// Add the label to a StackPane
-				// Create and display said the aforementioned pane in a new stage 	
-				Scene scene = new Scene(pane, 600, 600);
-				Stage stage = new Stage();
-				stage.setScene(scene);
-				stage.setTitle("Data Chart");
-				stage.setResizable(false);
-				stage.show();
-				//chart things
-				CategoryAxis xAxis= new CategoryAxis();
-				NumberAxis yAxis = new NumberAxis();
-				lineChart = new LineChart(xAxis, yAxis);
-				lineChart.setTitle("Data from Simulation");
-				StackPane root= new StackPane();
-				pane.getChildren().add(lineChart);//add line chart
-				
-			}
-			/**@author Savanh
-			 * chart uses dummy data*/
-			private ObservableList<XYChart.Series<String, Double>> getChart(boolean miChart){
-				//declare variables
-				double bValue = 17.56;
-				double gValue= 17.06;
-				ObservableList<XYChart.Series<String, Double>>answer = FXCollections.observableArrayList();
-				Series<String, Double> blue = new Series<>();
-				Series<String, Double> green = new Series<>();
-				blue.setName("blue");
-				green.setName("green");
-				
-				for(int i = 2011; i < 2016; i++){
-					blue.getData().add(new XYChart.Data(Integer.toString(i), bValue));
-					bValue = bValue + 6 * Math.random() -.2;
-					green.getData().add(new XYChart.Data(Integer.toString(i), gValue));
-					gValue = gValue + 4 * Math.random() - 2;
-				}
-				answer.addAll(blue, green);
-				return answer;
-			} }
 		
 }
 
