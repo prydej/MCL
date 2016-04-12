@@ -13,7 +13,7 @@ import javafx.scene.chart.XYChart.Series;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 	//chart
-public class chart extends Application{
+public class Chart extends Application{
 
 		public  void  showChart(){
 			Application.launch();
