@@ -13,13 +13,14 @@ public class Robot {
 	private double[][] positionsWError;
 	private double[][] waypoints = {{0,0},{0,0}};
 	public double[][] positions;
-	private double distBetweenWaypoints, xError, yError;
+	private double distBetweenWaypoints, xError, yError, distToNextWaypoint;
 	public int fromWaypoint, toWaypoint, numWaypoints, chipmunk;
 
-	/**
+	/*
 	 * @param start: starting positions x and y
 	 * @param end: ending positions x and y
 	 */
+
 	public Robot(int[] start, int[] end){
 
 		// Set waypoint values
@@ -30,9 +31,14 @@ public class Robot {
 
 		// Instantiate positions vector
 		int totalDist = (int) Math.ceil(this.findTotalDist(waypoints));
-
 		this.positions = new double[totalDist][2]; //ceiling of total distance travelled by robot
+		positions[0][0] = start[0];
+		positions[0][1] = start[1];
+
+		//initialize positions with error
 		this.positionsWError = new double[totalDist][2];
+		positionsWError[0][0] = start[0];
+		positionsWError[0][1] = start[1];
 
 		// Instantiate nextPosition
 		nextPosition = new double[2]; 
@@ -60,36 +66,45 @@ public class Robot {
 		distBetweenWaypoints = Math.sqrt(Math.pow((waypoints[toWaypoint][0] - waypoints[fromWaypoint][0]),2) + 
 				Math.pow((waypoints[toWaypoint][1] - waypoints[fromWaypoint][1]),2));
 
-		//loop through all stops between waypoints
-		for (chipmunk = 0; chipmunk < distBetweenWaypoints; chipmunk++){
+		// Initialize nextPosition
+		nextPosition[0] = (waypoints[1][0] - positions[0][0])/distBetweenWaypoints; 
+		nextPosition[1] = (waypoints[1][1] - positions[0][1])/distBetweenWaypoints;
 
-			//find next positions 1 unit away from last positions
-			//	divide horz and vert component by distance between actual positions and toWaypoint #UnitVector
-			nextPosition[0] = (waypoints[toWaypoint][0] - positions[chipmunk][0])/distBetweenWaypoints; 
-			nextPosition[1] = (waypoints[toWaypoint][1] - positions[chipmunk][1])/distBetweenWaypoints;
+		//loop through all stops between waypoints
+		for (chipmunk = 1; chipmunk < distBetweenWaypoints; chipmunk++){
 
 			//change positions var to new positions
-			positions[chipmunk][0] = nextPosition[0];
-			positions[chipmunk][1] = nextPosition[1];
+			positions[chipmunk][0] = positions[chipmunk - 1][0] + nextPosition[0];
+			positions[chipmunk][1] = positions[chipmunk - 1][0] + nextPosition[1];
+
+			//			positions[chipmunk][0] = 1;
+			//			positions[chipmunk][1] = 1;
 
 			//add movement error
 			Random errorGen = new Random(); //create rng object
-			
+
 			xError = errorGen.nextGaussian() * movementError; //multiply for standard deviation
 			yError = errorGen.nextGaussian() * movementError;
 
-			positionsWError[chipmunk][0] = positionsWError[chipmunk][0] + xError; //add error in x direction to positions
-			positionsWError[chipmunk][1] = positionsWError[chipmunk][1] + yError; //add error in y direction to positions
-			
+			positionsWError[chipmunk][0] = positionsWError[chipmunk - 1][0] + nextPosition[0] + xError; //add error in x direction to positions
+			positionsWError[chipmunk][1] = positionsWError[chipmunk - 1][1] + nextPosition[1] + yError; //add error in y direction to positions
+
 			//call sensor.sense()
-			try{
-				sensor.detectPoints(range, positionsWError[chipmunk][0], positionsWError[chipmunk][1], sensorError);
-			} catch (IOException e) {
-				System.out.println("IO Exception");
-			}
+//			try{
+//				sensor.detectPoints(range, positionsWError[chipmunk][0], positionsWError[chipmunk][1], sensorError);
+//			} catch (IOException e) {
+//				System.out.println("IO Exception");
+//			}
+
+			//find next positions 1 unit away from last positions
+			// find distance from next waypoint
+			distToNextWaypoint = this.distFormula(waypoints[toWaypoint], positions[chipmunk]);
 			
+			// ivide horz and vert component by distance between actual positions and toWaypoint #UnitVector
+			nextPosition[0] = (waypoints[toWaypoint][0] - positions[chipmunk][0])/distToNextWaypoint; 
+			nextPosition[1] = (waypoints[toWaypoint][1] - positions[chipmunk][1])/distToNextWaypoint;
 		}
-		
+
 		fromWaypoint = toWaypoint; //set current toWaypoint to fromWaypoint
 		toWaypoint++;//	set next waypoint to toWaypoint
 		System.out.println("Next Waypoint");
@@ -126,6 +141,16 @@ public class Robot {
 					Math.pow((waypoints[beaver][1] - waypoints[beaver + 1][1]),2));
 		}
 
+		return distance;
+	}
+	
+	public double distFormula(double[] one, double[] two){
+		
+		double distance;
+		
+		//Distance formula sqrt((x1 - x2)^2 + (y1 - y2)^2)
+		distance = Math.sqrt(Math.pow((one[0] - two[0]),2) + Math.pow((one[1] - two[1]),2));
+		
 		return distance;
 	}
 

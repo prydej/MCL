@@ -335,6 +335,5 @@ public class GUI extends Application{
 		stage.setResizable(false);
 		stage.show();
 	}
-
 }
 
