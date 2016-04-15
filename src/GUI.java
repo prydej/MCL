@@ -174,11 +174,8 @@ public class GUI extends Application{
 			}
 		});
 	}
-	/** @author Savanh Lu
-	 * Invoke GUI */
-	public void showGUI(){
-		Application.launch();
-	}
+
+	
 	//set moveString
 	/**@author Julian Pryde*/
 	public void setMoveString(String moveString){
@@ -199,11 +196,13 @@ public class GUI extends Application{
 		//start.setOnAction(new showHandler());
 		/* PUT EVERYTHING TOGETHER */
 		Scene scene = new Scene(MCLPane, 850, 850);
+
 		// Add the menu bar and shapes to the border pane
 		MCLPane.setTop(menuBar);
 		MCLPane.setCenter(grid);
 
 		MCLPane.setBottom(lineChart);
+		
 		//chart things
 		CategoryAxis xAxis= new CategoryAxis();
 		NumberAxis yAxis = new NumberAxis();
@@ -215,6 +214,7 @@ public class GUI extends Application{
 		// Configure and display the stage
 		stage.setScene(scene);
 		stage.setTitle("Monte Carlo Localization Simulator");
+		
 		//won't allow user to resize grid
 		stage.setResizable(false);
 		stage.show();
