@@ -174,7 +174,6 @@ public class GUI extends Application{
 			}
 		});
 	}
-
 	
 	//set moveString
 	/**@author Julian Pryde*/
