@@ -77,15 +77,36 @@ public class Robot {
 			positions[chipmunk][0] = Math.floor((positions[chipmunk - 1][0] + nextPosition[0])*1000)/1000;
 			positions[chipmunk][1] = Math.floor((positions[chipmunk - 1][0] + nextPosition[1])*1000)/1000;
 
-			
+
+
 			//add movement error
 			Random errorGen = new Random(); //create rng object
 
 			xError = errorGen.nextGaussian() * movementError; //multiply for standard deviation
 			yError = errorGen.nextGaussian() * movementError;
 
-			positionsWError[chipmunk][0] = Math.floor((positionsWError[chipmunk - 1][0] + nextPosition[0] + xError)*1000)/1000; //add error in x direction to positions
-			positionsWError[chipmunk][1] = positionsWError[chipmunk - 1][1] + nextPosition[1] + yError; //add error in y direction to positions
+			//update positions with error, quit program if robot runs off the map
+			try {
+				//add error in x direction to positions
+				positionsWError[chipmunk][0] = Math.floor((positionsWError[chipmunk - 1][0] + nextPosition[0] + xError)*1000)/1000;
+
+				if (positionsWError[chipmunk][0] < 0){
+					throw new NegativePositionException(); //stop program if robot goes out of bounds
+				}
+
+				//add error in y direction to positions
+				positionsWError[chipmunk][1] = Math.floor((positionsWError[chipmunk - 1][1] + nextPosition[1] + yError)*1000)/1000;
+
+				if (positionsWError[chipmunk][1] < 0){
+					throw new NegativePositionException(); //stop program if robot goes out of bounds
+				}
+
+			} catch (NegativePositionException e) {
+				System.out.println(e.message);
+				e.printStackTrace();
+				System.exit(1);
+			}
+
 
 			//call sensor.sense()
 			try{
@@ -97,8 +118,8 @@ public class Robot {
 			//find next positions 1 unit away from last positions
 			// find distance from next waypoint
 			distToNextWaypoint = this.distFormula(waypoints[toWaypoint], positions[chipmunk]);
-			
-			// ivide horz and vert component by distance between actual positions and toWaypoint #UnitVector
+
+			// divide horz and vert component by distance between actual positions and toWaypoint #UnitVector
 			nextPosition[0] = (waypoints[toWaypoint][0] - positions[chipmunk][0])/distToNextWaypoint; 
 			nextPosition[1] = (waypoints[toWaypoint][1] - positions[chipmunk][1])/distToNextWaypoint;
 		}
@@ -141,14 +162,14 @@ public class Robot {
 
 		return distance;
 	}
-	
+
 	public double distFormula(double[] one, double[] two){
-		
+
 		double distance;
-		
+
 		//Distance formula sqrt((x1 - x2)^2 + (y1 - y2)^2)
 		distance = Math.sqrt(Math.pow((one[0] - two[0]),2) + Math.pow((one[1] - two[1]),2));
-		
+
 		return distance;
 	}
 

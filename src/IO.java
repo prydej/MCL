@@ -20,6 +20,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.google.gson.*;
+
 /**
  * @author prydej
  *
@@ -49,7 +51,7 @@ public class IO {
 			
 			x_ideal.add(positions[cat][0]); //add all x componenents of positions w/ error to array
 		}
-		runPositions.put("x_error", x_ideal); //add x comps of pos w/error to object
+		runPositions.put("x_ideal", x_ideal); //add x comps of pos w/error to object
 		
 		//System.out.println(runPositions);
 		
@@ -59,7 +61,7 @@ public class IO {
 			
 			y_ideal.add(positions[dog][1]);
 		}
-		runPositions.put("y_error", y_ideal); //add y comps of pos w/error to object
+		runPositions.put("y_ideal", y_ideal); //add y comps of pos w/error to object
 		
 		//System.out.println(runPositions);
 		
@@ -83,7 +85,6 @@ public class IO {
 		runPositions.put("y_actual", y_actual); //add y comps of pos w/o error to object
 		
 		//for testing
-		System.out.println(runPositions);
 		
 		//Create name for new file
 		DateFormat formatObj = new SimpleDateFormat("ddMMMYY-HH-mm-ss"); //Format for date for name of file
@@ -91,9 +92,17 @@ public class IO {
 		String filename = formatObj.format(dateObj); //set filename
 		
 		//Write to file
+		//Create Gson object for pretty printing
+		Gson prettyPositions = new GsonBuilder().setPrettyPrinting().create();
+		JsonParser jp = new JsonParser();
+		JsonElement je = jp.parse(runPositions.toJSONString());
+		String prettyOutput = prettyPositions.toJson(je);
+		
+		System.out.println(prettyOutput);
+		
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(filename + ".json", false)); //create writer object
-			writer.write(runPositions.toJSONString());
+			writer.write(prettyOutput);
 			
 			//Close filewriter
 			writer.close();
