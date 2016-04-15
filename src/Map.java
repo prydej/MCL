@@ -28,7 +28,7 @@ public class Map{
 	 * @param numberRefPoints
 	 */
 	public void createPoints(int numberRefPoints){
-		//Instntiate refPoints
+		//Instantiate refPoints
 		refPoints = new int[numberRefPoints][2];
 		
 		// variables for loop iteration

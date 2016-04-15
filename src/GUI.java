@@ -106,7 +106,7 @@ public class GUI extends Application{
 		final TextField startPoint = new TextField();
 		Label label6 = new Label ("Start Point:");
 		startPoint.setPrefColumnCount(25);
-		startPoint.setPromptText("Enter in the form of (x,y)");
+		startPoint.setPromptText("Enter in the form of x,y");
 		GridPane.setConstraints(startPoint, 2, 5);
 		GridPane.setConstraints(label6, 1, 5);
 
@@ -114,7 +114,7 @@ public class GUI extends Application{
 		final TextField endPoint = new TextField();
 		Label label7 = new Label ("End Point:");
 		endPoint.setPrefColumnCount(25);
-		endPoint.setPromptText("Enter in the form of (x,y)");
+		endPoint.setPromptText("Enter in the form of x,y");
 		GridPane.setConstraints(endPoint, 2, 6);
 		GridPane.setConstraints(label7, 1, 6);
 		//Defining the start sim button
