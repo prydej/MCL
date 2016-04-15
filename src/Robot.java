@@ -90,11 +90,11 @@ public class Robot {
 			positionsWError[chipmunk][1] = positionsWError[chipmunk - 1][1] + nextPosition[1] + yError; //add error in y direction to positions
 
 			//call sensor.sense()
-//			try{
-//				sensor.detectPoints(range, positionsWError[chipmunk][0], positionsWError[chipmunk][1], sensorError);
-//			} catch (IOException e) {
-//				System.out.println("IO Exception");
-//			}
+			try{
+				sensor.detectPoints(range, positionsWError[chipmunk][0], positionsWError[chipmunk][1], sensorError);
+			} catch (IOException e) {
+				System.out.println("IO Exception");
+			}
 
 			//find next positions 1 unit away from last positions
 			// find distance from next waypoint
