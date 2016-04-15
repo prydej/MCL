@@ -77,13 +77,14 @@ public class Robot {
 			positions[chipmunk][0] = Math.floor((positions[chipmunk - 1][0] + nextPosition[0])*1000)/1000;
 			positions[chipmunk][1] = Math.floor((positions[chipmunk - 1][0] + nextPosition[1])*1000)/1000;
 
+			
 			//add movement error
 			Random errorGen = new Random(); //create rng object
 
 			xError = errorGen.nextGaussian() * movementError; //multiply for standard deviation
 			yError = errorGen.nextGaussian() * movementError;
 
-			positionsWError[chipmunk][0] = positionsWError[chipmunk - 1][0] + nextPosition[0] + xError; //add error in x direction to positions
+			positionsWError[chipmunk][0] = Math.floor((positionsWError[chipmunk - 1][0] + nextPosition[0] + xError)*1000)/1000; //add error in x direction to positions
 			positionsWError[chipmunk][1] = positionsWError[chipmunk - 1][1] + nextPosition[1] + yError; //add error in y direction to positions
 
 			//call sensor.sense()
