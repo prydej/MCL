@@ -175,11 +175,6 @@ public class GUI extends Application{
 		});
 	}
 	
-	//set moveString
-	/**@author Julian Pryde*/
-	public void setMoveString(String moveString){
-		this.moveString = moveString;
-	}
 	/**@author Savanh Lu*/
 	/* (non-Javadoc)
 	 * @see 

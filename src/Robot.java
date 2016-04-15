@@ -77,9 +77,6 @@ public class Robot {
 			positions[chipmunk][0] = Math.floor((positions[chipmunk - 1][0] + nextPosition[0])*1000)/1000;
 			positions[chipmunk][1] = Math.floor((positions[chipmunk - 1][0] + nextPosition[1])*1000)/1000;
 
-			//			positions[chipmunk][0] = 1;
-			//			positions[chipmunk][1] = 1;
-
 			//add movement error
 			Random errorGen = new Random(); //create rng object
 

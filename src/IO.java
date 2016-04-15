@@ -51,7 +51,7 @@ public class IO {
 		}
 		runPositions.put("x_error", x_error); //add x comps of pos w/error to object
 		
-		System.out.println(runPositions);
+		//System.out.println(runPositions);
 		
 		//Write y positions with movement error to json object
 		JSONArray y_error = new JSONArray(); //create json array of all y comps of pos w/ error
@@ -61,7 +61,7 @@ public class IO {
 		}
 		runPositions.put("y_error", y_error); //add y comps of pos w/error to object
 		
-		System.out.println(runPositions);
+		//System.out.println(runPositions);
 		
 		//Write positions without error to json array
 		//write x positions WITHOUT movement error to json object
@@ -72,7 +72,7 @@ public class IO {
 		}
 		runPositions.put("x_actual", x_actual); //add x comps of pos w/o error to object
 		
-		System.out.println(runPositions);
+		//System.out.println(runPositions);
 		
 		//write y positions WITHOUT movement error to json object
 		JSONArray y_actual = new JSONArray(); //create json array of all y comps of pos w/o error
@@ -83,7 +83,7 @@ public class IO {
 		runPositions.put("y_actual", y_actual); //add y comps of pos w/o error to object
 		
 		//for testing
-		System.out.println(runPositions);
+		//System.out.println(runPositions);
 		
 		//Create name for new file
 		DateFormat formatObj = new SimpleDateFormat("ddMMMYY-HH-mm-ss"); //Format for date for name of file

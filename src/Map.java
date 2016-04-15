@@ -37,7 +37,7 @@ public class Map{
 		for (i=0; i < numberRefPoints; i++ ){// NumberRefPoints is the number from the GUI
 			for (j=0; j<2; j++){
 				// j index 0 and 1 for x and y
-				System.out.println(i + "\n" + j + "\n");
+				//System.out.println(i + "\n" + j + "\n");
 				refPoints[i][j]= gen.nextInt(100); 
 			}			
 		}
