@@ -153,11 +153,11 @@ public class GUI extends Application{
 			 */
 			@Override
 			public void handle(ActionEvent e){
-				//get text, take out parens, split by comma, convert each element part to int
-				int startx = Integer.parseInt(startPoint.getText().replaceAll("[()]","").split(",")[0]);
-				int starty = Integer.parseInt(startPoint.getText().replaceAll("[()]","").split(",")[1]);
-				int endx = Integer.parseInt(endPoint.getText().replaceAll("[()]","").split(",")[0]);
-				int endy = Integer.parseInt(endPoint.getText().replaceAll("[()]","").split(",")[1]);
+				//get text, split by comma, convert each element part to int
+				int startx = Integer.parseInt(startPoint.getText().split(",")[0]);
+				int starty = Integer.parseInt(startPoint.getText().split(",")[1]);
+				int endx = Integer.parseInt(endPoint.getText().split(",")[0]);
+				int endy = Integer.parseInt(endPoint.getText().split(",")[1]);
 
 				int[] startPos = {startx, starty};
 				int[] endPos = {endx, endy};
