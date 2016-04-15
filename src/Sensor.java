@@ -154,6 +154,7 @@ public class Sensor {
 			bWSavePoints.write(rx + "," + ry + "," + sx + "," + sy + "\n");
 			bWSavePoints.newLine();
 			bWSavePoints.close();
+			distanceBetweenPoints();
 		}
 		catch (IOException iOEx1){
 			Stage fileNotFound = new Stage();
