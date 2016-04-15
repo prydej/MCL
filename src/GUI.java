@@ -88,35 +88,35 @@ public class GUI extends Application{
 
 		//Defining text field
 		final TextField waypoints = new TextField();
-		Label label4 = new Label ("Waypoints:");
-		waypoints.setPrefColumnCount(25);
-		waypoints.setPromptText("Enter a double");
-		GridPane.setConstraints(waypoints, 2, 3);
-		GridPane.setConstraints(label4, 1, 3);
+//		Label label4 = new Label ("Waypoints:");
+//		waypoints.setPrefColumnCount(25);
+//		waypoints.setPromptText("Enter a double");
+//		GridPane.setConstraints(waypoints, 2, 3);
+//		GridPane.setConstraints(label4, 1, 3);
 
 		//Defining text field
 		final TextField moveError = new TextField();
 		Label label5 = new Label ("Movment Error %:");
 		moveError.setPrefColumnCount(25);
 		moveError.setPromptText("Enter a percentage");
-		GridPane.setConstraints(moveError, 2, 4);
-		GridPane.setConstraints(label5, 1, 4);
+		GridPane.setConstraints(moveError, 2, 3);
+		GridPane.setConstraints(label5, 1, 3);
 
 		//Defining text field
 		final TextField startPoint = new TextField();
 		Label label6 = new Label ("Start Point:");
 		startPoint.setPrefColumnCount(25);
 		startPoint.setPromptText("Enter in the form of x,y");
-		GridPane.setConstraints(startPoint, 2, 5);
-		GridPane.setConstraints(label6, 1, 5);
+		GridPane.setConstraints(startPoint, 2, 4);
+		GridPane.setConstraints(label6, 1, 4);
 
 		//Defining text field
 		final TextField endPoint = new TextField();
 		Label label7 = new Label ("End Point:");
 		endPoint.setPrefColumnCount(25);
 		endPoint.setPromptText("Enter in the form of x,y");
-		GridPane.setConstraints(endPoint, 2, 6);
-		GridPane.setConstraints(label7, 1, 6);
+		GridPane.setConstraints(endPoint, 2, 5);
+		GridPane.setConstraints(label7, 1, 5);
 		//Defining the start sim button
 		Button start = new Button("Start Simulation");
 		GridPane.setConstraints(start, 3, 0);
@@ -124,8 +124,8 @@ public class GUI extends Application{
 		Button clear = new Button("Clear");
 		GridPane.setConstraints(clear, 3, 1);
 
-		grid.getChildren().addAll(rangeText, refPoints, senseError, waypoints, 
-				moveError, startPoint, endPoint, start, clear, label1, label2, label3,label4, label5, label6, label7);
+		grid.getChildren().addAll(rangeText, refPoints, senseError,  
+				moveError, startPoint, endPoint, start, clear, label1, label2, label3, label5, label6, label7);
 
 		clear.setOnAction(new EventHandler<ActionEvent>() {
 			/* @author Savanh Lu
@@ -137,7 +137,6 @@ public class GUI extends Application{
 				rangeText.clear();
 				refPoints.clear();
 				senseError.clear();
-				waypoints.clear();
 				moveError.clear();
 				startPoint.clear();
 				endPoint.clear();
@@ -155,22 +154,52 @@ public class GUI extends Application{
 			public void handle(ActionEvent e){
 				//get text, split by comma, convert each element part to int
 				int startx = Integer.parseInt(startPoint.getText().split(",")[0]);
+					if( startx < 0 || startx > 100 )/*set parameters for users by Savanh*/{
+						System.out.print("Error! Enter a number between 0-100");
+					}
 				int starty = Integer.parseInt(startPoint.getText().split(",")[1]);
+					if( starty < 0 || starty > 100 )/*set parameters for users by Savanh*/{
+						System.out.print("Error! Enter a number between 0-100");
+					}
 				int endx = Integer.parseInt(endPoint.getText().split(",")[0]);
+					if( endx < 0 || endx > 100 )/*set parameters for users by Savanh*/{
+						System.out.print("Error! Enter a number between 0-100");
+					}
 				int endy = Integer.parseInt(endPoint.getText().split(",")[1]);
+					if( endy < 0 || endy > 100 )/*set parameters for users by Savanh*/{
+						System.out.print("Error! Enter a number between 0-100");
+					}
 
 				int[] startPos = {startx, starty};
 				int[] endPos = {endx, endy};
-
+				/*created new variables by Savanh and added user parameters*/
+				int refPoint = Integer.parseInt(refPoints.getText());
+				double range = Double.parseDouble(rangeText.getText()); 
+				double sense = Double.parseDouble(senseError.getText()); 
+				double move = Double.parseDouble(moveError.getText());
+				
+				if (refPoint < 0 || refPoint > 100){
+					System.out.print("Error! Enter a number between 0-100");
+				}
+				if (range < 0 || range > 100){
+					System.out.print("Error! Enter a number between 0-100");
+				}
+				if (sense < 0 || sense > 100){
+					System.out.print("Error! Enter a number between 0-100");
+				}
+				if (move < 0 || move > 100){
+					System.out.print("Error! Enter a number between 0-100");
+				}
+				
 				Main.simulate(
-						Integer.parseInt(refPoints.getText()), 
-						startPos, 
-						endPos, 
-						Double.parseDouble(rangeText.getText()), 
-						Double.parseDouble(senseError.getText()),
-						Double.parseDouble(moveError.getText()),
-						Double.parseDouble(waypoints.getText())
+						refPoint,
+						startPos,
+						endPos,
+						range,
+						sense,
+						move
 						);
+				
 			}
 		});
 	}
