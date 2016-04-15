@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 //import javafx.stage.*;
 
@@ -23,6 +24,7 @@ public class Main extends Application{
 	public static void main(String[] args) throws Exception {
 		
 		Application.launch(args);
+		
 	}
 	
 	

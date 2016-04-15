@@ -74,8 +74,8 @@ public class Robot {
 		for (chipmunk = 1; chipmunk < distBetweenWaypoints; chipmunk++){
 
 			//change positions var to new positions
-			positions[chipmunk][0] = positions[chipmunk - 1][0] + nextPosition[0];
-			positions[chipmunk][1] = positions[chipmunk - 1][0] + nextPosition[1];
+			positions[chipmunk][0] = Math.floor((positions[chipmunk - 1][0] + nextPosition[0])*1000)/1000;
+			positions[chipmunk][1] = Math.floor((positions[chipmunk - 1][0] + nextPosition[1])*1000)/1000;
 
 			//			positions[chipmunk][0] = 1;
 			//			positions[chipmunk][1] = 1;
