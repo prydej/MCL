@@ -137,12 +137,26 @@ public class Sensor {
 	 */
 	public void distanceBetweenPoints(double rx, double ry, double sx, double sy){
 		
+		double distance = 0.0;
 		
+		distance = Math.sqrt(Math.pow((rx - sx), 2) + Math.pow((ry-sy), 2));
 		
+		calculateRobotLocation(rx, ry, sx, sy, distance);
 	}
 	
-	public void calculateRobotLocation(double distance){
+	public void calculateRobotLocation(double rx, double ry, double sx, double sy, double distance){
 		
+		double estimatedRobotX = 0.0;
+		
+		double estimatedRobotY = 0.0;
+		
+		double radians = Math.atan2((ry - sy),(rx -sx));
+		
+		estimatedRobotX = sx + (distance * Math.cos(radians));
+		
+		estimatedRobotY = sy + (distance * Math.sin(radians));
+		
+		saveToFile(rx, ry, sx, sy, distance, estimatedRobotX, estimatedRobotY);
 	}
 	
 	/**
