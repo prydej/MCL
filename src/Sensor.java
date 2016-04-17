@@ -150,7 +150,7 @@ public class Sensor {
 		
 		double estimatedRobotY = 0.0;
 		
-		double radians = Math.atan2((ry - sy),(rx -sx));
+		double radians = Math.atan2((sy - ry),(sx - rx));
 		
 		estimatedRobotX = sx + (distance * Math.cos(radians));
 		
@@ -181,8 +181,8 @@ public class Sensor {
 			File saveDetectedPoints = new File("DataFile.txt");
 			saveDetectedPoints.createNewFile();
 			BufferedWriter bWSavePoints = new BufferedWriter(new FileWriter(saveDetectedPoints, true));
-			bWSavePoints.write(arx + "," + ary + "," + rpx + "," + rpy + 
-					"," + dist + "," + erx + "," + ery + "\n");
+			bWSavePoints.write(arx + "\t" + ary + "\t" + rpx + "\t" + rpy + 
+					"\t" + dist + "\t" + erx + "\t" + ery);
 			bWSavePoints.newLine();
 			bWSavePoints.close();
 		}
