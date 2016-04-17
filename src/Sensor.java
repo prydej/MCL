@@ -178,9 +178,9 @@ public class Sensor {
 	public void saveToFile(double arx, double ary, double rpx, double rpy, double dist, double erx, double ery){
 
 		try{
-			File saveDetectedPoints = new File("DataFile.txt");
-			saveDetectedPoints.createNewFile();
-			BufferedWriter bWSavePoints = new BufferedWriter(new FileWriter(saveDetectedPoints, true));
+			File saveFile = new File("DataFile.txt");
+			saveFile.createNewFile();
+			BufferedWriter bWSavePoints = new BufferedWriter(new FileWriter(saveFile, true));
 			bWSavePoints.write(arx + "\t" + ary + "\t" + rpx + "\t" + rpy + 
 					"\t" + dist + "\t" + erx + "\t" + ery);
 			bWSavePoints.newLine();
