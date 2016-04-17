@@ -136,33 +136,7 @@ public class Sensor {
 		}
 	}
 		
-	/**
-	 * This will save the points detected in the format 
-	 * of (point1,point2,point3, point4) in a file.
-	 * 
-	 * @param rx
-	 * @param ry
-	 * @param sx
-	 * @param sy
-	 */
-	public void saveToFile(double rx, double ry, double sx, double sy){
-
-		try{
-			File saveDetectedPoints = new File("DetectedPoints.txt");
-			saveDetectedPoints.createNewFile();
-			BufferedWriter bWSavePoints = new BufferedWriter(new FileWriter(saveDetectedPoints, true));
-			bWSavePoints.write(rx + "," + ry + "," + sx + "," + sy + "\n");
-			bWSavePoints.newLine();
-			bWSavePoints.close();
-		}
-		catch (IOException iOEx1){
-			Stage fileNotFound = new Stage();
-			fileNotFound.initStyle(StageStyle.UNIFIED);
-			Scene scene = new Scene(new Group(new Text(25, 25, "There was an error while trying to create and write your information to the file :(")));
-			fileNotFound.setScene(scene);
-			fileNotFound.show();
-		}	
-	}
+	
 	/**
 	 * The distanceBetweenPoints method will get the 
 	 * 
@@ -255,5 +229,39 @@ public class Sensor {
 			fileNotFound2.setScene(scene);
 			fileNotFound2.show();
 		}
+	}
+	
+	/**
+	 * This will save the reference points detected by the sensor,
+	 * the robots location when it senses the point, the distance 
+	 * between the robot and the reference point, and the robots
+	 * estimation of its location at each instant.
+	 * 
+	 * @param arx
+	 * @param ary
+	 * @param rpx
+	 * @param rpy
+	 * @param dist
+	 * @param erx
+	 * @param ery
+	 */
+	public void saveToFile(double arx, double ary, double rpx, double rpy, double dist, double erx, double ery){
+
+		try{
+			File saveDetectedPoints = new File("DataFile.txt");
+			saveDetectedPoints.createNewFile();
+			BufferedWriter bWSavePoints = new BufferedWriter(new FileWriter(saveDetectedPoints, true));
+			bWSavePoints.write(arx + "," + ary + "," + rpx + "," + rpy + 
+					"," + dist + "," + erx + "," + ery + "\n");
+			bWSavePoints.newLine();
+			bWSavePoints.close();
+		}
+		catch (IOException iOEx1){
+			Stage fileNotFound = new Stage();
+			fileNotFound.initStyle(StageStyle.UNIFIED);
+			Scene scene = new Scene(new Group(new Text(25, 25, "There was an error while trying to create and write your information to the file :(")));
+			fileNotFound.setScene(scene);
+			fileNotFound.show();
+		}	
 	}
 }
