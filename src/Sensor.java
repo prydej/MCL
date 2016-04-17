@@ -100,35 +100,35 @@ public class Sensor {
 		 * on top of a point.
 		 */
 		
-		for(i = 0; i < refPointLoc.length-1; i++){
+		for(i = 0; i < refPointLoc.length; i++){
 
-			for(j = 0; j < refPointLoc[i].length; j++){
+			for(j = 0; j < refPointLoc[i].length - 2; j++){
 
-				if( (refPointLoc[i][j] > ((2/3)*rangeSensorX) && refPointLoc[i][j] <= (rangeSensorX))  && (refPointLoc[i+1][j] > ((2/3)*rangeSensorY) && refPointLoc[i+1][j] <= (rangeSensorY)) ){
+				if( (refPointLoc[i][j] > ((2/3)*rangeSensorX) && refPointLoc[i][j] <= (rangeSensorX))  && (refPointLoc[i][j+1] > ((2/3)*rangeSensorY) && refPointLoc[i][j+1] <= (rangeSensorY)) ){
 
 					errorInX = ( (sensorError/100)*refPointLoc[i][j] );
 					pointDetectedX = refPointLoc[i][j] + errorInX;
-					errorInY = ( (sensorError/100)*refPointLoc[i+1][j] );
-					pointDetectedY = refPointLoc[i+1][j] + errorInY;
+					errorInY = ( (sensorError/100)*refPointLoc[i][j+1] );
+					pointDetectedY = refPointLoc[i][j+1] + errorInY;
 
 					distanceBetweenPoints(robotX, robotY, pointDetectedX, pointDetectedY);
 					
 				}
-				if(refPointLoc[i][j] <= ((1/3)*rangeSensorX) && refPointLoc[i+1][j] <= ((1/3)*rangeSensorY)){
+				if(refPointLoc[i][j] <= ((1/3)*rangeSensorX) && refPointLoc[i][j+1] <= ((1/3)*rangeSensorY)){
 
 					errorInX = ( ((0.3)*sensorError/100)*refPointLoc[i][j] );
 					pointDetectedX = refPointLoc[i][j] + errorInX;
-					errorInY = ( ((0.3)*sensorError/100)*refPointLoc[i+1][j] );
-					pointDetectedY = refPointLoc[i+1][j] + errorInY;
+					errorInY = ( ((0.3)*sensorError/100)*refPointLoc[i][j+1] );
+					pointDetectedY = refPointLoc[i][j+1] + errorInY;
 
 					distanceBetweenPoints(robotX, robotY, pointDetectedX, pointDetectedY);
 				}
-				if( (refPointLoc[i][j] > ((1/3)*rangeSensorX) && refPointLoc[i][j] <= ((2/3)*rangeSensorX)) && (refPointLoc[i+1][j] > ((1/3)*rangeSensorY) && refPointLoc[i+1][j] <= ((2/3)*rangeSensorY)) ){
+				if( (refPointLoc[i][j] > ((1/3)*rangeSensorX) && refPointLoc[i][j] <= ((2/3)*rangeSensorX)) && (refPointLoc[i][j+1] > ((1/3)*rangeSensorY) && refPointLoc[i][j+1] <= ((2/3)*rangeSensorY)) ){
 
 					errorInX = ( ((0.6)*sensorError/100)*refPointLoc[i][j] );
 					pointDetectedX = refPointLoc[i][j] + errorInX;
-					errorInY = ( ((0.6)*sensorError/100)*refPointLoc[i+1][j] );
-					pointDetectedY = refPointLoc[i+1][j] + errorInY;
+					errorInY = ( ((0.6)*sensorError/100)*refPointLoc[i][j+1] );
+					pointDetectedY = refPointLoc[i][j+1] + errorInY;
 
 					distanceBetweenPoints(robotX, robotY, pointDetectedX, pointDetectedY);
 				}
