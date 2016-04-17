@@ -111,7 +111,7 @@ public class Sensor {
 					errorInY = ( (sensorError/100)*refPointLoc[i+1][j] );
 					pointDetectedY = refPointLoc[i+1][j] + errorInY;
 
-					saveToFile(robotX, robotY, pointDetectedX, pointDetectedY);
+					distanceBetweenPoints(robotX, robotY, pointDetectedX, pointDetectedY);
 					
 				}
 				if(refPointLoc[i][j] <= ((1/3)*rangeSensorX) && refPointLoc[i+1][j] <= ((1/3)*rangeSensorY)){
@@ -121,7 +121,7 @@ public class Sensor {
 					errorInY = ( ((0.3)*sensorError/100)*refPointLoc[i+1][j] );
 					pointDetectedY = refPointLoc[i+1][j] + errorInY;
 
-					saveToFile(robotX, robotY, pointDetectedX, pointDetectedY);
+					distanceBetweenPoints(robotX, robotY, pointDetectedX, pointDetectedY);
 				}
 				if( (refPointLoc[i][j] > ((1/3)*rangeSensorX) && refPointLoc[i][j] <= ((2/3)*rangeSensorX)) && (refPointLoc[i+1][j] > ((1/3)*rangeSensorY) && refPointLoc[i+1][j] <= ((2/3)*rangeSensorY)) ){
 
@@ -130,7 +130,7 @@ public class Sensor {
 					errorInY = ( ((0.6)*sensorError/100)*refPointLoc[i+1][j] );
 					pointDetectedY = refPointLoc[i+1][j] + errorInY;
 
-					saveToFile(robotX, robotY, pointDetectedX, pointDetectedY);
+					distanceBetweenPoints(robotX, robotY, pointDetectedX, pointDetectedY);
 				}
 			}
 		}
@@ -154,7 +154,6 @@ public class Sensor {
 			bWSavePoints.write(rx + "," + ry + "," + sx + "," + sy + "\n");
 			bWSavePoints.newLine();
 			bWSavePoints.close();
-			distanceBetweenPoints();
 		}
 		catch (IOException iOEx1){
 			Stage fileNotFound = new Stage();
@@ -169,7 +168,7 @@ public class Sensor {
 	 * 
 	 * @exception IOException is thrown
 	 */
-	public void distanceBetweenPoints() throws IOException{
+	public void distanceBetweenPoints(double rx, double ry, double sx, double sy) throws IOException{
 		
 		int counter1 = 0;
 		
@@ -205,17 +204,19 @@ public class Sensor {
 			
 			readPointsFound.useDelimiter(",");
 			
-			while(readPointsFound.next() != null){
+			for(counter1 = 0; counter1 < Map.refPoints.length; counter1++){
 				
-				actRobotsX[counter1] = readPointsFound.nextDouble();
+				if(readPointsFound.next() != "\n" && readPointsFound.hasNextLine()){
 				
-				actRobotsY[counter1] = readPointsFound.nextDouble();
+					actRobotsX[counter1] = readPointsFound.nextDouble();
 				
-				refPointX[counter1] = readPointsFound.nextDouble();
+					actRobotsY[counter1] = readPointsFound.nextDouble();
 				
-				refPointY[counter1] = readPointsFound.nextDouble();
+					refPointX[counter1] = readPointsFound.nextDouble();
 				
-				counter1++;
+					refPointY[counter1] = readPointsFound.nextDouble();
+				
+				}
 			}
 			
 			for(counter2 = 0; counter2 < counter1-1; counter2++){
