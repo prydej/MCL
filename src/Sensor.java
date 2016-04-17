@@ -135,7 +135,13 @@ public class Sensor {
 	 * 
 	 * @exception IOException is thrown
 	 */
-	public void distanceBetweenPoints(double rx, double ry, double sx, double sy) throws IOException{
+	public void distanceBetweenPoints(double rx, double ry, double sx, double sy){
+		
+		
+		
+	}
+	
+	public void calculateRobotLocation(double distance){
 		
 	}
 	
