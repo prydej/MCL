@@ -66,10 +66,7 @@ public class Sensor {
 		 * on the user defined scope and the robots' 
 		 * current  X and Y location
 		 */
-		double rangeSensorX = rangeOfSensor + robotX;
-		double rangeSensorY = rangeOfSensor + robotY;
-		
-		double rangeSensor = Math.sqrt(Math.pow((rangeSensorX),2) + Math.pow(rangeSensorY, 2));
+		double rangeSensor = Math.sqrt(Math.pow((robotX - rangeOfSensor),2) + Math.pow(robotY - rangeOfSensor, 2));
 
 		/**
 		 * variables to hold the sensed reference point
@@ -131,7 +128,6 @@ public class Sensor {
 		}
 	}
 		
-	
 	/**
 	 * The distanceBetweenPoints method will figure out the distance
 	 * between the robot at each point and a reference point in its
