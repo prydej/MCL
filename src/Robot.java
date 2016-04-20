@@ -86,31 +86,40 @@ public class Robot {
 			yError = errorGen.nextGaussian() * movementError;
 
 			//update positions with error, quit program if robot runs off the map
-			try {
-				//add error in x direction to positions
-				positionsWError[chipmunk][0] = Math.floor((positionsWError[chipmunk - 1][0] + nextPosition[0] + xError)*1000)/1000;
+			//try {
+			//add error in x direction to positions
+			positionsWError[chipmunk][0] = Math.floor((positionsWError[chipmunk - 1][0] + nextPosition[0] + xError)*1000)/1000;
 
-				if (positionsWError[chipmunk][0] < 0){
-					throw new NegativePositionException(); //stop program if robot goes out of bounds
-				}
-
-				//add error in y direction to positions
-				positionsWError[chipmunk][1] = Math.floor((positionsWError[chipmunk - 1][1] + nextPosition[1] + yError)*1000)/1000;
-
-				if (positionsWError[chipmunk][1] < 0){
-					throw new NegativePositionException(); //stop program if robot goes out of bounds
-				}
-
-			} catch (NegativePositionException e) {
-				System.out.println(e.message);
-				e.printStackTrace();
-				System.exit(1);
+			//reverse direction if robot hits a side boundary
+			if (positionsWError[chipmunk][0] < 0){
+				positionsWError[chipmunk][0] = -positionsWError[chipmunk][0];
+				//throw new NegativePositionException(); //stop program if robot goes out of bounds
+			} else if (positionsWError[chipmunk][0] > 100){
+				positionsWError[chipmunk][0] = 100 - (positionsWError[chipmunk][0] - 100);
 			}
+
+			//add error in y direction to positions
+			positionsWError[chipmunk][1] = Math.floor((positionsWError[chipmunk - 1][1] + nextPosition[1] + yError)*1000)/1000;
+
+			//reverse direction if robot hits top or bottom boundary
+			if (positionsWError[chipmunk][1] < 0){
+				positionsWError[chipmunk][1] = -positionsWError[chipmunk][1];
+				//throw new NegativePositionException(); //stop program if robot goes out of bounds
+			} else if (positionsWError[chipmunk][1] > 100){
+				positionsWError[chipmunk][1] = 100 - (positionsWError[chipmunk][1] - 100);
+			}
+
+			//			} catch (NegativePositionException e) {
+			//				System.out.println(e.message);
+			//				e.printStackTrace();
+			//				System.exit(1);
+			//			}
 
 
 			//call sensor.sense()
 			try{
 				sensor.detectPoints(range, positionsWError[chipmunk][0], positionsWError[chipmunk][1], sensorError);
+
 			} catch (IOException e) {
 				System.out.println("IO Exception");
 			}
