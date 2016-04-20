@@ -75,7 +75,22 @@ public class Robot {
 
 			//change positions var to new positions
 			positions[chipmunk][0] = Math.floor((positions[chipmunk - 1][0] + nextPosition[0])*1000)/1000;
+
+			if (positions[chipmunk][0] < 0){
+				positions[chipmunk][0] = -positions[chipmunk][0];
+				//throw new NegativePositionException(); //stop program if robot goes out of bounds
+			} else if (positions[chipmunk][0] > 100){
+				positions[chipmunk][0] = 100 - (positions[chipmunk][0] - 100);
+			}
+
 			positions[chipmunk][1] = Math.floor((positions[chipmunk - 1][0] + nextPosition[1])*1000)/1000;
+
+			if (positions[chipmunk][1] < 0){
+				positions[chipmunk][1] = -positions[chipmunk][1];
+				//throw new NegativePositionException(); //stop program if robot goes out of bounds
+			} else if (positions[chipmunk][1] > 100){
+				positions[chipmunk][1] = 100 - (positions[chipmunk][1] - 100);
+			}
 
 
 
