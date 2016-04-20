@@ -35,9 +35,9 @@ public class GUI extends Application{
 	private BorderPane MCLPane; 						//border pane
 	GridPane grid = new GridPane();						//gridpane
 	private MenuBar menuBar;							// MenuBar
-	private Menu menuFile, menuHelp, menuChart;					// Menus
+	private Menu menuFile, menuHelp, menuChart;			// Menus
 	private MenuItem miSave, miClose;					// save/close
-	private MenuItem miAbout,miInstructions, miShow;							// Displays info about the program
+	private MenuItem miAbout,miInstructions, miShow;	// Displays info about the program
 	private String moveString;
 	private LineChart<String, Double> lineChart;
 
@@ -70,14 +70,12 @@ public class GUI extends Application{
 		rangeText.getText();
 		GridPane.setConstraints(rangeText, 2, 0);
 		GridPane.setConstraints(label1, 1, 0);
-
 		//Defining  text field
 		final TextField refPoints = new TextField();
 		Label label2 = new Label ("Reference Points:");
 		refPoints.setPromptText("Enter a number of reference points");
 		GridPane.setConstraints(refPoints, 2, 1);
 		GridPane.setConstraints(label2, 1, 1);
-
 		//Defining text field
 		final TextField senseError = new TextField();
 		Label label3 = new Label ("Sensor Error %:");
@@ -85,15 +83,13 @@ public class GUI extends Application{
 		senseError.setPromptText("Enter a percentage");
 		GridPane.setConstraints(senseError, 2, 2);
 		GridPane.setConstraints(label3, 1, 2);
-
 		//Defining text field
-		final TextField waypoints = new TextField();
+		//final TextField waypoints = new TextField();
 //		Label label4 = new Label ("Waypoints:");
 //		waypoints.setPrefColumnCount(25);
 //		waypoints.setPromptText("Enter a double");
 //		GridPane.setConstraints(waypoints, 2, 3);
 //		GridPane.setConstraints(label4, 1, 3);
-
 		//Defining text field
 		final TextField moveError = new TextField();
 		Label label5 = new Label ("Movment Error %:");
@@ -101,7 +97,6 @@ public class GUI extends Application{
 		moveError.setPromptText("Enter a percentage");
 		GridPane.setConstraints(moveError, 2, 3);
 		GridPane.setConstraints(label5, 1, 3);
-
 		//Defining text field
 		final TextField startPoint = new TextField();
 		Label label6 = new Label ("Start Point:");
@@ -109,7 +104,6 @@ public class GUI extends Application{
 		startPoint.setPromptText("Enter in the form of x,y");
 		GridPane.setConstraints(startPoint, 2, 4);
 		GridPane.setConstraints(label6, 1, 4);
-
 		//Defining text field
 		final TextField endPoint = new TextField();
 		Label label7 = new Label ("End Point:");
@@ -199,11 +193,9 @@ public class GUI extends Application{
 						sense,
 						move
 						);
-				
 			}
 		});
 	}
-	
 	/**@author Savanh Lu*/
 	/* (non-Javadoc)
 	 * @see 
@@ -216,28 +208,15 @@ public class GUI extends Application{
 		miAbout.setOnAction(e -> showAbout());			//Event Handlers
 		miClose.setOnAction(e -> Platform.exit());
 		miShow.setOnAction(new ShowHandler());
-		//start.setOnAction(new showHandler());
 		/* PUT EVERYTHING TOGETHER */
 		Scene scene = new Scene(MCLPane, 850, 850);
-
 		// Add the menu bar and shapes to the border pane
 		MCLPane.setTop(menuBar);
 		MCLPane.setCenter(grid);
-
 		MCLPane.setBottom(lineChart);
-		
-		//chart things
-		CategoryAxis xAxis= new CategoryAxis();
-		NumberAxis yAxis = new NumberAxis();
-		lineChart = new LineChart(xAxis, yAxis);
-		lineChart.setTitle("Data from Simulation");
-		StackPane root= new StackPane();
-		root.getChildren().add(lineChart);//add line chart
-
 		// Configure and display the stage
 		stage.setScene(scene);
 		stage.setTitle("Monte Carlo Localization Simulator");
-		
 		//won't allow user to resize grid
 		stage.setResizable(false);
 		stage.show();
@@ -277,7 +256,6 @@ public class GUI extends Application{
 	private class ShowHandler implements EventHandler<ActionEvent>{
 		@Override
 		public void handle(ActionEvent e) {
-
 			StackPane pane = new StackPane();	// Add the label to a StackPane
 			// Create and display said the aforementioned pane in a new stage 	
 			Scene scene = new Scene(pane, 600, 600);
@@ -290,14 +268,14 @@ public class GUI extends Application{
 			CategoryAxis xAxis= new CategoryAxis();
 			NumberAxis yAxis = new NumberAxis();
 			lineChart = new LineChart(xAxis, yAxis);
+			lineChart.setData(getChartData());
 			lineChart.setTitle("Data from Simulation");
 			StackPane root= new StackPane();
 			pane.getChildren().add(lineChart);//add line chart
-
-		}
+			} }
+	private ObservableList<XYChart.Series<String, Double>>getChartData(){
 		/**@author Savanh
 		 * chart uses dummy data*/
-		private ObservableList<XYChart.Series<String, Double>> getChart(boolean miChart){
 			//declare variables
 			double bValue = 17.56;
 			double gValue= 17.06;
@@ -306,7 +284,6 @@ public class GUI extends Application{
 			Series<String, Double> green = new Series<>();
 			blue.setName("blue");
 			green.setName("green");
-
 			for(int i = 2011; i < 2016; i++){
 				blue.getData().add(new XYChart.Data(Integer.toString(i), bValue));
 				bValue = bValue + 6 * Math.random() -.2;
@@ -315,9 +292,7 @@ public class GUI extends Application{
 			}
 			answer.addAll(blue, green);
 			return answer;
-		} }
-
-
+	}
 	/** Shows instructions on each item in the GUI
 	 * @author Stephen Kristin
 	 */
