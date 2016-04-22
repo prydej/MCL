@@ -149,19 +149,19 @@ public class GUI extends Application{
 				//get text, split by comma, convert each element part to int
 				int startx = Integer.parseInt(startPoint.getText().split(",")[0]);
 					if( startx < 0 || startx > 100 )/*set parameters for users by Savanh*/{
-						System.out.print("Error! Enter a number between 0-100");
+						System.out.print("Error! Enter a number between 0-100\n");
 					}
 				int starty = Integer.parseInt(startPoint.getText().split(",")[1]);
 					if( starty < 0 || starty > 100 )/*set parameters for users by Savanh*/{
-						System.out.print("Error! Enter a number between 0-100");
+						System.out.print("Error! Enter a number between 0-100\n");
 					}
 				int endx = Integer.parseInt(endPoint.getText().split(",")[0]);
 					if( endx < 0 || endx > 100 )/*set parameters for users by Savanh*/{
-						System.out.print("Error! Enter a number between 0-100");
+						System.out.print("Error! Enter a number between 0-100\n");
 					}
 				int endy = Integer.parseInt(endPoint.getText().split(",")[1]);
 					if( endy < 0 || endy > 100 )/*set parameters for users by Savanh*/{
-						System.out.print("Error! Enter a number between 0-100");
+						System.out.print("Error! Enter a number between 0-100\n");
 					}
 
 				int[] startPos = {startx, starty};
@@ -173,16 +173,16 @@ public class GUI extends Application{
 				double move = Double.parseDouble(moveError.getText());
 				
 				if (refPoint < 0 || refPoint > 100){
-					System.out.print("Error! Enter a number between 0-100");
+					System.out.print("Error! Enter a number between 0-100\n");
 				}
 				if (range < 0 || range > 100){
-					System.out.print("Error! Enter a number between 0-100");
+					System.out.print("Error! Enter a number between 0-100\n");
 				}
 				if (sense < 0 || sense > 100){
-					System.out.print("Error! Enter a number between 0-100");
+					System.out.print("Error! Enter a number between 0-100\n");
 				}
 				if (move < 0 || move > 100){
-					System.out.print("Error! Enter a number between 0-100");
+					System.out.print("Error! Enter a number between 0-100\n");
 				}
 				
 				Main.simulate(
@@ -277,20 +277,20 @@ public class GUI extends Application{
 		/**@author Savanh
 		 * chart uses dummy data*/
 			//declare variables
-			double bValue = 17.56;
-			double gValue= 17.06;
+			double bValue = 10;
+			double gValue= 10;
 			ObservableList<XYChart.Series<String, Double>>answer = FXCollections.observableArrayList();
-			Series<String, Double> blue = new Series<>();
-			Series<String, Double> green = new Series<>();
-			blue.setName("blue");
-			green.setName("green");
-			for(int i = 2011; i < 2016; i++){
-				blue.getData().add(new XYChart.Data(Integer.toString(i), bValue));
-				bValue = bValue + 6 * Math.random() -.2;
-				green.getData().add(new XYChart.Data(Integer.toString(i), gValue));
-				gValue = gValue + 4 * Math.random() - 2;
+			Series<String, Double> positions = new Series<>();
+			Series<String, Double> positionError = new Series<>();
+			positions.setName("Positions");
+			positionError.setName("PositionErrors");
+			for(int i = 0; i < 100; i++){
+				positions.getData().add(new XYChart.Data(Integer.toString(i), bValue));
+				bValue = bValue + 5 * Math.random() -2;
+				positionError.getData().add(new XYChart.Data(Integer.toString(i), gValue));
+				gValue = gValue + 5 * Math.random() - 2;
 			}
-			answer.addAll(blue, green);
+			answer.addAll(positions, positionError);
 			return answer;
 	}
 	/** Shows instructions on each item in the GUI
