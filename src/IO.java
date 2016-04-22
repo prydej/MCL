@@ -125,7 +125,7 @@ public class IO {
 
 		try {
 
-			Object obj = parser.parse(new FileReader("c:\\test.json"));
+			Object obj = parser.parse(new FileReader(""));
 
 			JSONObject ParseObject = (JSONObject) obj;
 

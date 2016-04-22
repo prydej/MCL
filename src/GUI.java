@@ -146,6 +146,7 @@ public class GUI extends Application{
 			 */
 			@Override
 			public void handle(ActionEvent e){
+				
 				//get text, split by comma, convert each element part to int
 				int startx = Integer.parseInt(startPoint.getText().split(",")[0]);
 					if( startx < 0 || startx > 100 )/*set parameters for users by Savanh*/{
@@ -163,28 +164,32 @@ public class GUI extends Application{
 					if( endy < 0 || endy > 100 )/*set parameters for users by Savanh*/{
 						System.out.print("Error! Enter a number between 0-100\n");
 					}
-
-				int[] startPos = {startx, starty};
-				int[] endPos = {endx, endy};
+					int[] startPos = {startx, starty};
+					int[] endPos = {endx, endy};
+				
+				
 				/*created new variables by Savanh and added user parameters*/
 				int refPoint = Integer.parseInt(refPoints.getText());
 				double range = Double.parseDouble(rangeText.getText()); 
 				double sense = Double.parseDouble(senseError.getText()); 
 				double move = Double.parseDouble(moveError.getText());
-				
-				if (refPoint < 0 || refPoint > 100){
-					System.out.print("Error! Enter a number between 0-100\n");
+				try{
+					if (refPoint < 0 || refPoint > 100){
+						System.out.print("Error! Enter a number between 0-100\n");
+					}
+					if (range < 0 || range > 100){
+						System.out.print("Error! Enter a number between 0-100\n");
+					}
+					if (sense < 0 || sense > 100){
+						System.out.print("Error! Enter a number between 0-100\n");
+					}
+					if (move < 0 || move > 100){
+						System.out.print("Error! Enter a number between 0-100\n");
+					}
+				}catch(Exception ex){
+					ex.getStackTrace();
+					return;
 				}
-				if (range < 0 || range > 100){
-					System.out.print("Error! Enter a number between 0-100\n");
-				}
-				if (sense < 0 || sense > 100){
-					System.out.print("Error! Enter a number between 0-100\n");
-				}
-				if (move < 0 || move > 100){
-					System.out.print("Error! Enter a number between 0-100\n");
-				}
-				
 				Main.simulate(
 						refPoint,
 						startPos,
@@ -291,6 +296,7 @@ public class GUI extends Application{
 				gValue = gValue + 5 * Math.random() - 2;
 			}
 			answer.addAll(positions, positionError);
+			
 			return answer;
 	}
 	/** Shows instructions on each item in the GUI
