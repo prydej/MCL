@@ -3,11 +3,12 @@ import java.util.Random;
 
 /**
  * @author Stephen Kristin
- * @version 1.1
- * @last modified 3/7/2016
+ * @version 1.2
+ * @last modified 4/22/2016
  * 
  * This class uses random number generation to give x and y values for the reference points
- * The reference points are simulated by the 2 dimensional array refPoints[][]
+ * The reference points are simulated by the 2 dimensional array 
+ * refPoints[number of points determined by user][x and y values in index 0 and 1]
  * 
  */
 
@@ -37,7 +38,7 @@ public class Map{
 		for (i=0; i < numberRefPoints; i++ ){// NumberRefPoints is the number from the GUI
 			for (j=0; j<2; j++){
 				// j index 0 and 1 for x and y
-				//System.out.println(i + "\n" + j + "\n");
+				
 				refPoints[i][j]= gen.nextInt(100); 
 			}			
 		}
