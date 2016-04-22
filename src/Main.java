@@ -63,6 +63,9 @@ public class Main extends Application{
 		for (squirrel = 1; squirrel < 2; squirrel++){ //move robot to each waypoint
 			robot.move(range, sensorError, movementError, gui, map, sensor);
 		}
+		
+		//Chart positions found
+		gui.getChartData();
 	}
 
 }

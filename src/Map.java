@@ -17,7 +17,7 @@ public class Map{
 	Random gen = new Random();
 
 	// array for reference points
-	public static int[][] refPoints;
+	public int[][] refPoints;
 
 	// exception handling 
 	public void finalize() throws Throwable {}

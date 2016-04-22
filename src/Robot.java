@@ -133,7 +133,7 @@ public class Robot {
 
 			//call sensor.sense()
 			try{
-				sensor.detectPoints(range, positionsWError[chipmunk][0], positionsWError[chipmunk][1], sensorError);
+				sensor.detectPoints(range, positionsWError[chipmunk][0], positionsWError[chipmunk][1], sensorError, map);
 
 			} catch (IOException e) {
 				System.out.println("IO Exception");
