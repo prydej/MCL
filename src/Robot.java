@@ -10,8 +10,8 @@ import java.io.IOException;
 public class Robot {
 
 	private double[] calcPosition, nextPosition; //2 elements: 1st is x positions, 2nd is y positions
-	private double[][] positionsWError;
-	private double[][] waypoints = {{0,0},{0,0}};
+	public double[][] positionsWError;
+	public double[][] waypoints = {{0,0},{0,0}};
 	public double[][] positions;
 	private double distBetweenWaypoints, xError, yError, distToNextWaypoint;
 	public int fromWaypoint, toWaypoint, numWaypoints, chipmunk;
