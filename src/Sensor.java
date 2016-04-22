@@ -96,7 +96,7 @@ public class Sensor {
 
 			for(j = 0; j < Map.refPoints[i].length - 2; j++){
 
-				if( (Map.refPoints[i][j] > ((2/3)*rangeSensor) && Map.refPoints[i][j] <= (rangeSensor))  && (Map.refPoints[i][j+1] > ((2/3)*rangeSensor) && Map.refPoints[i][j+1] <= (rangeSensor)) ){
+				//if( (Map.refPoints[i][j] > ((2/3)*rangeSensor) && Map.refPoints[i][j] <= (rangeSensor))  && (Map.refPoints[i][j+1] > ((2/3)*rangeSensor) && Map.refPoints[i][j+1] <= (rangeSensor)) ){
 
 					errorInX = ( (sensorError/100)*Map.refPoints[i][j] );
 					pointDetectedX = Map.refPoints[i][j] + errorInX;
@@ -105,8 +105,8 @@ public class Sensor {
 
 					distanceBetweenPoints(robotX, robotY, pointDetectedX, pointDetectedY);
 					
-				}
-				if(Map.refPoints[i][j] <= ((1/3)*rangeSensor) && Map.refPoints[i][j+1] <= ((1/3)*rangeSensor)){
+				//}
+				/*if(Map.refPoints[i][j] <= ((1/3)*rangeSensor) && Map.refPoints[i][j+1] <= ((1/3)*rangeSensor)){
 
 					errorInX = ( ((0.3)*sensorError/100)*Map.refPoints[i][j] );
 					pointDetectedX = Map.refPoints[i][j] + errorInX;
@@ -122,11 +122,11 @@ public class Sensor {
 					errorInY = ( ((0.6)*sensorError/100)*Map.refPoints[i][j+1] );
 					pointDetectedY = Map.refPoints[i][j+1] + errorInY;
 
-					distanceBetweenPoints(robotX, robotY, pointDetectedX, pointDetectedY);
+					distanceBetweenPoints(robotX, robotY, pointDetectedX, pointDetectedY);*/
 				}
 			}
 		}
-	}
+	//}
 		
 	/**
 	 * The distanceBetweenPoints method will figure out the distance

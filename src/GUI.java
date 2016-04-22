@@ -273,7 +273,7 @@ public class GUI extends Application{
 			StackPane root= new StackPane();
 			pane.getChildren().add(lineChart);//add line chart
 			} }
-	private ObservableList<XYChart.Series<String, Double>>getChartData(){
+	public ObservableList<XYChart.Series<String, Double>> getChartData(){
 		/**@author Savanh
 		 * chart uses dummy data*/
 			//declare variables
