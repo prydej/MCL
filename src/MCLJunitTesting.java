@@ -16,9 +16,8 @@ public class MCLJunitTesting {
 		Map a = new Map();
 		
 		a.createPoints(0);
-		assertEquals(0, Map.refPoints[0][2]);
+		assertEquals(0, a.refPoints.length);
 		
-		fail("Not yet implemented");
 	}
 	
 	/**
@@ -26,9 +25,9 @@ public class MCLJunitTesting {
 	 */
 	@Test
 	public void referencePointsLimitTest(){
-		Map a = new Map();
+		Map b = new Map();
 		
-		a.createPoints(10);
+		b.createPoints(10);
 				
 		int value = 0;
 		int i, j;		
@@ -36,7 +35,7 @@ public class MCLJunitTesting {
 		for (i=0; i < 10; i++ ){
 			for (j=0; j<2; j++){
 				// loop through each point value				
-				if (((Map.refPoints[i][j]) > 100)||((Map.refPoints[i][j]) < 1)){
+				if (((b.refPoints[i][j]) > 100)||((b.refPoints[i][j]) < 1)){
 					value = 1;
 				}
 			}			
