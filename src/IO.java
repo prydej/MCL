@@ -22,6 +22,9 @@ import org.json.simple.parser.ParseException;
 
 import com.google.gson.*;
 
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
 /**
  * @author prydej
  *
@@ -40,6 +43,8 @@ public class IO {
 
 	@SuppressWarnings("unchecked")
 	public static void writeRunData(double[][] positions, double[][] positionsWError){
+		
+		//Truncate positionsWError to 2 decimals
 
 		//Create json object for all run positions
 		JSONObject runPositions = new JSONObject();
@@ -97,6 +102,15 @@ public class IO {
 		JsonParser jp = new JsonParser();
 		JsonElement je = jp.parse(runPositions.toJSONString());
 		String prettyOutput = prettyPositions.toJson(je);
+		
+		//If Windows, replace \n's with \r\n's for accurate printing
+		String pattern = "Windows.*";
+		Pattern r = Pattern.compile(pattern);
+		Matcher matcher = r.matcher(System.getProperty("os.name"));
+		
+		if (matcher.matches()){
+			prettyOutput.replace("\n", "\r\n");
+		}
 		
 		System.out.println(prettyOutput);
 		
@@ -184,6 +198,26 @@ public class IO {
 		}
 		
 		return 0;
+	}
+	
+	/**
+	 * Truncates a 2-d array of doubles to 3-decimal place precision for easy-to-read output.
+	 * @param positions
+	 * @return
+	 */
+	public double[][] truncate(double[][] array){
+		//Loop through 1st level of array
+		for (int camel = 0; camel < array.length; camel++){
+			
+			//Loop through second level of array
+			for (int giraffe = 0; giraffe < array[0].length; giraffe++){
+				
+				//Truncate value to three decimal places
+				array[camel][giraffe] = Math.floor(array[camel][giraffe] * 1000) * 1000;
+			}
+		}
+		
+		return array;
 	}
 
 }

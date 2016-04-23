@@ -60,7 +60,7 @@ public class Robot {
 	 * move() moves the robot to its next positions, calls sense and calculate
 	 * @return double array of positions betwen waypoints after robot hits a waypoint
 	 */
-	public void move(double range, double sensorError,double movementError, GUI gui, Map map, Sensor sensor){
+	public void move(double range, double sensorError,double movementError, Map map, Sensor sensor, boolean debug){
 
 		//Find distance between fromWaypoint and toWaypoint
 		distBetweenWaypoints = Math.sqrt(Math.pow((waypoints[toWaypoint][0] - waypoints[fromWaypoint][0]),2) + 
@@ -76,23 +76,21 @@ public class Robot {
 			//change positions var to new positions
 			positions[chipmunk][0] = Math.floor((positions[chipmunk - 1][0] + nextPosition[0])*1000)/1000;
 
-			if (positions[chipmunk][0] < 0){
-				positions[chipmunk][0] = -positions[chipmunk][0];
-				//throw new NegativePositionException(); //stop program if robot goes out of bounds
-			} else if (positions[chipmunk][0] > 100){
+			if (positions[chipmunk][0] < 0){ //if robot crosses bottom boundary
+				positions[chipmunk][0] = -positions[chipmunk][0]; //robot bounces off of boundary
+				
+			} else if (positions[chipmunk][0] > 100){ //if robot crosses top boundary
 				positions[chipmunk][0] = 100 - (positions[chipmunk][0] - 100);
 			}
 
 			positions[chipmunk][1] = Math.floor((positions[chipmunk - 1][0] + nextPosition[1])*1000)/1000;
 
-			if (positions[chipmunk][1] < 0){
+			if (positions[chipmunk][1] < 0){ //if robot crosses left boundary
 				positions[chipmunk][1] = -positions[chipmunk][1];
-				//throw new NegativePositionException(); //stop program if robot goes out of bounds
-			} else if (positions[chipmunk][1] > 100){
+				
+			} else if (positions[chipmunk][1] > 100){ //if robot crosses right boundary
 				positions[chipmunk][1] = 100 - (positions[chipmunk][1] - 100);
 			}
-
-
 
 			//add movement error
 			Random errorGen = new Random(); //create rng object
@@ -108,7 +106,7 @@ public class Robot {
 			//reverse direction if robot hits a side boundary
 			if (positionsWError[chipmunk][0] < 0){
 				positionsWError[chipmunk][0] = -positionsWError[chipmunk][0];
-				//throw new NegativePositionException(); //stop program if robot goes out of bounds
+				
 			} else if (positionsWError[chipmunk][0] > 100){
 				positionsWError[chipmunk][0] = 100 - (positionsWError[chipmunk][0] - 100);
 			}
@@ -119,24 +117,19 @@ public class Robot {
 			//reverse direction if robot hits top or bottom boundary
 			if (positionsWError[chipmunk][1] < 0){
 				positionsWError[chipmunk][1] = -positionsWError[chipmunk][1];
-				//throw new NegativePositionException(); //stop program if robot goes out of bounds
+				
 			} else if (positionsWError[chipmunk][1] > 100){
 				positionsWError[chipmunk][1] = 100 - (positionsWError[chipmunk][1] - 100);
 			}
 
-			//			} catch (NegativePositionException e) {
-			//				System.out.println(e.message);
-			//				e.printStackTrace();
-			//				System.exit(1);
-			//			}
+			if (debug == false){ //Do not detect points if debugging movement
+				//call sensor.sense()
+				try{
+					sensor.detectPoints(range, positionsWError[chipmunk][0], positionsWError[chipmunk][1], sensorError, map);
 
-
-			//call sensor.sense()
-			try{
-				sensor.detectPoints(range, positionsWError[chipmunk][0], positionsWError[chipmunk][1], sensorError, map);
-
-			} catch (IOException e) {
-				System.out.println("IO Exception");
+				} catch (IOException e) {
+					System.out.println("IO Exception");
+				}
 			}
 
 			//find next positions 1 unit away from last positions
@@ -150,7 +143,6 @@ public class Robot {
 
 		fromWaypoint = toWaypoint; //set current toWaypoint to fromWaypoint
 		toWaypoint++;//	set next waypoint to toWaypoint
-		System.out.println("Next Waypoint");
 
 		//send info from run to file
 		IO.writeRunData(positions, positionsWError);
