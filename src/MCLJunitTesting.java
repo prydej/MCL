@@ -166,6 +166,7 @@ public class MCLJunitTesting {
 			
 			e.printStackTrace();
 		}
+	}
 		
 	@Test
 	public void testCalculationFile(){
