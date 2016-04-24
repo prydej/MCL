@@ -60,7 +60,7 @@ public class Robot {
 	 * move() moves the robot to its next positions, calls sense and calculate
 	 * @return double array of positions betwen waypoints after robot hits a waypoint
 	 */
-	public void move(double range, double sensorError,double movementError, Map map, Sensor sensor, boolean debug){
+	public void move(double range, double sensorError,double movementError, Map map, Sensor sensor, IO io, boolean debug){
 
 		//Find distance between fromWaypoint and toWaypoint
 		distBetweenWaypoints = Math.sqrt(Math.pow((waypoints[toWaypoint][0] - waypoints[fromWaypoint][0]),2) + 
@@ -74,20 +74,20 @@ public class Robot {
 		for (chipmunk = 1; chipmunk < distBetweenWaypoints; chipmunk++){
 
 			//change positions var to new positions
-			positions[chipmunk][0] = Math.floor((positions[chipmunk - 1][0] + nextPosition[0])*1000)/1000;
+			positions[chipmunk][0] = positions[chipmunk - 1][0] + nextPosition[0];
 
 			if (positions[chipmunk][0] < 0){ //if robot crosses bottom boundary
 				positions[chipmunk][0] = -positions[chipmunk][0]; //robot bounces off of boundary
-				
+
 			} else if (positions[chipmunk][0] > 100){ //if robot crosses top boundary
 				positions[chipmunk][0] = 100 - (positions[chipmunk][0] - 100);
 			}
 
-			positions[chipmunk][1] = Math.floor((positions[chipmunk - 1][0] + nextPosition[1])*1000)/1000;
+			positions[chipmunk][1] = positions[chipmunk - 1][0] + nextPosition[1];
 
 			if (positions[chipmunk][1] < 0){ //if robot crosses left boundary
 				positions[chipmunk][1] = -positions[chipmunk][1];
-				
+
 			} else if (positions[chipmunk][1] > 100){ //if robot crosses right boundary
 				positions[chipmunk][1] = 100 - (positions[chipmunk][1] - 100);
 			}
@@ -101,28 +101,28 @@ public class Robot {
 			//update positions with error, quit program if robot runs off the map
 			//try {
 			//add error in x direction to positions
-			positionsWError[chipmunk][0] = Math.floor((positionsWError[chipmunk - 1][0] + nextPosition[0] + xError)*1000)/1000;
+			positionsWError[chipmunk][0] = positionsWError[chipmunk - 1][0] + nextPosition[0] + xError;
 
 			//reverse direction if robot hits a side boundary
 			if (positionsWError[chipmunk][0] < 0){
 				positionsWError[chipmunk][0] = -positionsWError[chipmunk][0];
-				
+
 			} else if (positionsWError[chipmunk][0] > 100){
 				positionsWError[chipmunk][0] = 100 - (positionsWError[chipmunk][0] - 100);
 			}
 
 			//add error in y direction to positions
-			positionsWError[chipmunk][1] = Math.floor((positionsWError[chipmunk - 1][1] + nextPosition[1] + yError)*1000)/1000;
+			positionsWError[chipmunk][1] = positionsWError[chipmunk - 1][1] + nextPosition[1] + yError;
 
 			//reverse direction if robot hits top or bottom boundary
 			if (positionsWError[chipmunk][1] < 0){
 				positionsWError[chipmunk][1] = -positionsWError[chipmunk][1];
-				
+
 			} else if (positionsWError[chipmunk][1] > 100){
 				positionsWError[chipmunk][1] = 100 - (positionsWError[chipmunk][1] - 100);
 			}
 
-			if (debug == false){ //Do not detect points if debugging movement
+			if (debug == false){ //Do not detect points if debugging
 				//call sensor.sense()
 				try{
 					sensor.detectPoints(range, positionsWError[chipmunk][0], positionsWError[chipmunk][1], sensorError, map);
@@ -139,13 +139,24 @@ public class Robot {
 			// divide horz and vert component by distance between actual positions and toWaypoint #UnitVector
 			nextPosition[0] = (waypoints[toWaypoint][0] - positions[chipmunk][0])/distToNextWaypoint; 
 			nextPosition[1] = (waypoints[toWaypoint][1] - positions[chipmunk][1])/distToNextWaypoint;
+			
+			//Snap to waypoint if on final move and within 2 units of waypoint
+			if ((Math.abs(positions[chipmunk][0] + nextPosition[0] - waypoints[toWaypoint][0]) < 1) && //x position
+					(Math.abs(positions[chipmunk][1] + nextPosition[1] - waypoints[toWaypoint][1]) < 1) && //y position
+					(chipmunk == distBetweenWaypoints - 1)) { //on last move before waypoint
+				positions[chipmunk][0] = waypoints[toWaypoint][0];
+				positions[chipmunk][1] = waypoints[toWaypoint][1];
+				
+			}
 		}
 
 		fromWaypoint = toWaypoint; //set current toWaypoint to fromWaypoint
 		toWaypoint++;//	set next waypoint to toWaypoint
 
-		//send info from run to file
-		IO.writeRunData(positions, positionsWError);
+		if (debug == false){ //Do not write to file if in debug mode
+			//send info from run to file
+			io.writeRunData(positions, positionsWError);
+		}
 	}
 
 	/**

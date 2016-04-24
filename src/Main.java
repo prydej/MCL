@@ -55,13 +55,23 @@ public class Main extends Application{
 		//Instantiate Sensor
 		Sensor sensor = new Sensor();
 		
+		//Instantiate IO
+		IO io = new IO();
+		
 		int squirrel;
 		
 		robot.fromWaypoint = 0;
 		robot.toWaypoint = 1;
 		
 		for (squirrel = 1; squirrel < 2; squirrel++){ //move robot to each waypoint
-			robot.move(range, sensorError, movementError, map, sensor, false); //set debug to false
+			robot.move(range, sensorError, movementError, map, sensor, io, false); //set debug to false
+		}
+		
+		//print ouput string of json text
+		double[][] positions = io.parseMethod("23Apr16-16-12-22.json");
+		
+		for (int giraffe = 0; giraffe < positions.length; giraffe++){
+			System.out.println(positions[giraffe].toString());
 		}
 		
 		//Chart positions found
