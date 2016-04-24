@@ -136,4 +136,12 @@ public class MCLJunitTesting {
 			}
 		}
 	}
+	
+	
+	@Test
+	public void testDistanceCalculation(){
+		
+		
+		
+	}
 }
