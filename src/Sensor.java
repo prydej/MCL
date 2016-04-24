@@ -43,12 +43,11 @@ public class Sensor {
 	 * points in the vicinity. When a point is detected, the estimated location
 	 * of the point is saved formatted in a file.
 	 *
-	 *
-	 * @param rangeOfSensor - user defined sensor range 
-	 * @param robotX - the robot's x location at each movement
-	 * @param robotY - the robot's y location at each movement
-	 * @param sensorError - user defined error in sensor
-	 * 
+	 * @param rangeOfSensor user defined sensor range 
+	 * @param robotX the robot's x location at each movement
+	 * @param robotY the robot's y location at each movement
+	 * @param sensorError user defined error in sensor
+	 * @param map object that contains the reference point locations
 	 * 
 	 * @exception IOException is thrown if the file is not found or if there
 	 * is a problem writing to the file.
@@ -78,89 +77,137 @@ public class Sensor {
 		double errorInY = 0.0;
 
 		/**
-		 * loop to access the information in the reference point
-		 * array. Based on the region where the reference point is 
-		 * sensed, the error will be the (1) user-defined max at the
-		 * edge, (2) two-thirds of the error in the midpoint region, 
-		 * and (3) one-third of the error in the inner ring and right
-		 * on top of a point.
+		 * number of reference points that the 
+		 * array created in the map class holds
 		 */
+		int numberOfRefPoints = map.refPoints.length;
 
-			int numberOfRefPoints = map.refPoints.length;
-			
-			double distance = 0;
-			
-			for(i = 0; i < numberOfRefPoints; i++){
-					System.out.println(map.refPoints.length);
-					errorInX = ( (sensorError/100)*map.refPoints[i][j] );
-					pointDetectedX = map.refPoints[i][j] + errorInX;
-					errorInY = ( (sensorError/100)*map.refPoints[i][j+1] );
-					pointDetectedY = map.refPoints[i][j+1] + errorInY;
+		/**
+		 * the distance between the robot at its current
+		 * location and the reference point with some error.
+		 */
+		double distance = 0;
 
-					distance = Math.sqrt( Math.pow((robotX - pointDetectedX), 2) + Math.pow((robotY - pointDetectedY), 2));
-					
-					if(distance < rangeOfSensor){
-						distanceBetweenPoints(robotX, robotY, pointDetectedX, pointDetectedY);
-					}	
-			}
-}
 
-		
+		/**
+		 * loop to go through all the reference points
+		 * with error to figure out if the robot is 
+		 * within the range it should be.
+		 */
+		for(i = 0; i < numberOfRefPoints; i++){
+			System.out.println(map.refPoints.length);
+			errorInX = ( (sensorError/100)*map.refPoints[i][j] );
+			pointDetectedX = map.refPoints[i][j] + errorInX;
+			errorInY = ( (sensorError/100)*map.refPoints[i][j+1] );
+			pointDetectedY = map.refPoints[i][j+1] + errorInY;
+
+			distance = Math.sqrt( Math.pow((robotX - pointDetectedX), 2) + Math.pow((robotY - pointDetectedY), 2));
+
+			//if the robot is within the correct range, it will go to the
+			//next method to calculate the same distance as a checker.
+			if(distance < rangeOfSensor){
+				distanceBetweenPoints(robotX, robotY, pointDetectedX, pointDetectedY, sensorError);
+			}	
+		}
+	}
+
+
 	/**
 	 * The distanceBetweenPoints method will figure out the distance
 	 * between the robot at each point and a reference point in its
 	 * sensing range.
 	 * 
-	 * @exception IOException is thrown
+	 * @param rx the robot's current x location
+	 * @param ry the robot's current y location
+	 * @param sx the reference points x location
+	 * @param sy the reference points y location 
+	 * @param sensorError the error in the sensor 
 	 */
-	public void distanceBetweenPoints(double rx, double ry, double sx, double sy){
-		
+	public void distanceBetweenPoints(double rx, double ry, double sx, double sy, double sensorError){
+
 		double distance = 0.0;
-		
+
 		distance = Math.sqrt(Math.pow((rx - sx), 2) + Math.pow((ry-sy), 2));
-		
-		calculateRobotLocation(rx, ry, sx, sy, distance);
+
+		calculateRobotLocation(rx, ry, sx, sy, distance, sensorError);
 	}
-	
-	public void calculateRobotLocation(double rx, double ry, double sx, double sy, double distance){
-		
+
+	/**
+	 * The method determines the robot's estimated location 
+	 * from the location given and the reference point with error
+	 * and adds some error to the calculations 
+	 *
+	 * 
+	 * @param rx the robot's x location
+	 * @param ry the robot's y location
+	 * @param sx the reference point x location
+	 * @param sy the reference point y location
+	 * @param distance the distance between the robot and the reference point
+	 * @param sensorError the error in the sensor
+	 */
+	public void calculateRobotLocation(double rx, double ry, double sx, double sy, double distance, double sensorError){
+
 		double estimatedRobotX = 0.0;
-		
+
 		double estimatedRobotY = 0.0;
-		
+
 		double radians = Math.atan2((sy - ry),(sx - rx));
-		
+
 		estimatedRobotX = sx - (distance * Math.cos(radians));
-		
+
 		estimatedRobotY = sy - (distance * Math.sin(radians));
-		
+
+		double errorInEstX = (sensorError/100)*estimatedRobotX;
+
+		double errorInEstY = (sensorError/100)*estimatedRobotY;
+
+		estimatedRobotX = estimatedRobotX + errorInEstX;
+
+		estimatedRobotY = estimatedRobotY + errorInEstY;
+
 		saveToFile(rx, ry, sx, sy, distance, estimatedRobotX, estimatedRobotY);
 	}
-	
+
 	/**
 	 * This will save the reference points detected by the sensor,
 	 * the robots location when it senses the point, the distance 
 	 * between the robot and the reference point, and the robots
 	 * estimation of its location at each instant.
 	 * 
-	 * @param arx
-	 * @param ary
-	 * @param rpx
-	 * @param rpy
-	 * @param dist
-	 * @param erx
-	 * @param ery
+	 * @param arx the robot's x location
+	 * @param ary the robot's y location
+	 * @param rpx the reference point x location
+	 * @param rpy the reference point y location 
+	 * @param dist the distance between the robot and the reference point
+	 * @param erx the robot's estimated x location
+	 * @param ery the robot's estimated y location 
 	 * 
-	 * @exception IO exception
+	 * @exception catches IO exception
 	 */
 	public void saveToFile(double arx, double ary, double rpx, double rpy, double dist, double erx, double ery){
+
+		DecimalFormat df1 = new DecimalFormat("#.###");
+
+		String aRX = df1.format(arx);
+
+		String aRY = df1.format(ary);
+
+		String rPX = df1.format(rpx);
+
+		String rPY = df1.format(rpy);
+
+		String dIst = df1.format(dist);
+
+		String eRX = df1.format(erx);
+
+		String eRY = df1.format(ery);
 
 		try{
 			File saveFile = new File("DataFile.txt");
 			saveFile.createNewFile();
 			BufferedWriter bWSavePoints = new BufferedWriter(new FileWriter(saveFile, true));
-			bWSavePoints.write(arx + "\t" + ary + "\t" + rpx + "\t" + rpy + 
-					"\t" + dist + "\t" + erx + "\t" + ery);
+			bWSavePoints.write(aRX + "\t" + aRY + "\t" + rPX + "\t" + rPY + 
+					"\t" + dIst + "\t" + eRX + "\t" + eRY);
 			bWSavePoints.newLine();
 			bWSavePoints.close();
 		}
