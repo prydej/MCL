@@ -66,8 +66,8 @@ public class Sensor {
 		 * on the user defined scope and the robots' 
 		 * current  X and Y location
 		 */
-		double rangeSensor = Math.sqrt(Math.pow((robotX - rangeOfSensor),2) + Math.pow(robotY - rangeOfSensor, 2));
-
+		double rangeSensorX = Math.sqrt(2)*(robotX + rangeOfSensor)/2;
+		double rangeSensorY = Math.sqrt(2)*(robotY + rangeOfSensor)/2;
 		/**
 		 * variables to hold the sensed reference point
 		 * x- and y-values with accounted error.
@@ -91,42 +91,26 @@ public class Sensor {
 		 * and (3) one-third of the error in the inner ring and right
 		 * on top of a point.
 		 */
-		
-		for(i = 0; i< map.refPoints.length; i++){
 
-			for(j = 0; j < map.refPoints[i].length - 2; j++){
-
-				if( (map.refPoints[i][j] > ((2/3)*rangeSensor) && map.refPoints[i][j] <= (rangeSensor))  && (map.refPoints[i][j+1] > ((2/3)*rangeSensor) && map.refPoints[i][j+1] <= (rangeSensor)) ){
-
+			int numberOfRefPoints = map.refPoints.length;
+			
+			double distance = 0;
+			
+			for(i = 0; i < numberOfRefPoints; i++){
+					System.out.println(map.refPoints.length);
 					errorInX = ( (sensorError/100)*map.refPoints[i][j] );
 					pointDetectedX = map.refPoints[i][j] + errorInX;
 					errorInY = ( (sensorError/100)*map.refPoints[i][j+1] );
 					pointDetectedY = map.refPoints[i][j+1] + errorInY;
 
-					distanceBetweenPoints(robotX, robotY, pointDetectedX, pointDetectedY);
+					distance = Math.sqrt( Math.pow((robotX - pointDetectedX), 2) + Math.pow((robotY - pointDetectedY), 2));
 					
-				}
-				if(map.refPoints[i][j] <= ((1/3)*rangeSensor) && map.refPoints[i][j+1] <= ((1/3)*rangeSensor)){
-
-					errorInX = ( ((0.3)*sensorError/100)*map.refPoints[i][j] );
-					pointDetectedX = map.refPoints[i][j] + errorInX;
-					errorInY = ( ((0.3)*sensorError/100)*map.refPoints[i][j+1] );
-					pointDetectedY = map.refPoints[i][j+1] + errorInY;
-
-					distanceBetweenPoints(robotX, robotY, pointDetectedX, pointDetectedY);
-				}
-				if( (map.refPoints[i][j] > ((1/3)*rangeSensor) && map.refPoints[i][j] <= ((2/3)*rangeSensor)) && (map.refPoints[i][j+1] > ((1/3)*rangeSensor) && map.refPoints[i][j+1] <= ((2/3)*rangeSensor)) ){
-
-					errorInX = ( ((0.6)*sensorError/100)*map.refPoints[i][j] );
-					pointDetectedX = map.refPoints[i][j] + errorInX;
-					errorInY = ( ((0.6)*sensorError/100)*map.refPoints[i][j+1] );
-					pointDetectedY = map.refPoints[i][j+1] + errorInY;
-
-					distanceBetweenPoints(robotX, robotY, pointDetectedX, pointDetectedY);
-				}
+					if(distance < rangeOfSensor){
+						distanceBetweenPoints(robotX, robotY, pointDetectedX, pointDetectedY);
+					}	
 			}
-		}
-	}
+}
+
 		
 	/**
 	 * The distanceBetweenPoints method will figure out the distance
@@ -152,9 +136,9 @@ public class Sensor {
 		
 		double radians = Math.atan2((sy - ry),(sx - rx));
 		
-		estimatedRobotX = sx + (distance * Math.cos(radians));
+		estimatedRobotX = sx - (distance * Math.cos(radians));
 		
-		estimatedRobotY = sy + (distance * Math.sin(radians));
+		estimatedRobotY = sy - (distance * Math.sin(radians));
 		
 		saveToFile(rx, ry, sx, sy, distance, estimatedRobotX, estimatedRobotY);
 	}
