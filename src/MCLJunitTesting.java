@@ -145,7 +145,7 @@ public class MCLJunitTesting {
 		
 		double difAllow = 0.001;
 		
-		assertEquals(50.0, s1.distanceBetweenPoints(0, 0, 10, 10, 8), difAllow);
+		assertEquals(35.35, s1.distanceBetweenPoints(0, 0, 25, 25, 8), difAllow);
 		
 	}
 }
