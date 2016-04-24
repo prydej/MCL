@@ -158,5 +158,14 @@ public class MCLJunitTesting {
 	@Test
 	public void testFileCreation(){
 		
+		Sensor s2 = new Sensor();
+		
+		try{
+			assertEquals(0, s2.saveToFile(0, 0, 0, 0, 0, 0, 0));
+		}catch(IOException e){
+			
+			e.printStackTrace();
+		}
+		
 	}
 }
