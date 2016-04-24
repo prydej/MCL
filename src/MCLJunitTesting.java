@@ -187,5 +187,22 @@ public class MCLJunitTesting {
 			e.printStackTrace();
 		}
 	}
+	/**@author Savanh
+	*Test so system doesn't allow negative input
+	*I can't test an event handler and there's nothing else for me to test..
+	*/
+	/*@Test
+	public void noNegativeInput(){
+	Main main = new Main();
+	double numRefPoints = 0;
+	double waypoint1 = 0;
+	double waypoint2 = 0;
+	double range = 0;
+	double sensorError = 0;
+	double movementError = 0;
+		Main.simulate(numRefPoints, waypoint1, waypoint2, range, sensorError, movementError);
+			
+		
+	}*/
 
 }
