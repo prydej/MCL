@@ -62,7 +62,7 @@ public class GUI extends Application{
 		menuHelp.getItems().addAll(miAbout, miInstructions);
 		menuChart.getItems().addAll(miShow,new SeparatorMenuItem());
 		menuBar.getMenus().addAll(menuFile, menuHelp, menuChart);
-		//Defining the text field
+		//Defining text fields
 		final TextField rangeText = new TextField();
 		Label label1 = new Label ("Range:");
 		rangeText.setPromptText("Enter a double");
@@ -70,13 +70,11 @@ public class GUI extends Application{
 		rangeText.getText();
 		GridPane.setConstraints(rangeText, 2, 0);
 		GridPane.setConstraints(label1, 1, 0);
-		//Defining  text field
 		final TextField refPoints = new TextField();
 		Label label2 = new Label ("Reference Points:");
 		refPoints.setPromptText("Enter a number of reference points");
 		GridPane.setConstraints(refPoints, 2, 1);
 		GridPane.setConstraints(label2, 1, 1);
-		//Defining text field
 		final TextField senseError = new TextField();
 		Label label3 = new Label ("Sensor Error %:");
 		senseError.setPrefColumnCount(25);
@@ -257,7 +255,7 @@ public class GUI extends Application{
 
 	/**@author Savanh
 	 * shows chart */
-
+	
 	private class ShowHandler implements EventHandler<ActionEvent>{
 		@Override
 		public void handle(ActionEvent e) {
