@@ -147,7 +147,7 @@ public class Sensor {
 	 * @param distance the distance between the robot and the reference point
 	 * @param sensorError the error in the sensor
 	 */
-	public void calculateRobotLocation(double rx, double ry, double sx, double sy, double distance, double sensorError) throws IOException{
+	public double calculateRobotLocation(double rx, double ry, double sx, double sy, double distance, double sensorError) throws IOException{
 
 		double estimatedRobotX = 0.0;
 
@@ -168,6 +168,8 @@ public class Sensor {
 		estimatedRobotY = estimatedRobotY + errorInEstY;
 
 		saveToFile(rx, ry, sx, sy, distance, estimatedRobotX, estimatedRobotY);
+		
+		return radians;
 	}
 
 	/**

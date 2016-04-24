@@ -167,5 +167,12 @@ public class MCLJunitTesting {
 			e.printStackTrace();
 		}
 		
+	@Test
+	public void testCalculationFile(){
+		
+		Sensor s3 = new Sensor();
+		
+		
+	}
 	}
 }
