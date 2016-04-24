@@ -141,7 +141,11 @@ public class MCLJunitTesting {
 	@Test
 	public void testDistanceCalculation(){
 		
+		Sensor s1 = new Sensor();
 		
+		double difAllow = 0.001;
+		
+		assertEquals(50.0, s1.distanceBetweenPoints(0, 0, 10, 10, 8), difAllow);
 		
 	}
 }

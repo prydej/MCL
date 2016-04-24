@@ -123,13 +123,15 @@ public class Sensor {
 	 * @param sy the reference points y location 
 	 * @param sensorError the error in the sensor 
 	 */
-	public void distanceBetweenPoints(double rx, double ry, double sx, double sy, double sensorError){
+	public double distanceBetweenPoints(double rx, double ry, double sx, double sy, double sensorError){
 
 		double distance = 0.0;
 
 		distance = Math.sqrt(Math.pow((rx - sx), 2) + Math.pow((ry-sy), 2));
 
 		calculateRobotLocation(rx, ry, sx, sy, distance, sensorError);
+		
+		return distance;
 	}
 
 	/**
