@@ -123,7 +123,7 @@ public class Sensor {
 	 * @param sy the reference points y location 
 	 * @param sensorError the error in the sensor 
 	 */
-	public double distanceBetweenPoints(double rx, double ry, double sx, double sy, double sensorError){
+	public double distanceBetweenPoints(double rx, double ry, double sx, double sy, double sensorError) throws IOException{
 
 		double distance = 0.0;
 
@@ -147,7 +147,7 @@ public class Sensor {
 	 * @param distance the distance between the robot and the reference point
 	 * @param sensorError the error in the sensor
 	 */
-	public void calculateRobotLocation(double rx, double ry, double sx, double sy, double distance, double sensorError){
+	public void calculateRobotLocation(double rx, double ry, double sx, double sy, double distance, double sensorError) throws IOException{
 
 		double estimatedRobotX = 0.0;
 
@@ -186,7 +186,7 @@ public class Sensor {
 	 * 
 	 * @exception catches IO exception
 	 */
-	public int saveToFile(double arx, double ary, double rpx, double rpy, double dist, double erx, double ery){
+	public int saveToFile(double arx, double ary, double rpx, double rpy, double dist, double erx, double ery) throws IOException{
 
 		DecimalFormat df1 = new DecimalFormat("#.###");
 
