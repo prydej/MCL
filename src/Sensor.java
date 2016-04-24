@@ -186,7 +186,7 @@ public class Sensor {
 	 * 
 	 * @exception catches IO exception
 	 */
-	public void saveToFile(double arx, double ary, double rpx, double rpy, double dist, double erx, double ery){
+	public int saveToFile(double arx, double ary, double rpx, double rpy, double dist, double erx, double ery){
 
 		DecimalFormat df1 = new DecimalFormat("#.###");
 
@@ -219,6 +219,8 @@ public class Sensor {
 			Scene scene = new Scene(new Group(new Text(25, 25, "There was an error while trying to create and write your information to the file :(")));
 			fileNotFound.setScene(scene);
 			fileNotFound.show();
-		}	
+		}
+		
+		return 0;
 	}
 }

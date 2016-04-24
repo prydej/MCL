@@ -148,4 +148,7 @@ public class MCLJunitTesting {
 		assertEquals(35.35, s1.distanceBetweenPoints(0, 0, 25, 25, 8), difAllow);
 		
 	}
+	
+	@Test
+	public void testRobot
 }
