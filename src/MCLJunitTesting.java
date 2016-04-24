@@ -1,5 +1,7 @@
 import static org.junit.Assert.*;
 
+import java.io.IOException;
+
 import org.junit.Test;
 
 public class MCLJunitTesting {
@@ -145,10 +147,16 @@ public class MCLJunitTesting {
 		
 		double difAllow = 0.001;
 		
-		assertEquals(35.35, s1.distanceBetweenPoints(0, 0, 25, 25, 8), difAllow);
+		try {
+			assertEquals(35.35, s1.distanceBetweenPoints(0, 0, 25, 25, 8), difAllow);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 	}
 	
 	@Test
-	public void testRobot
+	public void testFileCreation(){
+		
+	}
 }
