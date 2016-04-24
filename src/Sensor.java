@@ -1,4 +1,4 @@
-import java.util.*;
+import java.text.*;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.text.Text;
@@ -62,12 +62,6 @@ public class Sensor {
 		int i = 0;
 		int j = 0;
 
-		/**variables to represent the sensor range based
-		 * on the user defined scope and the robots' 
-		 * current  X and Y location
-		 */
-		double rangeSensorX = Math.sqrt(2)*(robotX + rangeOfSensor)/2;
-		double rangeSensorY = Math.sqrt(2)*(robotY + rangeOfSensor)/2;
 		/**
 		 * variables to hold the sensed reference point
 		 * x- and y-values with accounted error.
