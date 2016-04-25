@@ -48,7 +48,8 @@ public class GUI extends Application{
 	private MenuItem miSave, miClose;					// save/close
 	private MenuItem miAbout,miInstructions, miShow;	// Displays info about the program
 	private String moveString;
-	private Button load;
+	private Button load, start;
+	public static TextField startPoint, endPoint, rangeText, refPoints, moveError, senseError;
 
 	/** @author Savanh Lu
 	 * this is a constructor*/
@@ -72,19 +73,19 @@ public class GUI extends Application{
 		menuChart.getItems().addAll(miShow);
 		menuBar.getMenus().addAll(menuFile, menuHelp, menuChart);
 		//Defining text fields
-		final TextField rangeText = new TextField();
+		rangeText = new TextField();
 		Label label1 = new Label ("Range:");
 		rangeText.setPromptText("Enter a double");
 		rangeText.setPrefColumnCount(20);
 		rangeText.getText();
 		GridPane.setConstraints(rangeText, 2, 0);
 		GridPane.setConstraints(label1, 1, 0);
-		final TextField refPoints = new TextField();
+		refPoints = new TextField();
 		Label label2 = new Label ("Reference Points:");
 		refPoints.setPromptText("Enter a number of reference points");
 		GridPane.setConstraints(refPoints, 2, 1);
 		GridPane.setConstraints(label2, 1, 1);
-		final TextField senseError = new TextField();
+		senseError = new TextField();
 		Label label3 = new Label ("Sensor Error %:");
 		senseError.setPrefColumnCount(25);
 		senseError.setPromptText("Enter a percentage");
@@ -98,28 +99,28 @@ public class GUI extends Application{
 		//		GridPane.setConstraints(waypoints, 2, 3);
 		//		GridPane.setConstraints(label4, 1, 3);
 		//Defining text field
-		final TextField moveError = new TextField();
+		moveError = new TextField();
 		Label label5 = new Label ("Movment Error SD:");
 		moveError.setPrefColumnCount(25);
 		moveError.setPromptText("Enter a percentage");
 		GridPane.setConstraints(moveError, 2, 3);
 		GridPane.setConstraints(label5, 1, 3);
 		//Defining text field
-		final TextField startPoint = new TextField();
+		startPoint = new TextField();
 		Label label6 = new Label ("Start Point:");
 		startPoint.setPrefColumnCount(25);
 		startPoint.setPromptText("Enter in the form of x,y");
 		GridPane.setConstraints(startPoint, 2, 4);
 		GridPane.setConstraints(label6, 1, 4);
 		//Defining text field
-		final TextField endPoint = new TextField();
+		endPoint = new TextField();
 		Label label7 = new Label ("End Point:");
 		endPoint.setPrefColumnCount(25);
 		endPoint.setPromptText("Enter in the form of x,y");
 		GridPane.setConstraints(endPoint, 2, 5);
 		GridPane.setConstraints(label7, 1, 5);
 		//Defining the start sim button
-		Button start = new Button("Start Simulation");
+		start = new Button("Start Simulation");
 		GridPane.setConstraints(start, 3, 0);
 		//Defining the Clear button
 		Button clear = new Button("Clear");
@@ -150,7 +151,8 @@ public class GUI extends Application{
 
 		start.setOnAction(new EventHandler<ActionEvent>() {
 
-			/* @author Julian Pryde
+			/**
+			 *  @author Julian Pryde
 			 * Set action for start simulation button
 			 * (non-Javadoc)
 			 * @see javafx.event.EventHandler#handle(javafx.event.Event)
@@ -224,6 +226,7 @@ public class GUI extends Application{
 		miAbout.setOnAction(e -> showAbout());			//Event Handlers
 		miClose.setOnAction(e -> Platform.exit());
 		//miShow.setOnAction(new ShowHandler());
+		start.setOnAction(new SimulateHandler());
 		load.setOnAction(e -> showFiles());
 		//load.setOnAction(e -> loadFile());
 		/* PUT EVERYTHING TOGETHER */
@@ -272,6 +275,75 @@ public class GUI extends Application{
 		Optional<String> choice = fileChoice.showAndWait();
 		choice.ifPresent(fileChosen -> System.out.println("Choice: " + fileChosen));
 	}
+	
+	/**
+	 * @author Julian and Savanh
+	 * 
+	 */
+	/*public class SimulateHandler implements EventHandler<ActionEvent>{
+		
+		/**
+		 *  @author Julian Pryde
+		 * Set action for start simulation button
+		 * (non-Javadoc)
+		 * @see javafx.event.EventHandler#handle(javafx.event.Event)
+		 */
+		/*@Override
+		public void handle(ActionEvent e){
+
+			//get text, split by comma, convert each element part to int
+			int startx = Integer.parseInt(startPoint.getText().split(",")[0]);
+			if( startx < 0 || startx > 100 )/*set parameters for users by Savanh*///{
+			//	System.out.print("Error! Enter a number between 0-100\n");
+			/*}
+			int starty = Integer.parseInt(startPoint.getText().split(",")[1]);
+			if( starty < 0 || starty > 100 )/*set parameters for users by Savanh*///{
+			//	System.out.print("Error! Enter a number between 0-100\n");
+			/*}
+			int endx = Integer.parseInt(endPoint.getText().split(",")[0]);
+			if( endx < 0 || endx > 100 )/*set parameters for users by Savanh*///{
+			//	System.out.print("Error! Enter a number between 0-100\n");
+			/*}
+			int endy = Integer.parseInt(endPoint.getText().split(",")[1]);
+			if( endy < 0 || endy > 100 )/*set parameters for users by Savanh*///{
+			//	System.out.print("Error! Enter a number between 0-100\n");
+			/*}
+			int[] startPos = {startx, starty};
+			int[] endPos = {endx, endy};
+
+
+			/*created new variables by Savanh and added user parameters*/
+			/*int refPoint = Integer.parseInt(refPoints.getText());
+			double range = Double.parseDouble(rangeText.getText()); 
+			double sense = Double.parseDouble(senseError.getText()); 
+			double move = Double.parseDouble(moveError.getText());
+			try{
+				if (refPoint < 0 || refPoint > 100){
+					System.out.print("Error! Enter a number between 0-100\n");
+				}
+				if (range < 0 || range > 100){
+					System.out.print("Error! Enter a number between 0-100\n");
+				}
+				if (sense < 0 || sense > 100){
+					System.out.print("Error! Enter a number between 0-100\n");
+				}
+				if (move < 0 || move > 100){
+					System.out.print("Error! Enter a number between 0-100\n");
+				}
+			}catch(Exception ex){
+				ex.getStackTrace();
+				return;
+			}
+			Main.simulate(
+					refPoint,
+					startPos,
+					endPos,
+					range,
+					sense,
+					move
+					);
+		}
+	}*/
 
 	/** Shows information about the program in it's own window 
 	 * @author Savanh Lu */

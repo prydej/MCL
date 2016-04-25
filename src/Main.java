@@ -74,11 +74,11 @@ public class Main extends Application{
 		//}
 
 		//print ouput string of json text
-		double[][] positions = io.parseMethod("23Apr16-16-12-22.json");
+		//double[][] positions = io.parseMethod("23Apr16-16-12-22.json");
 
-		for (int giraffe = 0; giraffe < positions.length; giraffe++){
+		/*for (int giraffe = 0; giraffe < positions.length; giraffe++){
 			System.out.println(Arrays.toString(positions[giraffe]));
-		}
+		}*/
 
 		//Chart positions found
 		io.showChart(posReturn.get(0), posReturn.get(1));

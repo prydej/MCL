@@ -11,9 +11,8 @@ import java.io.IOException;
 public class Robot {
 
 	private double[] calcPosition, nextPosition; //2 elements: 1st is x positions, 2nd is y positions
-	public double[][] positionsWError;
+	public double[][] positionsWError, positions;
 	public double[][] waypoints = {{0,0},{0,0}};
-	public double[][] positions;
 	private double distBetweenWaypoints, xError, yError, distToNextWaypoint;
 	public int fromWaypoint, toWaypoint, numWaypoints, chipmunk;
 
@@ -32,12 +31,12 @@ public class Robot {
 
 		// Instantiate positions vector
 		int totalDist = (int) Math.ceil(this.findTotalDist(waypoints));
-		this.positions = new double[totalDist][2]; //ceiling of total distance travelled by robot
+		this.positions = new double[totalDist + 1][2]; //ceiling of total distance travelled by robot
 		positions[0][0] = start[0];
 		positions[0][1] = start[1];
 
 		//initialize positions with error
-		this.positionsWError = new double[totalDist][2];
+		this.positionsWError = new double[totalDist + 1][2];
 		positionsWError[0][0] = start[0];
 		positionsWError[0][1] = start[1];
 
@@ -75,8 +74,8 @@ public class Robot {
 		for (chipmunk = 1; chipmunk < distBetweenWaypoints; chipmunk++){
 
 			//change positions var to new positions
+			//x position
 			positions[chipmunk][0] = positions[chipmunk - 1][0] + nextPosition[0];
-			positions[chipmunk][1] = positions[chipmunk - 1][1] + nextPosition[1];
 
 			if (positions[chipmunk][0] < 0){ //if robot crosses bottom boundary
 				positions[chipmunk][0] = -positions[chipmunk][0]; //robot bounces off of boundary
@@ -84,7 +83,8 @@ public class Robot {
 			} else if (positions[chipmunk][0] > 100){ //if robot crosses top boundary
 				positions[chipmunk][0] = 100 - (positions[chipmunk][0] - 100);
 			}
-
+			
+			//y position
 			positions[chipmunk][1] = positions[chipmunk - 1][0] + nextPosition[1];
 
 			if (positions[chipmunk][1] < 0){ //if robot crosses left boundary
@@ -143,13 +143,13 @@ public class Robot {
 			nextPosition[1] = (waypoints[toWaypoint][1] - positions[chipmunk][1])/distToNextWaypoint;
 			
 			//Snap to waypoint if on final move and within 2 units of waypoint
-			if ((Math.abs(positions[chipmunk][0] + nextPosition[0] - waypoints[toWaypoint][0]) < 1) && //x position
+			/*if ((Math.abs(positions[chipmunk][0] + nextPosition[0] - waypoints[toWaypoint][0]) < 1) && //x position
 					(Math.abs(positions[chipmunk][1] + nextPosition[1] - waypoints[toWaypoint][1]) < 1) && //y position
 					(chipmunk == distBetweenWaypoints - 1)) { //on last move before waypoint
 				positions[chipmunk][0] = waypoints[toWaypoint][0];
 				positions[chipmunk][1] = waypoints[toWaypoint][1];
 				
-			}
+			}*/
 		}
 
 		fromWaypoint = toWaypoint; //set current toWaypoint to fromWaypoint
