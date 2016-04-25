@@ -7,11 +7,12 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.LineChart;
+//import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -25,6 +26,14 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import java.lang.Integer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Optional;
+
+import javax.swing.JOptionPane;
+
+import java.io.File;
 import java.lang.Double;
 
 /** The GUI
@@ -39,7 +48,7 @@ public class GUI extends Application{
 	private MenuItem miSave, miClose;					// save/close
 	private MenuItem miAbout,miInstructions, miShow;	// Displays info about the program
 	private String moveString;
-	private LineChart<String, Double> lineChart;
+	private Button load;
 
 	/** @author Savanh Lu
 	 * this is a constructor*/
@@ -60,7 +69,7 @@ public class GUI extends Application{
 		// Add menu items to respective menus and to menuBaar
 		menuFile.getItems().addAll(miSave, miClose);
 		menuHelp.getItems().addAll(miAbout, miInstructions);
-		menuChart.getItems().addAll(miShow,new SeparatorMenuItem());
+		menuChart.getItems().addAll(miShow);
 		menuBar.getMenus().addAll(menuFile, menuHelp, menuChart);
 		//Defining text fields
 		final TextField rangeText = new TextField();
@@ -83,14 +92,14 @@ public class GUI extends Application{
 		GridPane.setConstraints(label3, 1, 2);
 		//Defining text field
 		//final TextField waypoints = new TextField();
-//		Label label4 = new Label ("Waypoints:");
-//		waypoints.setPrefColumnCount(25);
-//		waypoints.setPromptText("Enter a double");
-//		GridPane.setConstraints(waypoints, 2, 3);
-//		GridPane.setConstraints(label4, 1, 3);
+		//		Label label4 = new Label ("Waypoints:");
+		//		waypoints.setPrefColumnCount(25);
+		//		waypoints.setPromptText("Enter a double");
+		//		GridPane.setConstraints(waypoints, 2, 3);
+		//		GridPane.setConstraints(label4, 1, 3);
 		//Defining text field
 		final TextField moveError = new TextField();
-		Label label5 = new Label ("Movment Error %:");
+		Label label5 = new Label ("Movment Error SD:");
 		moveError.setPrefColumnCount(25);
 		moveError.setPromptText("Enter a percentage");
 		GridPane.setConstraints(moveError, 2, 3);
@@ -115,10 +124,14 @@ public class GUI extends Application{
 		//Defining the Clear button
 		Button clear = new Button("Clear");
 		GridPane.setConstraints(clear, 3, 1);
+		//Define Load file button
+		load = new Button("Load File");
+		GridPane.setConstraints(load, 3, 2);
 
 		grid.getChildren().addAll(rangeText, refPoints, senseError,  
-				moveError, startPoint, endPoint, start, clear, label1, label2, label3, label5, label6, label7);
+				moveError, startPoint, endPoint, start, clear, load, label1, label2, label3, label5, label6, label7);
 
+		// Clear button event handler
 		clear.setOnAction(new EventHandler<ActionEvent>() {
 			/* @author Savanh Lu
 			 * (non-Javadoc)
@@ -144,28 +157,28 @@ public class GUI extends Application{
 			 */
 			@Override
 			public void handle(ActionEvent e){
-				
+
 				//get text, split by comma, convert each element part to int
 				int startx = Integer.parseInt(startPoint.getText().split(",")[0]);
-					if( startx < 0 || startx > 100 )/*set parameters for users by Savanh*/{
-						System.out.print("Error! Enter a number between 0-100\n");
-					}
+				if( startx < 0 || startx > 100 )/*set parameters for users by Savanh*/{
+					System.out.print("Error! Enter a number between 0-100\n");
+				}
 				int starty = Integer.parseInt(startPoint.getText().split(",")[1]);
-					if( starty < 0 || starty > 100 )/*set parameters for users by Savanh*/{
-						System.out.print("Error! Enter a number between 0-100\n");
-					}
+				if( starty < 0 || starty > 100 )/*set parameters for users by Savanh*/{
+					System.out.print("Error! Enter a number between 0-100\n");
+				}
 				int endx = Integer.parseInt(endPoint.getText().split(",")[0]);
-					if( endx < 0 || endx > 100 )/*set parameters for users by Savanh*/{
-						System.out.print("Error! Enter a number between 0-100\n");
-					}
+				if( endx < 0 || endx > 100 )/*set parameters for users by Savanh*/{
+					System.out.print("Error! Enter a number between 0-100\n");
+				}
 				int endy = Integer.parseInt(endPoint.getText().split(",")[1]);
-					if( endy < 0 || endy > 100 )/*set parameters for users by Savanh*/{
-						System.out.print("Error! Enter a number between 0-100\n");
-					}
-					int[] startPos = {startx, starty};
-					int[] endPos = {endx, endy};
-				
-				
+				if( endy < 0 || endy > 100 )/*set parameters for users by Savanh*/{
+					System.out.print("Error! Enter a number between 0-100\n");
+				}
+				int[] startPos = {startx, starty};
+				int[] endPos = {endx, endy};
+
+
 				/*created new variables by Savanh and added user parameters*/
 				int refPoint = Integer.parseInt(refPoints.getText());
 				double range = Double.parseDouble(rangeText.getText()); 
@@ -210,13 +223,15 @@ public class GUI extends Application{
 		miInstructions.setOnAction(e -> showInstructions());
 		miAbout.setOnAction(e -> showAbout());			//Event Handlers
 		miClose.setOnAction(e -> Platform.exit());
-		miShow.setOnAction(new ShowHandler());
+		//miShow.setOnAction(new ShowHandler());
+		load.setOnAction(e -> showFiles());
+		//load.setOnAction(e -> loadFile());
 		/* PUT EVERYTHING TOGETHER */
 		Scene scene = new Scene(MCLPane, 850, 850);
 		// Add the menu bar and shapes to the border pane
 		MCLPane.setTop(menuBar);
 		MCLPane.setCenter(grid);
-		MCLPane.setBottom(lineChart);
+		//MCLPane.setBottom(lineChart);
 		// Configure and display the stage
 		stage.setScene(scene);
 		stage.setTitle("Monte Carlo Localization Simulator");
@@ -227,6 +242,35 @@ public class GUI extends Application{
 		grid.setPadding(new Insets(20, 20, 20, 20));
 		grid.setVgap(5);
 		grid.setHgap(5);
+	}
+
+	/**
+	 * @author Julian
+	 */
+	private void showFiles(){
+
+		//Get files from current directory ending in .json
+		File folder = new File(".");
+		File[] fileArray = folder.listFiles();
+
+		//Convert fileList to arrayList of filenames
+		ArrayList<File> fileList = new ArrayList<File>(Arrays.asList(fileArray));
+
+		//Create string array of all filenames that end in .json
+		ArrayList<String> dispFiles = new ArrayList<String>(); //Create array
+		for (File file : fileList){
+			if (file.getName().contains(".json")){
+				dispFiles.add(file.getName());
+			}
+		}
+
+		// Show dropdown box to choose file
+		ChoiceDialog<String> fileChoice = new ChoiceDialog<>(dispFiles.get(1), dispFiles);
+		fileChoice.setTitle("Saved Files");
+		fileChoice.setHeaderText("Choose a saved File:");
+
+		Optional<String> choice = fileChoice.showAndWait();
+		choice.ifPresent(fileChosen -> System.out.println("Choice: " + fileChosen));
 	}
 
 	/** Shows information about the program in it's own window 
@@ -255,12 +299,14 @@ public class GUI extends Application{
 
 	/**@author Savanh
 	 * shows chart */
-	
-	private class ShowHandler implements EventHandler<ActionEvent>{
+	/*private class ShowHandler implements EventHandler<ActionEvent>{
 		@Override
 		public void handle(ActionEvent e) {
-			StackPane pane = new StackPane();	// Add the label to a StackPane
-			// Create and display said the aforementioned pane in a new stage 	
+
+			stage.show();
+
+			/*StackPane pane = new StackPane();	// Add the label to a StackPane
+			// Create and display the aforementioned pane in a new stage 	
 			Scene scene = new Scene(pane, 600, 600);
 			Stage stage = new Stage();
 			stage.setScene(scene);
@@ -271,32 +317,17 @@ public class GUI extends Application{
 			CategoryAxis xAxis= new CategoryAxis();
 			NumberAxis yAxis = new NumberAxis();
 			lineChart = new LineChart(xAxis, yAxis);
-			lineChart.setData(getChartData());
+
+			/*if (robot instanceof Robot){
+				lineChart.setData(getChartData());
+			}
+
 			lineChart.setTitle("Data from Simulation");
 			StackPane root= new StackPane();
 			pane.getChildren().add(lineChart);//add line chart
-			} }
-	public ObservableList<XYChart.Series<String, Double>>getChartData(){
-		/**@author Savanh
-		 * chart uses dummy data*/
-			//declare variables
-			double bValue = 10;
-			double gValue= 10;
-			ObservableList<XYChart.Series<String, Double>>answer = FXCollections.observableArrayList();
-			Series<String, Double> positions = new Series<>();
-			Series<String, Double> positionError = new Series<>();
-			positions.setName("Positions");
-			positionError.setName("PositionErrors");
-			for(int i = 0; i < 100; i++){
-				positions.getData().add(new XYChart.Data(Integer.toString(i), bValue));
-				bValue = bValue + 5 * Math.random() -2;
-				positionError.getData().add(new XYChart.Data(Integer.toString(i), gValue));
-				gValue = gValue + 5 * Math.random() - 2;
-			}
-			answer.addAll(positions, positionError);
-			
-			return answer;
-	}
+		} 
+	}*/
+
 	/** Shows instructions on each item in the GUI
 	 * @author Stephen Kristin
 	 */

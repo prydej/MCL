@@ -4,6 +4,7 @@
  */
 
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.io.IOException;
 
@@ -60,7 +61,7 @@ public class Robot {
 	 * move() moves the robot to its next positions, calls sense and calculate
 	 * @return double array of positions betwen waypoints after robot hits a waypoint
 	 */
-	public void move(double range, double sensorError,double movementError, Map map, Sensor sensor, IO io, boolean debug){
+	public ArrayList<double[][]> move(double range, double sensorError,double movementError, Map map, Sensor sensor, IO io, boolean debug){
 
 		//Find distance between fromWaypoint and toWaypoint
 		distBetweenWaypoints = Math.sqrt(Math.pow((waypoints[toWaypoint][0] - waypoints[fromWaypoint][0]),2) + 
@@ -75,6 +76,7 @@ public class Robot {
 
 			//change positions var to new positions
 			positions[chipmunk][0] = positions[chipmunk - 1][0] + nextPosition[0];
+			positions[chipmunk][1] = positions[chipmunk - 1][1] + nextPosition[1];
 
 			if (positions[chipmunk][0] < 0){ //if robot crosses bottom boundary
 				positions[chipmunk][0] = -positions[chipmunk][0]; //robot bounces off of boundary
@@ -157,6 +159,13 @@ public class Robot {
 			//send info from run to file
 			io.writeRunData(positions, positionsWError);
 		}
+		
+		ArrayList<double[][]> posReturn = new ArrayList<>();
+		
+		posReturn.add(positions);
+		posReturn.add(positionsWError);
+		
+		return posReturn;
 	}
 
 	/**

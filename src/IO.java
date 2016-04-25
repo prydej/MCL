@@ -22,6 +22,18 @@ import org.json.simple.parser.ParseException;
 
 import com.google.gson.*;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.Scene;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Series;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+import javafx.scene.chart.LineChart;
+
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
@@ -33,6 +45,7 @@ import java.util.regex.Matcher;
 public class IO {
 
 	//private String strToSave;
+	private LineChart<Number, Number> lineChart;
 
 	public IO(){
 
@@ -144,13 +157,13 @@ public class IO {
 		double Y_ideal_array[];
 		double X_actual_array[];
 		double Y_actual_array[];
-		
+
 		Object obj = null;
 
 		try {
 
 			obj = parser.parse(new FileReader(filename));
-			
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -163,12 +176,12 @@ public class IO {
 
 		// loop array for x_ideal
 		JSONArray x_ideal = (JSONArray) ParseObject.get("x_ideal");
-		
+
 		//Instantiate output arrays
 		X_ideal_array = new double[x_ideal.size()];
 		Iterator<Double> iterator = x_ideal.iterator();
+		int i = 0;
 		while (iterator.hasNext()) {
-			int i = 0;
 
 			X_ideal_array[i] = iterator.next();
 
@@ -178,34 +191,34 @@ public class IO {
 		JSONArray y_ideal = (JSONArray) ParseObject.get("y_ideal");
 		Y_ideal_array = new double[y_ideal.size()];
 		Iterator<Double> iterator1 = y_ideal.iterator();
+		int j = 0;
 		while (iterator1.hasNext()) {
-			int i = 0;
 
-			Y_ideal_array[i] = iterator1.next();
+			Y_ideal_array[j] = iterator1.next();
 
-			i++;
+			j++;
 		}
 		// loop array for x_error
 		JSONArray x_actual = (JSONArray) ParseObject.get("x_actual");
 		X_actual_array = new double[x_actual.size()];
 		Iterator<Double> iterator2 = x_actual.iterator();
+		int k = 0;
 		while (iterator2.hasNext()) {
-			int i = 0;
 
-			X_actual_array[i] = iterator2.next();
+			X_actual_array[k] = iterator2.next();
 
-			i++;
+			k++;
 		}
 		// loop array for y_actual
 		JSONArray y_actual = (JSONArray) ParseObject.get("y_actual");
 		Y_actual_array = new double[y_actual.size()];
 		Iterator<Double> iterator3 = y_actual.iterator();
+		int m = 0;
 		while (iterator3.hasNext()) {
-			int i = 0;
 
-			Y_actual_array[i] = iterator3.next();
+			Y_actual_array[m] = iterator3.next();
 
-			i++;
+			m++;
 
 		}
 
@@ -232,6 +245,68 @@ public class IO {
 		}
 
 		return array;
+	}
+
+	// Create chart
+	/**
+	 * @author Julian and Savanh
+	 * @param positions: positions that the Robot has visited ideally
+	 * @param positionsWError: positions that the Robot has visited with error added
+	 */
+	public void showChart(double[][] positions, double[][] positionsWError){
+		StackPane pane = new StackPane();	// Add the label to a StackPane
+		
+		// Create and display the aforementioned pane in a new stage 	
+		Scene scene = new Scene(pane, 600, 600);
+		Stage chartStage = new Stage();
+		chartStage.setScene(scene);
+		chartStage.setTitle("Robot Positions");
+		chartStage.setResizable(false);
+		chartStage.show();
+		
+		//chart things
+		NumberAxis xAxis= new NumberAxis();
+		NumberAxis yAxis = new NumberAxis();
+		lineChart = new LineChart(xAxis, yAxis);
+
+		lineChart.setData(setChartData(positions, positionsWError));
+
+		lineChart.setTitle("Data from Simulation");
+		StackPane root= new StackPane();
+		pane.getChildren().add(lineChart);//add line chart
+	}
+
+	/**
+	 * @author Savanh and Julian
+	 * @param positionsArray : array of x and y values for ideal positions of robot
+	 * @param positionsErrorArray : array of x and y values for actual positions of robot
+	 * Gets data from two 2-d arrays of doubles and formats it for display on a lineChart
+	 */
+	public ObservableList<XYChart.Series<Number, Number>> setChartData(double[][] positionsArray, double[][] positionsErrorArray){
+		//declare variables
+		double xValue, yValue, xValError, yValError;
+
+		ObservableList<XYChart.Series<Number, Number>> dataToDisplay = FXCollections.observableArrayList();
+
+		Series<Number, Number> positions = new Series<>();
+		Series<Number, Number> positionsError = new Series<>();
+
+		positions.setName("Ideal Positions");
+		positionsError.setName("Position With Error");
+
+		for(int i = 0; i < positionsArray.length; i++){
+			xValue = positionsArray[i][0];
+			yValue = positionsArray[i][1];
+			positions.getData().add(new XYChart.Data(xValue, yValue));
+
+			xValError = positionsErrorArray[i][0];
+			yValError = positionsErrorArray[i][1];
+			positionsError.getData().add(new XYChart.Data(xValError, yValError));
+		}
+
+		dataToDisplay.addAll(positions, positionsError);
+
+		return dataToDisplay;
 	}
 
 }
