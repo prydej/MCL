@@ -140,12 +140,18 @@ public class MCLJunitTesting {
 	}
 	
 	
+	/**
+	 * to test the distance between points method in the sensor class
+	 */
+	/**
+	 * 
+	 */
 	@Test
 	public void testDistanceCalculation(){
 		
 		Sensor s1 = new Sensor();
 		
-		double difAllow = 0.0001;
+		double difAllow = 0.00001;
 		
 		try {
 			assertEquals(35.35, s1.distanceBetweenPoints(0, 0, 25, 25, 8), difAllow);
@@ -155,6 +161,9 @@ public class MCLJunitTesting {
 		
 	}
 	
+	/**
+	 * to check if the program actually runs through to the last method in the sensor class
+	 */
 	@Test
 	public void testFileCreation(){
 		
@@ -168,6 +177,9 @@ public class MCLJunitTesting {
 		}
 	}
 		
+	/**
+	 * to test the robot location calculation method in the sensor class
+	 */
 	@Test
 	public void testCalculationFile(){
 		
@@ -179,7 +191,7 @@ public class MCLJunitTesting {
 		
 		double radiansAct = Math.atan2((8-5), (8-5));
 		
-		double difAllow = 0.0001;
+		double difAllow = 0.00001;
 		
 		assertEquals(radiansAct, s3.calculateRobotLocation(8, 8, 5, 5, distance1, 10), difAllow);
 		
