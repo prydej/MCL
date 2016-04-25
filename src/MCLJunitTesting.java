@@ -189,7 +189,7 @@ public class MCLJunitTesting {
 		
 		double distance1 = s3.distanceBetweenPoints(8, 8, 5, 5, 10);
 		
-		double radiansAct = Math.atan2((8-5), (8-5));
+		double radiansAct = Math.atan2((5-8), (5-8));
 		
 		double difAllow = 0.00001;
 		
