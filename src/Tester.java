@@ -42,7 +42,7 @@ public class Tester {
 		for (i=0; i < 10; i++ ){
 			for (j=0; j<2; j++){
 				// loop through each point value				
-				if (((b.refPoints[i][j]) > 100)||((b.refPoints[i][j]) < 1)){
+				if (((b.refPoints[i][j]) >= 100)||((b.refPoints[i][j]) <= 1)){
 					value = 1;
 				}
 			}			
