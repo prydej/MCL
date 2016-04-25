@@ -97,9 +97,9 @@ public class Sensor {
 		for(i = 0; i < numberOfRefPoints; i++){
 			
 			errorInX = ( (sensorError/100)*map.refPoints[i][j] );
-			pointDetectedX = map.refPoints[i][j] + errorInX;
+			pointDetectedX = map.refPoints[i][j] - errorInX;
 			errorInY = ( (sensorError/100)*map.refPoints[i][j+1] );
-			pointDetectedY = map.refPoints[i][j+1] + errorInY;
+			pointDetectedY = map.refPoints[i][j+1] - errorInY;
 
 			distance = Math.sqrt( Math.pow((robotX - pointDetectedX), 2) + Math.pow((robotY - pointDetectedY), 2));
 
@@ -163,9 +163,9 @@ public class Sensor {
 
 		double errorInEstY = (sensorError/100)*estimatedRobotY;
 
-		estimatedRobotX = estimatedRobotX + errorInEstX;
+		estimatedRobotX = estimatedRobotX - errorInEstX;
 
-		estimatedRobotY = estimatedRobotY + errorInEstY;
+		estimatedRobotY = estimatedRobotY - errorInEstY;
 
 		saveToFile(rx, ry, sx, sy, distance, estimatedRobotX, estimatedRobotY);
 		
