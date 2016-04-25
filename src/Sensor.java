@@ -95,7 +95,7 @@ public class Sensor {
 		 * within the range it should be.
 		 */
 		for(i = 0; i < numberOfRefPoints; i++){
-			System.out.println(map.refPoints.length);
+			
 			errorInX = ( (sensorError/100)*map.refPoints[i][j] );
 			pointDetectedX = map.refPoints[i][j] + errorInX;
 			errorInY = ( (sensorError/100)*map.refPoints[i][j+1] );
