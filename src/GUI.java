@@ -44,10 +44,9 @@ public class GUI extends Application{
 	private BorderPane MCLPane; 						//border pane
 	GridPane grid = new GridPane();						//gridpane
 	private MenuBar menuBar;							// MenuBar
-	private Menu menuFile, menuHelp, menuChart;			// Menus
+	private Menu menuFile, menuHelp;			// Menus
 	private MenuItem miSave, miClose;					// save/close
-	private MenuItem miAbout,miInstructions, miShow;	// Displays info about the program
-	private String moveString;
+	private MenuItem miAbout,miInstructions;	// Displays info about the program;
 	private Button load, start;
 	public static TextField startPoint, endPoint, rangeText, refPoints, moveError, senseError;
 
@@ -61,20 +60,17 @@ public class GUI extends Application{
 		miAbout = new MenuItem("About");
 		miInstructions = new MenuItem("Instructions");
 		//miChart = new CheckMenuItem("See Data");
-		miShow = new MenuItem("Show Data");
 		// Create Menus and MenuBar
 		menuFile = new Menu("File");
 		menuHelp = new Menu("Help");
-		menuBar = new MenuBar();	
-		menuChart = new Menu("Data Chart");
+		menuBar = new MenuBar();
 		// Add menu items to respective menus and to menuBaar
 		menuFile.getItems().addAll(miSave, miClose);
 		menuHelp.getItems().addAll(miAbout, miInstructions);
-		menuChart.getItems().addAll(miShow);
-		menuBar.getMenus().addAll(menuFile, menuHelp, menuChart);
+		menuBar.getMenus().addAll(menuFile, menuHelp);
 		//Defining text fields
 		rangeText = new TextField();
-		Label label1 = new Label ("Range:");
+		Label label1 = new Label ("Sensor Range:");
 		rangeText.setPromptText("Enter a double");
 		rangeText.setPrefColumnCount(20);
 		rangeText.getText();
@@ -430,7 +426,6 @@ public class GUI extends Application{
 				+ "Help menu:\n"
 				+ "About: Shows info on authors.\n"
 				+ "Information: Shows this window.\n\n"
-				+ "Data Chart menu:\n"
 				+ "Show Data: Shows graphs of data from simulation.\n"
 				+ "See Data: Shows the data.\n\n"
 				+ "Text Fields:\n"
