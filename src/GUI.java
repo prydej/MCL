@@ -230,7 +230,7 @@ public class GUI extends Application{
 		load.setOnAction(e -> showFiles());
 		//load.setOnAction(e -> loadFile());
 		/* PUT EVERYTHING TOGETHER */
-		Scene scene = new Scene(MCLPane, 850, 850);
+		Scene scene = new Scene(MCLPane, 850, 500);
 		// Add the menu bar and shapes to the border pane
 		MCLPane.setTop(menuBar);
 		MCLPane.setCenter(grid);
@@ -272,8 +272,27 @@ public class GUI extends Application{
 		fileChoice.setTitle("Saved Files");
 		fileChoice.setHeaderText("Choose a saved File:");
 
+		IO io = new IO();
+		
 		Optional<String> choice = fileChoice.showAndWait();
-		choice.ifPresent(fileChosen -> System.out.println("Choice: " + fileChosen));
+		choice.ifPresent(fileChosen -> {
+			double[][] fromFile = io.parseMethod(fileChosen);
+			
+			double[][] positions = new double[fromFile[0].length][2];
+			double[][] positionsWError = new double[fromFile[0].length][2];
+			
+			//put data from file in coordinate format for chart
+			for (int bassoon = 0; bassoon < fromFile.length; bassoon++){
+				positions[bassoon][0] = fromFile[0][bassoon]; //fromFile is in format {x_ideal, y_ideal, x_actual, y_actual}
+				positions[bassoon][1] = fromFile[1][bassoon]; //positions must be in format {{x,y}, {x,y}, ...}
+				
+				positionsWError[bassoon][0] = fromFile[2][bassoon];
+				positionsWError[bassoon][1] = fromFile[3][bassoon];
+				
+			}
+			
+			io.showChart(positions, positionsWError);
+		});
 	}
 	
 	/**

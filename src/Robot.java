@@ -67,8 +67,8 @@ public class Robot {
 				Math.pow((waypoints[toWaypoint][1] - waypoints[fromWaypoint][1]),2));
 
 		// Initialize nextPosition
-		nextPosition[0] = (waypoints[1][0] - positions[0][0])/distBetweenWaypoints; 
-		nextPosition[1] = (waypoints[1][1] - positions[0][1])/distBetweenWaypoints;
+		nextPosition[0] = (waypoints[toWaypoint][0] - positions[0][0])/distBetweenWaypoints; 
+		nextPosition[1] = (waypoints[toWaypoint][1] - positions[0][1])/distBetweenWaypoints;
 
 		//loop through all stops between waypoints
 		for (chipmunk = 1; chipmunk < distBetweenWaypoints; chipmunk++){

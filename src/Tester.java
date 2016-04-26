@@ -83,12 +83,12 @@ public class Tester {
 		ArrayList<double[][]> list = robot.move(1, 1, 0, map, sensor, io, true); //debug == true
 
 		//Test that the final x coordinate is within a tolerance of 1 unit due to rounding error
-		if ((Math.abs(list.get(0)[robot.positions.length][0] - 100) < 1)){ //if last x-position is NOT less than 1 unit from 100
+		if ((Math.abs(list.get(0)[robot.positions.length - 1][0] - 100) < 1)){ //if last x-position is NOT less than 1 unit from 100
 			fail();
 		}
 
 		//Test that the final y coordinate is within a tolerance of 1 unit due to rounding error
-		if ((Math.abs(list.get(0)[robot.positions.length][1] - 100) < 1)){ //if last x-position is NOT less than 1 unit from 100
+		if ((Math.abs(list.get(0)[robot.positions.length - 1][1] - 100) < 1)){ //if last x-position is NOT less than 1 unit from 100
 			fail();
 		}
 	}
@@ -109,12 +109,12 @@ public class Tester {
 		ArrayList<double[][]> list = robot.move(1, 1, 0, map, sensor, io, true); //debug == true
 
 		//Test that the final x coordinate is within a tolerance of 1 unit due to rounding error
-		if (!(Math.abs(list.get(0)[robot.positions.length][0] - 100) < 1)){ //if last x-position is NOT less than 1 unit from 100
+		if (!(Math.abs(list.get(0)[robot.positions.length - 1][0] - 100) < 1)){ //if last x-position is NOT less than 1 unit from 100
 			fail();
 		}
 
 		//Test that the final y coordinate is within a tolerance of 1 unit due to rounding error
-		if (!(Math.abs(list.get(0)[robot.positions.length][1] - 0) < 1)){ //if last x-position is NOT less than 1 unit from 100
+		if (!(Math.abs(list.get(0)[robot.positions.length - 1][1] - 0) < 1)){ //if last x-position is NOT less than 1 unit from 100
 			fail();
 		}
 	}
