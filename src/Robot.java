@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class Robot {
 
-	private double[] calcPosition, nextPosition; //2 elements: 1st is x positions, 2nd is y positions
+	private double[] calcPosition; //2 elements: 1st is x positions, 2nd is y positions
 	public double[][] positionsWError, positions;
 	public double[][] waypoints = {{0,0},{0,0}};
 	private double distBetweenWaypoints, xError, yError, distToNextWaypoint;
@@ -39,9 +39,6 @@ public class Robot {
 		this.positionsWError = new double[totalDist + 1][2];
 		positionsWError[0][0] = start[0];
 		positionsWError[0][1] = start[1];
-
-		// Instantiate nextPosition
-		nextPosition = new double[2]; 
 	}
 
 	public int getNumWaypoints(){
@@ -65,34 +62,20 @@ public class Robot {
 		//Find distance between fromWaypoint and toWaypoint
 		distBetweenWaypoints = Math.sqrt(Math.pow((waypoints[toWaypoint][0] - waypoints[fromWaypoint][0]),2) + 
 				Math.pow((waypoints[toWaypoint][1] - waypoints[fromWaypoint][1]),2));
-
-		// Initialize nextPosition
-		nextPosition[0] = (waypoints[toWaypoint][0] - positions[0][0])/distBetweenWaypoints; 
-		nextPosition[1] = (waypoints[toWaypoint][1] - positions[0][1])/distBetweenWaypoints;
+		
+		//Find length of one move in x and y direction
+		double moveLengthX = (waypoints[toWaypoint][0] - waypoints[fromWaypoint][0])/distBetweenWaypoints;
+		double moveLengthY = (waypoints[toWaypoint][1] - waypoints[fromWaypoint][1])/distBetweenWaypoints;
+		
+		//Create evenly-spaced array of x and y values between waypoints
+		for (int piano = 1; piano < distBetweenWaypoints + 1; piano++){
+			positions[piano][0] = positions[piano - 1][0] + moveLengthX;
+			positions[piano][1] = positions[piano - 1][1] + moveLengthY;
+			
+		}
 
 		//loop through all stops between waypoints
 		for (chipmunk = 1; chipmunk < distBetweenWaypoints; chipmunk++){
-
-			//change positions var to new positions
-			//x position
-			positions[chipmunk][0] = positions[chipmunk - 1][0] + nextPosition[0];
-
-			if (positions[chipmunk][0] < 0){ //if robot crosses bottom boundary
-				positions[chipmunk][0] = -positions[chipmunk][0]; //robot bounces off of boundary
-
-			} else if (positions[chipmunk][0] > 100){ //if robot crosses top boundary
-				positions[chipmunk][0] = 100 - (positions[chipmunk][0] - 100);
-			}
-			
-			//y position
-			positions[chipmunk][1] = positions[chipmunk - 1][0] + nextPosition[1];
-
-			if (positions[chipmunk][1] < 0){ //if robot crosses left boundary
-				positions[chipmunk][1] = -positions[chipmunk][1];
-
-			} else if (positions[chipmunk][1] > 100){ //if robot crosses right boundary
-				positions[chipmunk][1] = 100 - (positions[chipmunk][1] - 100);
-			}
 
 			//add movement error
 			Random errorGen = new Random(); //create rng object
@@ -101,27 +84,26 @@ public class Robot {
 			yError = errorGen.nextGaussian() * movementError;
 
 			//update positions with error, quit program if robot runs off the map
-			//try {
 			//add error in x direction to positions
-			positionsWError[chipmunk][0] = positionsWError[chipmunk - 1][0] + nextPosition[0] + xError;
+			positionsWError[chipmunk][0] = positionsWError[chipmunk - 1][0] + moveLengthX + xError;
 
-			//reverse direction if robot hits a side boundary
+			//stop at a boundary
 			if (positionsWError[chipmunk][0] < 0){
-				positionsWError[chipmunk][0] = -positionsWError[chipmunk][0];
+				positionsWError[chipmunk][0] = 0;
 
 			} else if (positionsWError[chipmunk][0] > 100){
-				positionsWError[chipmunk][0] = 100 - (positionsWError[chipmunk][0] - 100);
+				positionsWError[chipmunk][0] = 100;
 			}
 
 			//add error in y direction to positions
-			positionsWError[chipmunk][1] = positionsWError[chipmunk - 1][1] + nextPosition[1] + yError;
+			positionsWError[chipmunk][1] = positionsWError[chipmunk - 1][1] + moveLengthY + yError;
 
 			//reverse direction if robot hits top or bottom boundary
 			if (positionsWError[chipmunk][1] < 0){
-				positionsWError[chipmunk][1] = -positionsWError[chipmunk][1];
+				positionsWError[chipmunk][1] = 0;
 
 			} else if (positionsWError[chipmunk][1] > 100){
-				positionsWError[chipmunk][1] = 100 - (positionsWError[chipmunk][1] - 100);
+				positionsWError[chipmunk][1] = 100;
 			}
 
 			if (debug == false){ //Do not detect points if debugging
@@ -133,23 +115,6 @@ public class Robot {
 					System.out.println("IO Exception");
 				}
 			}
-
-			//find next positions 1 unit away from last positions
-			// find distance from next waypoint
-			distToNextWaypoint = this.distFormula(waypoints[toWaypoint], positions[chipmunk]);
-
-			// divide horz and vert component by distance between actual positions and toWaypoint #UnitVector
-			nextPosition[0] = (waypoints[toWaypoint][0] - positions[chipmunk][0])/distToNextWaypoint; 
-			nextPosition[1] = (waypoints[toWaypoint][1] - positions[chipmunk][1])/distToNextWaypoint;
-			
-			//Snap to waypoint if on final move and within 2 units of waypoint
-			/*if ((Math.abs(positions[chipmunk][0] + nextPosition[0] - waypoints[toWaypoint][0]) < 1) && //x position
-					(Math.abs(positions[chipmunk][1] + nextPosition[1] - waypoints[toWaypoint][1]) < 1) && //y position
-					(chipmunk == distBetweenWaypoints - 1)) { //on last move before waypoint
-				positions[chipmunk][0] = waypoints[toWaypoint][0];
-				positions[chipmunk][1] = waypoints[toWaypoint][1];
-				
-			}*/
 		}
 
 		fromWaypoint = toWaypoint; //set current toWaypoint to fromWaypoint
