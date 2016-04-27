@@ -5,18 +5,19 @@
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import java.io.IOException;
 
 public class Robot {
 
 	private double[] calcPosition; //2 elements: 1st is x positions, 2nd is y positions
-	public double[][] positionsWError, positions;
+	public double[][] positionsWError, positions, positionsEstimate;
 	public double[][] waypoints = {{0,0},{0,0}};
 	private double distBetweenWaypoints, xError, yError, distToNextWaypoint;
 	public int fromWaypoint, toWaypoint, numWaypoints, chipmunk;
 
-	/*
+	/**
 	 * @param start: starting positions x and y
 	 * @param end: ending positions x and y
 	 */
@@ -39,6 +40,10 @@ public class Robot {
 		this.positionsWError = new double[totalDist + 1][2];
 		positionsWError[0][0] = start[0];
 		positionsWError[0][1] = start[1];
+		
+		this.positionsEstimate = new double[totalDist + 1][2];
+		positionsEstimate[0][0] = start[0];
+		positionsEstimate[0][1] = start[1];
 	}
 
 	public int getNumWaypoints(){
@@ -54,18 +59,25 @@ public class Robot {
 	}
 
 	/**
-	 * move() moves the robot to its next positions, calls sense and calculate
+	 * move() moves the robot to its next positions, calls calculate
 	 * @return double array of positions betwen waypoints after robot hits a waypoint
+	 * @param range: Sensor range
+	 * @param sensorError: percentage of detection distance
+	 * @param movementError: Standard Deviation of gaussian random number
+	 * @param map: object of class map
+	 * @param sensor: object of class sensor
+	 * @param io: object of class IO
+	 * @param debug: whether or not to call detectPoints and run to file
 	 */
 	public ArrayList<double[][]> move(double range, double sensorError,double movementError, Map map, Sensor sensor, IO io, boolean debug){
 
 		//Find distance between fromWaypoint and toWaypoint
-		distBetweenWaypoints = Math.sqrt(Math.pow((waypoints[toWaypoint][0] - waypoints[fromWaypoint][0]),2) + 
-				Math.pow((waypoints[toWaypoint][1] - waypoints[fromWaypoint][1]),2));
+		distBetweenWaypoints = Math.sqrt(Math.pow((waypoints[1][0] - waypoints[0][0]),2) + 
+				Math.pow((waypoints[1][1] - waypoints[0][1]),2));
 		
 		//Find length of one move in x and y direction
-		double moveLengthX = (waypoints[toWaypoint][0] - waypoints[fromWaypoint][0])/distBetweenWaypoints;
-		double moveLengthY = (waypoints[toWaypoint][1] - waypoints[fromWaypoint][1])/distBetweenWaypoints;
+		double moveLengthX = (waypoints[1][0] - waypoints[0][0])/distBetweenWaypoints;
+		double moveLengthY = (waypoints[1][1] - waypoints[0][1])/distBetweenWaypoints;
 		
 		//Create evenly-spaced array of x and y values between waypoints
 		for (int piano = 1; piano < distBetweenWaypoints + 1; piano++){
@@ -75,7 +87,7 @@ public class Robot {
 		}
 
 		//loop through all stops between waypoints
-		for (chipmunk = 1; chipmunk < distBetweenWaypoints; chipmunk++){
+		for (chipmunk = 1; chipmunk < distBetweenWaypoints + 1; chipmunk++){
 
 			//add movement error
 			Random errorGen = new Random(); //create rng object
@@ -109,26 +121,29 @@ public class Robot {
 			if (debug == false){ //Do not detect points if debugging
 				//call sensor.sense()
 				try{
-					sensor.detectPoints(range, positionsWError[chipmunk][0], positionsWError[chipmunk][1], sensorError, map);
-
+					this.positionsEstimate[chipmunk] = sensor.detectPoints(range, positionsWError[chipmunk][0], 
+							positionsWError[chipmunk][1], sensorError, map);
 				} catch (IOException e) {
 					System.out.println("IO Exception");
 				}
 			}
 		}
+		
+		System.out.println("The robot estimates that it is at " + Arrays.toString(this.positionsEstimate[40]));
 
-		fromWaypoint = toWaypoint; //set current toWaypoint to fromWaypoint
-		toWaypoint++;//	set next waypoint to toWaypoint
+		//fromWaypoint = toWaypoint; //set current toWaypoint to fromWaypoint
+		//toWaypoint++;//	set next waypoint to toWaypoint
 
 		if (debug == false){ //Do not write to file if in debug mode
 			//send info from run to file
-			io.writeRunData(positions, positionsWError);
+			io.writeRunData(positions, positionsWError, positionsEstimate);
 		}
 		
 		ArrayList<double[][]> posReturn = new ArrayList<>();
 		
 		posReturn.add(positions);
 		posReturn.add(positionsWError);
+		posReturn.add(positionsEstimate);
 		
 		return posReturn;
 	}

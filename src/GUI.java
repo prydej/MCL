@@ -11,6 +11,8 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
@@ -98,7 +100,7 @@ public class GUI extends Application{
 		moveError = new TextField();
 		Label label5 = new Label ("Movment Error SD:");
 		moveError.setPrefColumnCount(25);
-		moveError.setPromptText("Enter a percentage");
+		moveError.setPromptText("Enter a double");
 		GridPane.setConstraints(moveError, 2, 3);
 		GridPane.setConstraints(label5, 1, 3);
 		//Defining text field
@@ -226,7 +228,7 @@ public class GUI extends Application{
 		load.setOnAction(e -> showFiles());
 		//load.setOnAction(e -> loadFile());
 		/* PUT EVERYTHING TOGETHER */
-		Scene scene = new Scene(MCLPane, 850, 500);
+		Scene scene = new Scene(MCLPane, 650, 260);
 		// Add the menu bar and shapes to the border pane
 		MCLPane.setTop(menuBar);
 		MCLPane.setCenter(grid);
@@ -264,101 +266,46 @@ public class GUI extends Application{
 		}
 
 		// Show dropdown box to choose file
-		ChoiceDialog<String> fileChoice = new ChoiceDialog<>(dispFiles.get(1), dispFiles);
-		fileChoice.setTitle("Saved Files");
-		fileChoice.setHeaderText("Choose a saved File:");
-
-		IO io = new IO();
+		try {
+			ChoiceDialog<String> fileChoice = new ChoiceDialog<>(dispFiles.get(0), dispFiles);
 		
-		Optional<String> choice = fileChoice.showAndWait();
-		choice.ifPresent(fileChosen -> {
-			double[][] fromFile = io.parseMethod(fileChosen);
-			
-			double[][] positions = new double[fromFile[0].length][2];
-			double[][] positionsWError = new double[fromFile[0].length][2];
-			
-			//put data from file in coordinate format for chart
-			for (int bassoon = 0; bassoon < fromFile.length; bassoon++){
-				positions[bassoon][0] = fromFile[0][bassoon]; //fromFile is in format {x_ideal, y_ideal, x_actual, y_actual}
-				positions[bassoon][1] = fromFile[1][bassoon]; //positions must be in format {{x,y}, {x,y}, ...}
-				
-				positionsWError[bassoon][0] = fromFile[2][bassoon];
-				positionsWError[bassoon][1] = fromFile[3][bassoon];
-				
-			}
-			
-			io.showChart(positions, positionsWError);
-		});
-	}
+			fileChoice.setTitle("Saved Files");
+			fileChoice.setHeaderText("Choose a saved File:");
 	
-	/**
-	 * @author Julian and Savanh
-	 * 
-	 */
-	/*public class SimulateHandler implements EventHandler<ActionEvent>{
-		
-		/**
-		 *  @author Julian Pryde
-		 * Set action for start simulation button
-		 * (non-Javadoc)
-		 * @see javafx.event.EventHandler#handle(javafx.event.Event)
-		 */
-		/*@Override
-		public void handle(ActionEvent e){
-
-			//get text, split by comma, convert each element part to int
-			int startx = Integer.parseInt(startPoint.getText().split(",")[0]);
-			if( startx < 0 || startx > 100 )/*set parameters for users by Savanh*///{
-			//	System.out.print("Error! Enter a number between 0-100\n");
-			/*}
-			int starty = Integer.parseInt(startPoint.getText().split(",")[1]);
-			if( starty < 0 || starty > 100 )/*set parameters for users by Savanh*///{
-			//	System.out.print("Error! Enter a number between 0-100\n");
-			/*}
-			int endx = Integer.parseInt(endPoint.getText().split(",")[0]);
-			if( endx < 0 || endx > 100 )/*set parameters for users by Savanh*///{
-			//	System.out.print("Error! Enter a number between 0-100\n");
-			/*}
-			int endy = Integer.parseInt(endPoint.getText().split(",")[1]);
-			if( endy < 0 || endy > 100 )/*set parameters for users by Savanh*///{
-			//	System.out.print("Error! Enter a number between 0-100\n");
-			/*}
-			int[] startPos = {startx, starty};
-			int[] endPos = {endx, endy};
-
-
-			/*created new variables by Savanh and added user parameters*/
-			/*int refPoint = Integer.parseInt(refPoints.getText());
-			double range = Double.parseDouble(rangeText.getText()); 
-			double sense = Double.parseDouble(senseError.getText()); 
-			double move = Double.parseDouble(moveError.getText());
-			try{
-				if (refPoint < 0 || refPoint > 100){
-					System.out.print("Error! Enter a number between 0-100\n");
+			IO io = new IO();
+			
+			Optional<String> choice = fileChoice.showAndWait();
+			choice.ifPresent(fileChosen -> {
+				double[][] fromFile = io.parseMethod(fileChosen);
+				
+				double[][] positions = new double[fromFile[0].length][2];
+				double[][] positionsWError = new double[fromFile[0].length][2];
+				double[][] positionsEstimate = new double[fromFile[0].length][2];
+				
+				//put data from file in coordinate format for chart
+				for (int bassoon = 0; bassoon < fromFile.length; bassoon++){
+					positions[bassoon][0] = fromFile[0][bassoon]; //fromFile is in format {x_ideal, y_ideal, x_actual, y_actual}
+					positions[bassoon][1] = fromFile[1][bassoon]; //positions must be in format {{x,y}, {x,y}, ...}
+					
+					positionsWError[bassoon][0] = fromFile[2][bassoon];
+					positionsWError[bassoon][1] = fromFile[3][bassoon];
+					
+					positionsEstimate[bassoon][0] = fromFile[4][bassoon];
+					positionsEstimate[bassoon][1] = fromFile[5][bassoon];
+					
 				}
-				if (range < 0 || range > 100){
-					System.out.print("Error! Enter a number between 0-100\n");
-				}
-				if (sense < 0 || sense > 100){
-					System.out.print("Error! Enter a number between 0-100\n");
-				}
-				if (move < 0 || move > 100){
-					System.out.print("Error! Enter a number between 0-100\n");
-				}
-			}catch(Exception ex){
-				ex.getStackTrace();
-				return;
-			}
-			Main.simulate(
-					refPoint,
-					startPos,
-					endPos,
-					range,
-					sense,
-					move
-					);
+				
+				io.showChart(positions, positionsWError, positionsEstimate);
+			});
+		} catch (Exception e){
+			Alert noneFound = new Alert(AlertType.ERROR);
+			noneFound.setContentText("No .json files found in the current directory");
+			noneFound.setTitle("No Files Found");
+			noneFound.setHeaderText("404");
+			
+			noneFound.showAndWait();
 		}
-	}*/
+	}
 
 	/** Shows information about the program in it's own window 
 	 * @author Savanh Lu */
@@ -384,37 +331,6 @@ public class GUI extends Application{
 		stage.show();
 	}
 
-	/**@author Savanh
-	 * shows chart */
-	/*private class ShowHandler implements EventHandler<ActionEvent>{
-		@Override
-		public void handle(ActionEvent e) {
-
-			stage.show();
-
-			/*StackPane pane = new StackPane();	// Add the label to a StackPane
-			// Create and display the aforementioned pane in a new stage 	
-			Scene scene = new Scene(pane, 600, 600);
-			Stage stage = new Stage();
-			stage.setScene(scene);
-			stage.setTitle("Data Chart");
-			stage.setResizable(false);
-			stage.show();
-			//chart things
-			CategoryAxis xAxis= new CategoryAxis();
-			NumberAxis yAxis = new NumberAxis();
-			lineChart = new LineChart(xAxis, yAxis);
-
-			/*if (robot instanceof Robot){
-				lineChart.setData(getChartData());
-			}
-
-			lineChart.setTitle("Data from Simulation");
-			StackPane root= new StackPane();
-			pane.getChildren().add(lineChart);//add line chart
-		} 
-	}*/
-
 	/** Shows instructions on each item in the GUI
 	 * @author Stephen Kristin
 	 */
@@ -433,7 +349,7 @@ public class GUI extends Application{
 				+ "Reference Points: User input to determine number of reference points as Integer value.\n"
 				+ "Sensor Error: User input to determine percentage of sensor error as Double value.\n"
 				+ "Waypoints: User input to determine number of waypoints as Double value.\n"
-				+ "Movement Error: User input to determine percentage of movement error as Double value.\n"
+				+ "Movement Error: User input to determine standard deviation of the movement error as Double value.\n"
 				+ "Start Point: User input to determine robot starting point, input as (x,y) as Integers.\n"
 				+ "End Point: User input to determine robot ending point, input as (x,y) as Integers.\n\n"
 				+ "Start Simualtion button: Uses user input data to run the simulation.\n"

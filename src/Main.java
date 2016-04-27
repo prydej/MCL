@@ -38,6 +38,10 @@ public class Main extends Application{
 	}
 
 	/**
+	 * 
+	 * 
+	 * @author Julian Pryde
+	 * 
 	 * @param numRefPoints number of reference points
 	 * @param waypoint1 first point in robot's path
 	 * @param waypoint2 2nd point in robot's path
@@ -81,7 +85,7 @@ public class Main extends Application{
 		}*/
 
 		//Chart positions found
-		io.showChart(posReturn.get(0), posReturn.get(1));
+		io.showChart(posReturn.get(0), posReturn.get(1), posReturn.get(2));
 	}
 
 }

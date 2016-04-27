@@ -42,7 +42,7 @@ public class Tester {
 		for (i=0; i < 10; i++ ){
 			for (j=0; j<2; j++){
 				// loop through each point value				
-				if (((b.refPoints[i][j]) >= 100)||((b.refPoints[i][j]) <= 1)){
+				if (((b.refPoints[i][j]) > 100)||((b.refPoints[i][j]) < 0)){
 					value = 1;
 				}
 			}			
@@ -83,12 +83,12 @@ public class Tester {
 		ArrayList<double[][]> list = robot.move(1, 1, 0, map, sensor, io, true); //debug == true
 
 		//Test that the final x coordinate is within a tolerance of 1 unit due to rounding error
-		if ((Math.abs(list.get(0)[robot.positions.length - 1][0] - 100) < 1)){ //if last x-position is NOT less than 1 unit from 100
+		if ((Math.abs(list.get(0)[robot.positions.length - 1][0] - 100) > 1)){ //if last x-position is NOT greater than 1 unit from 100
 			fail();
 		}
 
 		//Test that the final y coordinate is within a tolerance of 1 unit due to rounding error
-		if ((Math.abs(list.get(0)[robot.positions.length - 1][1] - 100) < 1)){ //if last x-position is NOT less than 1 unit from 100
+		if ((Math.abs(list.get(0)[robot.positions.length - 1][1] - 100) > 1)){ //if last x-position is NOT greater than 1 unit from 100
 			fail();
 		}
 	}
@@ -109,12 +109,12 @@ public class Tester {
 		ArrayList<double[][]> list = robot.move(1, 1, 0, map, sensor, io, true); //debug == true
 
 		//Test that the final x coordinate is within a tolerance of 1 unit due to rounding error
-		if (!(Math.abs(list.get(0)[robot.positions.length - 1][0] - 100) < 1)){ //if last x-position is NOT less than 1 unit from 100
+		if ((Math.abs(list.get(0)[robot.positions.length - 1][0] - 100) > 1)){ //if last x-position is NOT less than 1 unit from 100
 			fail();
 		}
 
 		//Test that the final y coordinate is within a tolerance of 1 unit due to rounding error
-		if (!(Math.abs(list.get(0)[robot.positions.length - 1][1] - 0) < 1)){ //if last x-position is NOT less than 1 unit from 100
+		if ((Math.abs(list.get(0)[robot.positions.length - 1][1] - 0) > 1)){ //if last x-position is NOT less than 1 unit from 100
 			fail();
 		}
 	}
@@ -126,7 +126,7 @@ public class Tester {
 	 *  - Tests specifically for crossing the left boundary
 	 */
 	@Test
-	public void test(){
+	public void testPositionsPositive(){
 
 		Robot robot = new Robot(new int[] {0, 0}, new int[] {100, 0});
 
@@ -137,8 +137,14 @@ public class Tester {
 
 		robot.move(0, 0, 1, map, sensor, io, true); //debug == true
 
-		for (int jaguar = 0; jaguar < 100; jaguar++){
-			if (robot.positions[jaguar][0] < 0){
+		for (int jaguar = 0; jaguar < 100; jaguar++){ //test if any x actual positions are out of bounds (0-100)
+			if (robot.positionsWError[jaguar][0] < 0 || robot.positionsWError[jaguar][0] > 100){
+				fail();
+			}
+		}
+		
+		for (int lion = 0; lion < 100; lion++){ //test if any x actual positions are out of bounds (0-100)
+			if (robot.positionsWError[lion][1] < 0 || robot.positionsWError[lion][1] > 100){
 				fail();
 			}
 		}
@@ -157,7 +163,7 @@ public class Tester {
 		double difAllow = 0.01;
 
 		try {
-			assertEquals(35.35, s1.distanceBetweenPoints(0, 0, 25, 25, 8), difAllow);
+			assertEquals(35.35, s1.distanceBetweenPoints(0, 0, 25, 25, 8)[2], difAllow);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -192,13 +198,13 @@ public class Tester {
 
 		try{
 
-			double distance1 = s3.distanceBetweenPoints(8, 8, 5, 5, 10);
+			double distance1 = s3.distanceBetweenPoints(8, 8, 5, 5, 10)[2];
 
 			double radiansAct = Math.atan2((5-8), (5-8));
 
 			double difAllow = 0.00001;
 
-			assertEquals(radiansAct, s3.calculateRobotLocation(8, 8, 5, 5, distance1, 10), difAllow);
+			assertEquals(radiansAct, s3.calculateRobotLocation(8, 8, 5, 5, distance1, 10)[2], difAllow);
 
 		}catch(IOException e){
 			e.printStackTrace();

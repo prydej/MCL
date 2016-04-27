@@ -1,4 +1,6 @@
 import java.text.*;
+import java.util.Arrays;
+
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.text.Text;
@@ -52,7 +54,7 @@ public class Sensor {
 	 * @exception IOException is thrown if the file is not found or if there
 	 * is a problem writing to the file.
 	 **/
-	public void detectPoints(double rangeOfSensor, double robotX, double robotY, double sensorError, Map map) throws IOException{
+	public double[] detectPoints(double rangeOfSensor, double robotX, double robotY, double sensorError, Map map) throws IOException{
 
 		/**
 		 * loop counters to use in for loops in order
@@ -94,6 +96,9 @@ public class Sensor {
 		 * with error to figure out if the robot is 
 		 * within the range it should be.
 		 */
+		
+		double[] estimate = new double[3];
+		
 		for(i = 0; i < numberOfRefPoints; i++){
 			
 			errorInX = ( (sensorError/100)*map.refPoints[i][j] );
@@ -105,10 +110,14 @@ public class Sensor {
 
 			//if the robot is within the correct range, it will go to the
 			//next method to calculate the same distance as a checker.
+			
 			if(distance < rangeOfSensor){
-				distanceBetweenPoints(robotX, robotY, pointDetectedX, pointDetectedY, sensorError);
-			}	
+				estimate = distanceBetweenPoints(robotX, robotY, pointDetectedX, pointDetectedY, sensorError);
+			}
+			
 		}
+		
+		return estimate;
 	}
 
 
@@ -123,15 +132,20 @@ public class Sensor {
 	 * @param sy the reference points y location 
 	 * @param sensorError the error in the sensor 
 	 */
-	public double distanceBetweenPoints(double rx, double ry, double sx, double sy, double sensorError) throws IOException{
+	public double[] distanceBetweenPoints(double rx, double ry, double sx, double sy, double sensorError) throws IOException{
 
 		double distance = 0.0;
+		double[] returnVals = new double[3];
 
 		distance = Math.sqrt(Math.pow((rx - sx), 2) + Math.pow((ry-sy), 2));
 
-		calculateRobotLocation(rx, ry, sx, sy, distance, sensorError);
+		double[] estimate = calculateRobotLocation(rx, ry, sx, sy, distance, sensorError);
 		
-		return distance;
+		returnVals[0] = estimate[0];
+		returnVals[1] = estimate[1];
+		returnVals[2] = distance;
+		
+		return estimate;
 	}
 
 	/**
@@ -147,7 +161,7 @@ public class Sensor {
 	 * @param distance the distance between the robot and the reference point
 	 * @param sensorError the error in the sensor
 	 */
-	public double calculateRobotLocation(double rx, double ry, double sx, double sy, double distance, double sensorError) throws IOException{
+	public double[] calculateRobotLocation(double rx, double ry, double sx, double sy, double distance, double sensorError) throws IOException{
 
 		double estimatedRobotX = 0.0;
 
@@ -169,7 +183,9 @@ public class Sensor {
 
 		saveToFile(rx, ry, sx, sy, distance, estimatedRobotX, estimatedRobotY);
 		
-		return radians;
+		double[] estimate = {estimatedRobotX, estimatedRobotY};
+		
+		return estimate;
 	}
 
 	/**

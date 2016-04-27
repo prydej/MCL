@@ -7,12 +7,12 @@ import javafx.event.EventHandler;
 
 /**
  * @author Julian Pryde
- *
+ * Contains the event handler for the simulate button on the main GUI
  */
 public class SimulateHandler implements EventHandler<ActionEvent> {
 
 	/**
-	 *  @author Julian Pryde
+	 * @author Julian Pryde
 	 * Set action for start simulation button
 	 * (non-Javadoc)
 	 * @see javafx.event.EventHandler#handle(javafx.event.Event)
