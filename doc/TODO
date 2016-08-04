@@ -1,0 +1,22 @@
+- Fix map program
+    - With map, also pass list of distances, angles between points
+- Rewrite sensor.java
+    - Sense points to degree of precision defined by normal distribution
+      around point with given SD
+        - Loop through all points on map
+        - Identify points within range
+        - Apply normal distribution of error to position
+    - Measure distances between detected points if more than 1 detected
+        - 2 nested loops through list of detected points finding the distance
+          between each point found. Drop each distance in a 2-dimensional array
+        - Figure out the maximum acceptable variation in distance from movement?
+          and sensor error
+    - Measure angle between points if more than 2 detected
+        - Measure side lengths
+        - Measure 2 angles
+        - Find last by subtracting from 180
+    - Find points with close-enough distance and angle
+        - Loop through distances, find similar distances
+        - If 3 or more points found, loop through angles, find similar angles
+          that involve the same points
+    - Make guess (or array of guesses)
