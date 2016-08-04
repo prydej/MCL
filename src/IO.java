@@ -153,7 +153,7 @@ public class IO {
 		System.out.println(prettyOutput);
 
 		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(filename + ".json", false)); //create writer object
+			BufferedWriter writer = new BufferedWriter(new FileWriter("log/" + filename + ".json", false)); //create writer object
 			writer.write(prettyOutput);
 
 			//Close filewriter
