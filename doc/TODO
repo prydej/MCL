@@ -8,12 +8,18 @@
         - Apply normal distribution of error to position
     - Measure distances between detected points if more than 1 detected
         - 2 nested loops through list of detected points finding the distance
-          between each point found. Drop each distance in a 2-dimensional array
+          between each point found. 
+        - Drop each distance in a 2-dimensional array
         - Figure out the maximum acceptable variation in distance from movement?
           and sensor error
     - Measure angle between points if more than 2 detected
         - Measure side lengths
         - Measure 2 angles
+            - For every group of three vectors
+                - Find vector components of 2 vectors between points
+                - Transform vector components into Magnitude/Direction
+                - Take abs() of difference between angles
+                - Drop each angle in 3-dimensional array
         - Find last by subtracting from 180
     - Find points with close-enough distance and angle
         - Loop through distances, find similar distances
